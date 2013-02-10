@@ -3,6 +3,10 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+HOSTNAME = "localhost"
+PORT_NUMBER = 6379
+DATABASE = 0
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
