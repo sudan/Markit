@@ -112,18 +112,6 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-# When using TCP connections
-CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': 'http://localhost:6379',
-        'OPTIONS': {
-            'DB': 1,
-            'PASSWORD': 'password',
-            'PARSER_CLASS': 'redis.connection.HiredisParser'
-        },
-    },
-}
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
