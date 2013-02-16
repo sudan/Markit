@@ -2,10 +2,15 @@ import redis
 from online_bookmarking.settings import HOSTNAME,PORT_NUMBER,DATABASE
 
 class Redis:
+	""" A redis helper class """ 
 
 	#Create a connection with redis server and return the object
 	def __init__(self):
 		self.redis_object = redis.StrictRedis(host=HOSTNAME,port=PORT_NUMBER,db=DATABASE)
+
+	#Increment the global key and return it
+	def next_unique_key(self,key):
+		return self.redis_object.incr(key)
 
 	#Get the value from a key
 	def get_value(self,key):
