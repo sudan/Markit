@@ -59,5 +59,8 @@ class Redis:
 		else:
 			return self.redis_object.lrange(key,start,end)
 
+	#Check for the existence of a key
+	def check_existence(self,key):
+		return self.redis_object.exists(key)
 
 
