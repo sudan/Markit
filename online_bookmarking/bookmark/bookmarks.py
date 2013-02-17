@@ -1,4 +1,9 @@
 #todos -- append the uid of the user
+#change the name of the template
+#get bookmarks
+#update page after adding bookmarks
+#blocked coz of auth module
+#if public add bookmarks to followers
 
 from django.shortcuts import render_to_response
 from django.http import  Http404,HttpResponseRedirect,HttpResponse

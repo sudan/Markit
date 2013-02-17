@@ -15,6 +15,6 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),
     url(r'^$', 'auth.views.login'),
-    url(r'^home$', 'bookmark.views.home'),
+    url(r'^home$', 'auth.views.home'),
     url(r'', include('social_auth.urls')),
 )

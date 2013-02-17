@@ -36,6 +36,10 @@ class Redis:
 	def members_in_set(self,key):
 		return self.redis_object.smembers(key)
 
+	#Get the count in a set
+	def total_members(self,key):
+		return self.redis_object.scard(key)
+
 	#Add element to the stack
 	def add_to_stack(self,key,value):
 		self.redis_object.lpush(key,value)
