@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from auth.views import login
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -14,7 +13,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-    url(r'^bookmark/$','bookmark.bookmarks.create_bookmark'),
-    url(r'^$',login),
-    url(r'',include('social_auth.urls')),
+    url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),
+    url(r'^$', 'auth.views.login'),
+    url(r'^home$', 'bookmark.views.home'),
+    url(r'', include('social_auth.urls')),
 )

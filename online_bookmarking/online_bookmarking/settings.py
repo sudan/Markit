@@ -35,6 +35,17 @@ SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
 SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
 
 LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "/home"
+LOGIN_ERROR_URL = "/"
+
+SOCIAL_AUTH_PIPELINE = (
+'social_auth.backends.pipeline.social.social_auth_user',
+'social_auth.backends.pipeline.associate.associate_by_email',
+'social_auth.backends.pipeline.user.get_username',
+'social_auth.backends.pipeline.user.create_user',
+'social_auth.backends.pipeline.social.associate_user',
+'social_auth.backends.pipeline.user.update_user_details',
+)
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -166,8 +177,8 @@ AUTHENTICATION_BACKENDS = (
 
 TWITTER_CONSUMER_KEY         = ''
 TWITTER_CONSUMER_SECRET      = ''
-FACEBOOK_APP_ID              = ''
-FACEBOOK_API_SECRET          = ''
+FACEBOOK_APP_ID              = '206833696091079'
+FACEBOOK_API_SECRET          = 'f6557050b9eade538b87716addbb8304'
 LINKEDIN_CONSUMER_KEY        = ''
 LINKEDIN_CONSUMER_SECRET     = ''
 GOOGLE_CONSUMER_KEY          = ''
