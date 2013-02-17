@@ -94,14 +94,17 @@ def store_user_info(signup_form):
 	store_uid_with_email(redis_obj,user_id,email)
 	store_uid_with_auth_token(redis_obj,user_id,auth_token)
 
+# check for the existence of a username
 def username_exists(username):
 	redis_obj = Redis()
 	return redis_obj.check_existence("username:%s:userId" % (username))
 
+# check for the existence of email
 def email_exists(email):
 	redis_obj = Redis()
 	return redis_obj.check_existence("email:%s:userId" % (email))
     
+# signup functionality which returns a empty form when given a GET request or validates n creates an entry in db with POST request
 def register(request):
 
 	if request.method == "POST":

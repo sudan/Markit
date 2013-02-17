@@ -7,21 +7,25 @@ from redis_helpers.views import Redis
 from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
 
+# Check for the existence of an account
 def  account_existence(redis_obj,email):
 	
 	key = "email:%s:userId" % (email)
 	return redis_obj.check_existence(key)
 
+# Get the key using email
 def get_key(redis_obj,email):
 
 	key = "email:%s:userId" % (email)
 	return redis_obj.get_value(key)
 
+# Get the encrypted password using userid
 def get_password(redis_obj,userId):
 
 	key = "userId:%d:password" % (int(userId))
 	return redis_obj.get_value(key)
 
+# login functionality which returns a empty form when given a GET request or validates the authentication when given a POST request
 def login(request):
 
 	if request.method == "POST":
