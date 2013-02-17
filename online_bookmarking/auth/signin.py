@@ -48,7 +48,7 @@ def login(request):
 		
 		login_form = LoginForm()
 		return render_to_response('login.html',{'login_form':login_form,'error':'invalid username or password'},context_instance=RequestContext(request))
-	print "4"
+	
 	login_form = LoginForm()
 	return render_to_response('login.html',{'login_form':login_form},context_instance=RequestContext(request))
 				
