@@ -135,8 +135,11 @@ def register(request):
 
 			store_user_info(signup_form)
 			response = HttpResponseRedirect('/home')
-			response.set_cookie('auth',signup_form['auth_token'])
-			response.set_cookie('email',signup_form['email'])
+
+			max_age = 7 * 24 * 60 * 60
+			expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+			response.set_cookie('auth',signup_form['auth_token'], max_age=max_age, expires=expires)
+			response.set_cookie('email',signup_form['email'], max_age=max_age, expires=expires)
 			return response
 		
 		signup_form = SignUpForm()

@@ -58,9 +58,10 @@ def login(request):
 					update_auth_token(redis_obj,auth_token,user_id)
 
 					response = HttpResponseRedirect('/home')
-					response.set_cookie('auth',auth_token)
-
-					response.set_cookie('email',email)
+					max_age = 7 * 24 * 60 * 60
+					expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+					response.set_cookie('auth',auth_token,max_age=max_age, expires=expires)
+					response.set_cookie('email',email,max_age=max_age, expires=expires)
 					return response
 		
 		login_form = LoginForm()
