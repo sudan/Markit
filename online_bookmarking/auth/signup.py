@@ -9,6 +9,7 @@ from django.template import RequestContext
 import hashlib
 import random
 import md5
+import datetime
 
 from auth.forms import SignUpForm
 from auth.encrypt import encrypt_password
@@ -52,6 +53,10 @@ def store_image_url(redis_obj,user_id,email):
 	image_url = "http://www.gravatar.com/avatar/%s?s=50" % hashlib.md5(email).hexdigest()
 	redis_obj.set_value(key,image_url)
 
+def store_timestamp(redis_obj,user_id):
+	key = "userId:%d:timestamp" %(user_id)
+	redis_obj.set_value(key,str(datetime.datetime.now()))
+
 #store the reverse mapping for the username
 def store_uid_with_username(redis_obj,user_id,username):
 	key = "username:%s:userId" % (username)
@@ -86,6 +91,7 @@ def store_user_info(signup_form):
 	store_last_name(redis_obj,user_id,last_name)
 	store_password(redis_obj,user_id,password)
 	store_image_url(redis_obj,user_id,email)
+	store_timestamp(redis_obj,user_id)
 	store_auth_token(redis_obj,user_id,auth_token)
 	store_uid_with_username(redis_obj,user_id,username)
 	store_uid_with_email(redis_obj,user_id,email)
