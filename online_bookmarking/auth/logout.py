@@ -11,6 +11,7 @@ def logout(request):
 	email = request.COOKIES.get("email",None)
 
 	if auth_token != None and email != None:
+		
 		redis_obj = Redis()
 		old_auth_token = redis_obj.get_value("email:%s:auth.token" %(email))
 		new_auth_token = get_auth_token()

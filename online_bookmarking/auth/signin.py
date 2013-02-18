@@ -20,10 +20,22 @@ def get_key(redis_obj,email):
 	return redis_obj.get_value(key)
 
 # Get the encrypted password using userid
-def get_password(redis_obj,userId):
+def get_password(redis_obj,user_id):
 
-	key = "userId:%d:password" % (int(userId))
+	key = "userId:%d:password" % (int(user_id))
 	return redis_obj.get_value(key)
+
+#Function which updates the auth token after signin
+def update_auth_token(redis_obj,auth_token,user_id):
+	
+	key = "userId:%d:auth.token" % (int(user_id))
+	old_auth_token = redis_obj.get_value(key)
+	
+	redis_obj.remove_key("auth.token:%s:userId" % (old_auth_token))
+	redis_obj.set_value(key,auth_token)
+
+	key = "auth.token:%s:userId" % (auth_token)
+	redis_obj.set_value(key,user_id)
 
 # login functionality which returns a empty form when given a GET request or validates the authentication when given a POST request
 def login(request):
@@ -37,13 +49,17 @@ def login(request):
 			redis_obj = Redis()
 
 			if account_existence(redis_obj,email) == 1:
-				userId = get_key(redis_obj,email)
-				password = get_password(redis_obj,userId)
+				user_id = get_key(redis_obj,email)
+				password = get_password(redis_obj,user_id)
 				
 				if password == encrypt_password(login_form['password']):
-					response = HttpResponseRedirect('/home')
 					auth_token = get_auth_token()
+					
+					update_auth_token(redis_obj,auth_token,user_id)
+
+					response = HttpResponseRedirect('/home')
 					response.set_cookie('auth',auth_token)
+
 					response.set_cookie('email',email)
 					return response
 		
