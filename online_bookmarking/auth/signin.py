@@ -28,7 +28,7 @@ def get_password(redis_obj,user_id):
 	return redis_obj.get_value(key)
 
 #Function which updates the auth token after signin
-def update_auth_token(redis_obj,auth_token,user_id):
+def update_auth_token(redis_obj,auth_token,user_id,email):
 	
 	key = "userId:%d:auth.token" % (int(user_id))
 	old_auth_token = redis_obj.get_value(key)
@@ -38,6 +38,9 @@ def update_auth_token(redis_obj,auth_token,user_id):
 
 	key = "auth.token:%s:userId" % (auth_token)
 	redis_obj.set_value(key,user_id)
+
+	key = "auth.token:%s:email" % (auth_token)
+	redis_obj.set_value(key,email)
 
 # login functionality which returns a empty form when given a GET request or validates the authentication when given a POST request
 def login(request):
@@ -57,7 +60,7 @@ def login(request):
 				if password == encrypt_password(login_form['password']):
 					auth_token = get_auth_token()
 					
-					update_auth_token(redis_obj,auth_token,user_id)
+					update_auth_token(redis_obj,auth_token,user_id,email)
 
 					response = HttpResponseRedirect('/home')
 					max_age = 7 * 24 * 60 * 60

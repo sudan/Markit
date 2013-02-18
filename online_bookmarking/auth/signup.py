@@ -72,6 +72,11 @@ def store_uid_with_auth_token(redis_obj,user_id,auth_token):
 	key = "auth.token:%s:userId" % (auth_token)
 	redis_obj.set_value(key,user_id)
 
+#store the reverse mapping for auth token
+def store_email_with_auth_token(redis_obj,email,auth_token):
+	key = "auth.token:%s:email" % (auth_token)
+	redis_obj.set_value(key,email)
+
 #A controller which calls the individual store methods
 def store_user_info(signup_form):
 	redis_obj = Redis()
@@ -96,6 +101,7 @@ def store_user_info(signup_form):
 	store_uid_with_username(redis_obj,user_id,username)
 	store_uid_with_email(redis_obj,user_id,email)
 	store_uid_with_auth_token(redis_obj,user_id,auth_token)
+	store_email_with_auth_token(redis_obj,email,auth_token)
 
 # check for the existence of a username
 def username_exists(username):
