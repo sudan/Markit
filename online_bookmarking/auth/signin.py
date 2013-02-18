@@ -7,6 +7,8 @@ from redis_helpers.views import Redis
 from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
 
+import datetime
+
 # Check for the existence of an account
 def  account_existence(redis_obj,email):
 	
