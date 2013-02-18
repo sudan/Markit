@@ -20,6 +20,10 @@ class Redis:
 	def set_value(self,key,value):
 		self.redis_object.set(key,value)
 
+	#remove the key
+	def remove_key(self,key):
+		self.redis_object.delete(key)
+
 	#Add an element to the set
 	def add_to_set(self,key,value):
 		self.redis_object.sadd(key,value)

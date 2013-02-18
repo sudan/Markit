@@ -116,6 +116,7 @@ def register(request):
 				return render_to_response('signup.html',{'signup_form':signup_form,'error':'password doesnt match'},context_instance=RequestContext(request))
 			
 			if username_exists(signup_form['username']) == 1:
+				signup_form = SignUpForm(data=request.POST)
 				return render_to_response('signup.html',{'signup_form':signup_form,'error':'username already exists'},context_instance=RequestContext(request))
 			
 			if email_exists(signup_form['email']) == 1:
@@ -129,6 +130,7 @@ def register(request):
 			store_user_info(signup_form)
 			response = HttpResponseRedirect('/home')
 			response.set_cookie('auth',signup_form['auth_token'])
+			response.set_cookie('email',signup_form['email'])
 			return response
 		
 		signup_form = SignUpForm()

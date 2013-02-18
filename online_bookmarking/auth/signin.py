@@ -44,6 +44,7 @@ def login(request):
 					response = HttpResponseRedirect('/home')
 					auth_token = get_auth_token()
 					response.set_cookie('auth',auth_token)
+					response.set_cookie('email',email)
 					return response
 		
 		login_form = LoginForm()
