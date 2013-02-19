@@ -6,7 +6,7 @@ def get_auth_token():
 	random_range = random.randrange(0,65535)
 	m = md5.new()
 	m.update(str(random_range))
-	return m.digest()
+	return m.hexdigest()
 
 #store auth token of the user
 def store_auth_token(redis_obj,user_id,auth_token):
