@@ -30,6 +30,8 @@ def get_password(redis_obj,user_id):
 #Function which updates the auth token after signin
 def update_auth_token(redis_obj,auth_token,user_id,email):
 	
+	''' Get the old auth token and update it accordingly '''
+	
 	key = "userId:%d:auth.token" % (int(user_id))
 	old_auth_token = redis_obj.get_value(key)
 	redis_obj.remove_key("auth.token:%s:userId" % (old_auth_token))
