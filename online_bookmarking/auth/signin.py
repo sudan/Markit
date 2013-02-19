@@ -32,9 +32,9 @@ def update_auth_token(redis_obj,auth_token,user_id,email):
 	
 	key = "userId:%d:auth.token" % (int(user_id))
 	old_auth_token = redis_obj.get_value(key)
-	
 	redis_obj.remove_key("auth.token:%s:userId" % (old_auth_token))
-	redis_obj.set_value(key,auth_token)
+	
+	store_auth_token(redis_obj,int(user_id),email,auth_token)
 
 	key = "auth.token:%s:userId" % (auth_token)
 	redis_obj.set_value(key,user_id)

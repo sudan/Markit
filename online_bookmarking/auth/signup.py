@@ -7,7 +7,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 import hashlib
-import random
 import md5
 import datetime
 
@@ -97,7 +96,7 @@ def store_user_info(signup_form):
 	store_password(redis_obj,user_id,password)
 	store_image_url(redis_obj,user_id,email)
 	store_timestamp(redis_obj,user_id)
-	store_auth_token(redis_obj,user_id,auth_token)
+	store_auth_token(redis_obj,user_id,email,auth_token)
 	store_uid_with_username(redis_obj,user_id,username)
 	store_uid_with_email(redis_obj,user_id,email)
 	store_uid_with_auth_token(redis_obj,user_id,auth_token)

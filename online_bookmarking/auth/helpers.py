@@ -9,6 +9,9 @@ def get_auth_token():
 	return m.hexdigest()
 
 #store auth token of the user
-def store_auth_token(redis_obj,user_id,auth_token):
+def store_auth_token(redis_obj,user_id,email,auth_token):
 	key = "userId:%d:auth.token" %(user_id)
+	redis_obj.set_value(key,auth_token)
+
+	key = "email:%s:auth.token" %(email)
 	redis_obj.set_value(key,auth_token)
