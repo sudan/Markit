@@ -133,7 +133,7 @@ def get_userId(request):
 def create_bookmark(request):
 	''' View function which handles rendering the bookmark form and 
 	stores them if valid or re-renders '''
-	
+
 	email = request.COOKIES.get("email","")
 	auth_token = request.COOKIES.get("auth","")
 	if not is_logged_in(email,auth_token):
@@ -167,13 +167,14 @@ def display_bookmarks(request):
 
 	for i, bookmark_id in enumerate(bookmarks):
 		data_dic ={}
+		bookmark_id = int(bookmark_id)
 		data_dic['name'] = get_name(redis_obj, bookmark_id)
 		data_dic['url'] = get_url(redis_obj, bookmark_id)
 		data_dic['visibility'] = get_visibility(redis_obj, bookmark_id)
-		data_dic['creation_date'] = get_creation_date(redis_obj, bookmark_id)
+		data_dic['creation_date'] = get_created_date(redis_obj, bookmark_id)
 		data_dic['description'] = get_description(redis_obj, bookmark_id)
-
+	
 		data[i] = data_dic
+		
 
-	print data	
 	return render_to_response('home.html', {'uid' : uid, 'bookmarks' : data})	
