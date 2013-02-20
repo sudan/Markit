@@ -4,6 +4,7 @@
 #update page after adding bookmarks
 #blocked coz of auth module
 #if public add bookmarks to followers
+#once signed in should be redirected to corresponding page
 
 from django.shortcuts import render_to_response
 from django.http import  Http404,HttpResponseRedirect,HttpResponse
@@ -14,6 +15,8 @@ import datetime
 
 from bookmark.forms import BookmarkForm
 from redis_helpers.views import Redis
+from auth.login_status import is_logged_in
+from auth.signin import login
 
 #Get the next unique bookmark id
 def get_next_bookmarkId(redis_obj):
@@ -42,11 +45,21 @@ def store_visibility(redis_obj,bookmark_id,visibility):
 
 #store the creation time of bookmark
 def store_created_date(redis_obj,bookmark_id,created_date):
-	key = "bookmarkId:%d:created_date" % (bookmark_id)
+	key = "bookmarkId:%d:created.date" % (bookmark_id)
 	redis_obj.set_value(key,created_date)
 
+#store the user id in the bookmark
+def store_userId(redis_obj,bookmark_id,user_id):
+	key = "bookmarkId:%d:userId" % (bookmark_id)
+	redis_obj.set_value(key,user_id)
+
+#store the user's bookmarks in a list (stack implementation)
+def store_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
+	key = "userId:%d:bookmarks" % (int(user_id))
+	redis_obj.add_to_stack(key,bookmark_id)
+
 #A controller which calls the individual store methods
-def store_bookmark(bookmark_form):
+def store_bookmark(request,bookmark_form):
 	redis_obj = Redis()
 	bookmark_id = get_next_bookmarkId(redis_obj)
 	store_url(redis_obj,bookmark_id,bookmark_form['url'])
@@ -54,17 +67,33 @@ def store_bookmark(bookmark_form):
 	store_description(redis_obj,bookmark_id,bookmark_form['description'])
 	store_visibility(redis_obj,bookmark_id,bookmark_form['visibility'])
 	store_created_date(redis_obj,bookmark_id,str(datetime.datetime.now()))
+	store_userId(redis_obj,bookmark_id,get_userId(request))
+	store_bookmark_uid_mapping(redis_obj,bookmark_id,get_userId(request))
+
+#Get the user id by extracting auth token from cookies which is passed in the request
+def get_userId(request):
+	redis_obj = Redis()
+	auth_token = request.COOKIES.get('auth','')
+
+	key = "auth.token:%s:userId" %(auth_token)
+	return redis_obj.get_value(key)
 
 #View function which handles rendering the bookmark form and stores them if valid or re-renders
 def create_bookmark(request):
 	
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+	if not is_logged_in(email,auth_token):
+		return login(request)
+
+
 	if request.method == "POST":
 
 		bookmark_form = BookmarkForm(data=request.POST)
 		
 		if bookmark_form.is_valid():
 			bookmark_form = bookmark_form.cleaned_data
-			store_bookmark(bookmark_form)
+			store_bookmark(request,bookmark_form)
 			return HttpResponseRedirect('/success/')
 
 		return render_to_response('home.html',{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
