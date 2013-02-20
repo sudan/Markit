@@ -19,6 +19,6 @@ urlpatterns = patterns('',
     url(r'^logout/$','auth.logout.logout'),
     #url(r'^login_status/$','auth.login_status.is_logged_in'),
     # url(r'^$', 'auth.views.login'),
-    url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
+    url(r'^home$', 'auth.views.home'),
     url(r'', include('social_auth.urls')),
 )

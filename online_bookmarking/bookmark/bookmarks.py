@@ -58,42 +58,6 @@ def store_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
 	key = "userId:%d:bookmarks" % (int(user_id))
 	redis_obj.add_to_stack(key,bookmark_id)
 
-#Retrieve methods
-def get_bookmark_uid_mapping_all(redis_obj, user_id):
-	''' Retrieve the user's bookmark ids '''
-	key = "userId:%d:bookmarks" % (int(user_id))
-	return redis_obj.get_value(key)
-
-def get_bookmark_uid_mapping_range(redis_obj, user_id, start, end):
-	''' Retrieve the user's bookmark ids '''
-	key = "userId:%d:bookmarks" % (int(user_id))
-	return redis_obj.get_elements_in_range(key, start, end)
-
-def get_name(redis_obj, bookmark_id):
-	''' Retrieve bookmark name '''
-	key = "bookmarkId:%d:name" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_created_date(redis_obj, bookmark_id):
-	''' Retrieve bookmark creation time '''
-	key = "bookmarkId:%d:created.date" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_description(redis_obj, bookmark_id):
-	''' Retrieve bookmark description '''
-	key = "bookmarkId:%d:description" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_url(redis_obj, bookmark_id):
-	''' Retrieve bookmark URL '''
-	key = "bookmarkId:%d:url" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_visibility(redis_obj, bookmark_id):
-	''' Retrieve bookmark visibility '''
-	key = "bookmarkId:%d:visibility" % (bookmark_id)
-	return redis_obj.get_value(key)
-
 #A controller which calls the individual store methods
 def store_bookmark(request,bookmark_form):
 	redis_obj = Redis()
@@ -114,8 +78,7 @@ def get_userId(request):
 	key = "auth.token:%s:userId" %(auth_token)
 	return redis_obj.get_value(key)
 
-#View function which handles rendering the bookmark form 
-#and stores them if valid or re-renders
+#View function which handles rendering the bookmark form and stores them if valid or re-renders
 def create_bookmark(request):
 	
 	email = request.COOKIES.get("email","")
@@ -133,31 +96,8 @@ def create_bookmark(request):
 			store_bookmark(request,bookmark_form)
 			return HttpResponseRedirect('/success/')
 
-		return render_to_response('add.html',
-			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
+		return render_to_response('home.html',{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
 
 	bookmark_form = BookmarkForm()
-	return render_to_response('add.html',
-		{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
+	return render_to_response('home.html',{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
 
-def display_bookmarks(request):
-	''' Display existing bookmarks '''
-
-	redis_obj = Redis()
-	uid = get_userId(request)
-	bookmarks = get_bookmark_uid_mapping_range(redis_obj, uid, 0, 10)
-
-	data = [{} for i in xrange(len(bookmarks))]
-
-	for i, bookmark_id in enumerate(bookmarks):
-		data_dic ={}
-		data_dic['name'] = get_name(redis_obj, bookmark_id)
-		data_dic['url'] = get_url(redis_obj, bookmark_id)
-		data_dic['visibility'] = get_visibility(redis_obj, bookmark_id)
-		data_dic['creation_date'] = get_creation_date(redis_obj, bookmark_id)
-		data_dic['description'] = get_description(redis_obj, bookmark_id)
-
-		data[i] = data_dic
-
-	print data	
-	return render_to_response('home.html', {'uid' : uid, 'bookmarks' : data})	
