@@ -1,0 +1,19 @@
+<html>
+    <body>
+        <div class="panel left">
+            <h1>My bookmarks</h1>
+            <div class="uid">
+                {{ uid }}
+            </div>
+            {% for bookmark in data %}
+            <div class="bookmarkWrapper">
+                <span class="name">{{ bookmark.name }}</span>
+                <span class="url">{{ bookmark.url }}</span>
+                <span class="visibility">{{ bookmark.visibility }}</span>
+                <span class="time">{{ bookmark.creation_date }}</span>
+                <p class="description">{{ bookmark.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>
