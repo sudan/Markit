@@ -3,9 +3,10 @@ from django.utils.hashcompat import md5_constructor, sha_constructor
 
 import md5
 
-#Implementation for hex digest
+
 def get_hexdigest(algorithm, salt, raw_password):
-    
+    ''' Implementation for hex digest '''
+
     raw_password, salt = smart_str(raw_password), smart_str(salt)
     if algorithm == 'crypt':
         try:
@@ -20,10 +21,17 @@ def get_hexdigest(algorithm, salt, raw_password):
         return sha_constructor(salt + raw_password).hexdigest()
     raise ValueError("Got unknown password algorithm type in password.")
 
-#encryption algorithm md5 or sha1
-def encrypt_password(password):
 
-	algo = 'sha1'
-	salt = get_hexdigest(algo, str(123456), str(123456))[:5]
-	hsh = get_hexdigest(algo, salt, password)
-	return '%s$%s$%s' % (algo, salt, hsh)
+def encrypt_password(password):
+    ''' encryption algorithm md5 or sha1 '''
+    
+    algo = 'sha1'
+    salt = get_hexdigest(algo, str(123456), str(123456))[:5]
+    hsh = get_hexdigest(algo, salt, password)
+    return '%s$%s$%s' % (algo, salt, hsh)
+	
+
+
+
+    
+    

@@ -15,69 +15,84 @@ from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
 from redis_helpers.views import Redis
 
-    
-#Get the next unique user id
 def get_next_userId(redis_obj):
+	''' Get the next unique user id '''
+	
 	key = "global:userId"
 	return Redis.next_unique_key(redis_obj,key)
 
-#store the email id of the user 
 def store_email(redis_obj,user_id,email):
+	''' store the email id of the user '''
+	
 	key = "userId:%d:email" % (user_id)
 	redis_obj.set_value(key,email)
 
-#store the username of the user
 def store_username(redis_obj,user_id,username):
+	''' store the username of the user '''
+	
 	key = "userId:%d:username" % (user_id)
 	redis_obj.set_value(key,username)
 
-#store the first name of the user
 def store_first_name(redis_obj,user_id,first_name):
+	''' store the first name of the user '''
+	
 	key = "userId:%d:first.name" % (user_id)
 	redis_obj.set_value(key,first_name)
 
-#store the last name of the user
 def store_last_name(redis_obj,user_id,last_name):
+	''' store the last name of the user '''
+	
 	key = "userId:%d:last.name" % (user_id)
 	redis_obj.set_value(key,last_name)
 
-#store the password of the user
 def store_password(redis_obj,user_id,password):
+	''' store the password of the user '''
+	
 	key = "userId:%d:password" % (user_id)
 	redis_obj.set_value(key,password)
 
-#store the gravatar  image url of the user
 def store_image_url(redis_obj,user_id,email):
+	''' store the gravatar  image url of the user '''
+	
 	key = "userId:%d:image" %(user_id)
 	image_url = "http://www.gravatar.com/avatar/%s?s=50" % hashlib.md5(email).hexdigest()
 	redis_obj.set_value(key,image_url)
 
 def store_timestamp(redis_obj,user_id):
+	''' store the timestamp of the user creation '''
+	
 	key = "userId:%d:timestamp" %(user_id)
 	redis_obj.set_value(key,str(datetime.datetime.now()))
 
-#store the reverse mapping for the username
 def store_uid_with_username(redis_obj,user_id,username):
+	''' store the reverse mapping for the username '''
+	
 	key = "username:%s:userId" % (username)
 	redis_obj.set_value(key,user_id)
 
-#store the reverse mapping for the email id
 def store_uid_with_email(redis_obj,user_id,email):
+	''' store the reverse mapping for the email id '''
+	
 	key = "email:%s:userId" % (email)
 	redis_obj.set_value(key,user_id)
 
-#store the reverse mapping for auth token
+
 def store_uid_with_auth_token(redis_obj,user_id,auth_token):
+	''' store the reverse mapping for auth token '''
+	
 	key = "auth.token:%s:userId" % (auth_token)
 	redis_obj.set_value(key,user_id)
 
-#store the reverse mapping for auth token
+
 def store_email_with_auth_token(redis_obj,email,auth_token):
+	''' store the reverse mapping for auth token '''
+	
 	key = "auth.token:%s:email" % (auth_token)
 	redis_obj.set_value(key,email)
 
-#A controller which calls the individual store methods
 def store_user_info(signup_form):
+	''' A controller which calls the individual store methods '''
+	
 	redis_obj = Redis()
 
 	username = signup_form['username']
@@ -102,18 +117,23 @@ def store_user_info(signup_form):
 	store_uid_with_auth_token(redis_obj,user_id,auth_token)
 	store_email_with_auth_token(redis_obj,email,auth_token)
 
-# check for the existence of a username
+
 def username_exists(username):
+	'''  check for the existence of a username '''
+	
 	redis_obj = Redis()
 	return redis_obj.check_existence("username:%s:userId" % (username))
 
-# check for the existence of email
+
 def email_exists(email):
+	'''  check for the existence of email '''
+	
 	redis_obj = Redis()
 	return redis_obj.check_existence("email:%s:userId" % (email))
     
-# signup functionality which returns a empty form when given a GET request or validates n creates an entry in db with POST request
 def register(request):
+	''' signup functionality which returns a empty form when given a GET request or
+	validates n creates an entry in db with POST request '''
 
 	if request.method == "POST":
 		

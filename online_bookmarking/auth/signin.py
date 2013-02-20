@@ -9,27 +9,25 @@ from auth.helpers import get_auth_token,store_auth_token
 
 import datetime
 
-# Check for the existence of an account
 def  account_existence(redis_obj,email):
+	''' Check for the existence of an account '''
 	
 	key = "email:%s:userId" % (email)
 	return redis_obj.check_existence(key)
 
-# Get the key using email
 def get_key(redis_obj,email):
-
+	''' Get the key using email '''
+	
 	key = "email:%s:userId" % (email)
 	return redis_obj.get_value(key)
 
-# Get the encrypted password using userid
 def get_password(redis_obj,user_id):
+	''' Get the encrypted password using userid '''
 
 	key = "userId:%d:password" % (int(user_id))
 	return redis_obj.get_value(key)
 
-#Function which updates the auth token after signin
-def update_auth_token(redis_obj,auth_token,user_id,email):
-	
+def update_auth_token(redis_obj,auth_token,user_id,email):	
 	''' Get the old auth token and update it accordingly '''
 	
 	key = "userId:%d:auth.token" % (int(user_id))
@@ -44,8 +42,10 @@ def update_auth_token(redis_obj,auth_token,user_id,email):
 	key = "auth.token:%s:email" % (auth_token)
 	redis_obj.set_value(key,email)
 
-# login functionality which returns a empty form when given a GET request or validates the authentication when given a POST request
+
 def login(request):
+	''' login functionality which returns a empty form when given a GET request 
+	or validates the authentication when given a POST request '''
 
 	if request.method == "POST":
 		login_form = LoginForm(data=request.POST)
