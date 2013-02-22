@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     #url(r'^login_status/$','auth.login_status.is_logged_in'),
     # url(r'^$', 'auth.views.login'),
     url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
+    url(r'^tags/$','tags.views.tag_bundle'),
     url(r'', include('social_auth.urls')),
 )

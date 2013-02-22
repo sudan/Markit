@@ -5,6 +5,7 @@
 #blocked coz of auth module
 #if public add bookmarks to followers
 #once signed in should be redirected to corresponding page
+#add bookmark to tags
 
 from django.shortcuts import render_to_response
 from django.http import  Http404,HttpResponseRedirect,HttpResponse
@@ -130,6 +131,30 @@ def get_userId(request):
 	key = "auth.token:%s:userId" %(auth_token)
 	return redis_obj.get_value(key)
 
+def get_bookmarks(request):
+
+	redis_obj = Redis()
+	uid = get_userId(request)
+
+	bookmarks = get_bookmark_uid_mapping_range(redis_obj, uid, 0, 10)
+	data = [{} for i in xrange(len(bookmarks))]
+	
+	for i, bookmark_id in enumerate(bookmarks):
+
+		data_dic ={}
+		bookmark_id = int(bookmark_id)
+		data_dic['bookmark_id'] = bookmark_id
+		data_dic['name'] = get_name(redis_obj, bookmark_id)
+		data_dic['url'] = get_url(redis_obj, bookmark_id)
+		data_dic['visibility'] = get_visibility(redis_obj, bookmark_id)
+		data_dic['creation_date'] = get_created_date(redis_obj, bookmark_id)
+		data_dic['description'] = get_description(redis_obj, bookmark_id)
+		
+		data[i] = data_dic
+
+	return uid , data
+
+
 def create_bookmark(request):
 	''' View function which handles rendering the bookmark form and 
 	stores them if valid or re-renders '''
@@ -159,22 +184,6 @@ def create_bookmark(request):
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
 
-	redis_obj = Redis()
-	uid = get_userId(request)
-	bookmarks = get_bookmark_uid_mapping_range(redis_obj, uid, 0, 10)
-
-	data = [{} for i in xrange(len(bookmarks))]
-
-	for i, bookmark_id in enumerate(bookmarks):
-		data_dic ={}
-		bookmark_id = int(bookmark_id)
-		data_dic['name'] = get_name(redis_obj, bookmark_id)
-		data_dic['url'] = get_url(redis_obj, bookmark_id)
-		data_dic['visibility'] = get_visibility(redis_obj, bookmark_id)
-		data_dic['creation_date'] = get_created_date(redis_obj, bookmark_id)
-		data_dic['description'] = get_description(redis_obj, bookmark_id)
-	
-		data[i] = data_dic
-		
+	uid , data = get_bookmarks(request)		
 
 	return render_to_response('home.html', {'uid' : uid, 'bookmarks' : data})	

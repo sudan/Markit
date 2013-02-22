@@ -46,7 +46,7 @@ def update_auth_token(redis_obj,auth_token,user_id,email):
 def login(request):
 	''' login functionality which returns a empty form when given a GET request 
 	or validates the authentication when given a POST request '''
-
+	
 	if request.method == "POST":
 		login_form = LoginForm(data=request.POST)
 		
