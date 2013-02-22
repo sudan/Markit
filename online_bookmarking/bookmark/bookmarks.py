@@ -18,6 +18,7 @@ from bookmark.forms import BookmarkForm
 from redis_helpers.views import Redis
 from auth.login_status import is_logged_in
 from auth.signin import login
+from auth.helpers import get_userId
 
 def get_next_bookmarkId(redis_obj):
 	''' Get the next unique bookmark id '''
@@ -60,6 +61,12 @@ def store_userId(redis_obj,bookmark_id,user_id):
 
 	key = "bookmarkId:%d:userId" % (bookmark_id)
 	redis_obj.set_value(key,user_id)
+
+def store_category(redis_obj,bookmark_id,category_id):
+	''' store the category bookmark association '''
+
+	key = "bookmarkId:%d:categoryId" %(bookmark_id)
+	redis_obj.set_value(key,category_id)
 
 def store_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
 	''' store the user's bookmarks in a list (stack implementation) '''
@@ -121,15 +128,6 @@ def store_bookmark(request,bookmark_form):
 	store_created_date(redis_obj,bookmark_id,str(datetime.datetime.now()))
 	store_userId(redis_obj,bookmark_id,get_userId(request))
 	store_bookmark_uid_mapping(redis_obj,bookmark_id,get_userId(request))
-
-def get_userId(request):
-	''' Get the user id by extracting auth token from cookies which is passed in the request '''
-
-	redis_obj = Redis()
-	auth_token = request.COOKIES.get('auth','')
-
-	key = "auth.token:%s:userId" %(auth_token)
-	return redis_obj.get_value(key)
 
 def get_bookmarks(request):
 

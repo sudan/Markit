@@ -13,7 +13,7 @@ def get_next_tagId(redis_obj):
 	''' Get the next unique tag id '''
 	
 	key = "global:tagId"
-	return Redis.next_unique_key(redis_obj,key)
+	return redis_obj.next_unique_key(key)
 
 def tag_name_exists(redis_obj,name):
 	''' Check if the tag name already exists '''
