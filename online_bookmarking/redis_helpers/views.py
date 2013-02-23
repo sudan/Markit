@@ -58,11 +58,21 @@ class Redis:
 		''' Add element to the stack '''
 
 		self.redis_object.lpush(key,value)
+
+	def remove_from_stack(self,key,value):
+		''' Remove element from the stack '''
+
+		self.redis_object.lrem(key,0,value)
 	
 	def add_to_queue(self,key,value):
 		''' Add element to the queue '''
 
 		self.redis_object.rpush(key,value)
+
+	def remove_from_queue(self,key,value):
+		''' Remove element from the queue '''
+
+		self.redis_object.lrem(key,0,value)
 	
 	def get_length(self,key):
 		''' Get the length of the list  stack/queue '''

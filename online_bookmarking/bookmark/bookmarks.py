@@ -1,6 +1,4 @@
-#todos -- append the uid of the user
 #change the name of the template
-#get bookmarks
 #update page after adding bookmarks
 #blocked coz of auth module
 #if public add bookmarks to followers
@@ -32,11 +30,35 @@ def store_url(redis_obj,bookmark_id,url):
 	key = "bookmarkId:%d:url" % (bookmark_id)
 	redis_obj.set_value(key,url)
 
+def get_url(redis_obj, bookmark_id):
+	''' Retrieve bookmark URL '''
+
+	key = "bookmarkId:%d:url" % (bookmark_id)
+	return redis_obj.get_value(key)
+
+def delete_url(redis_obj,bookmark_id):
+	''' Delete the bookmark url '''
+
+	key = "bookmarkId:%d:url" % (bookmark_id)
+	redis_obj.remove_key(key)
+
 def store_name(redis_obj,bookmark_id,name):
 	''' store the name of the bookmark '''
 
 	key = "bookmarkId:%d:name" % (bookmark_id)
 	redis_obj.set_value(key,name)
+
+def get_name(redis_obj, bookmark_id):
+	''' Retrieve bookmark name '''
+
+	key = "bookmarkId:%d:name" % (bookmark_id)
+	return redis_obj.get_value(key)
+
+def delete_name(redis_obj,bookmark_id):
+	''' Delete the bookmark name '''
+
+	key = "bookmarkId:%d:name" % (bookmark_id)
+	redis_obj.remove_key(key)
 
 def store_description(redis_obj,bookmark_id,description):
 	''' store the description of the bookmark '''
@@ -44,11 +66,35 @@ def store_description(redis_obj,bookmark_id,description):
 	key = "bookmarkId:%d:description" % (bookmark_id)
 	redis_obj.set_value(key,description)
 
+def get_description(redis_obj, bookmark_id):
+	''' Retrieve bookmark description '''
+
+	key = "bookmarkId:%d:description" % (bookmark_id)
+	return redis_obj.get_value(key)
+
+def delete_description(redis_obj,bookmark_id):
+	''' Delete the bookmark description '''
+
+	key = "bookmarkId:%d:description" % (bookmark_id)
+	redis_obj.remove_key(key)
+
 def store_visibility(redis_obj,bookmark_id,visibility):
 	''' store the visibility of bookmark '''
 
 	key = "bookmarkId:%d:visibility" % (bookmark_id)
 	redis_obj.set_value(key,visibility)
+
+def get_visibility(redis_obj, bookmark_id):
+	''' Retrieve bookmark visibility '''
+
+	key = "bookmarkId:%d:visibility" % (bookmark_id)
+	return redis_obj.get_value(key)
+
+def delete_visibility(redis_obj,bookmark_id):
+	''' Delete the bookmark visibility '''
+
+	key = "bookmarkId:%d:visibility" % (bookmark_id)
+	redis_obj.remove_key(key)
 
 def store_created_date(redis_obj,bookmark_id,created_date):
 	''' store the creation time of bookmark '''
@@ -56,17 +102,41 @@ def store_created_date(redis_obj,bookmark_id,created_date):
 	key = "bookmarkId:%d:created.date" % (bookmark_id)
 	redis_obj.set_value(key,created_date)
 
+def get_created_date(redis_obj, bookmark_id):
+	''' Retrieve bookmark creation time '''
+
+	key = "bookmarkId:%d:created.date" % (bookmark_id)
+	return redis_obj.get_value(key)
+
+def delete_created_date(redis_obj,bookmark_id):
+	''' Delete the bookmark created date '''
+
+	key = "bookmarkId:%d:created.date" % (bookmark_id)
+	redis_obj.remove_key(key)
+
 def store_userId(redis_obj,bookmark_id,user_id):
 	''' store the user id in the bookmark '''
 
 	key = "bookmarkId:%d:userId" % (bookmark_id)
 	redis_obj.set_value(key,user_id)
 
+def delete_userId(redis_obj,bookmark_id):
+	''' Delete the bookmark user id mapping '''
+
+	key = "bookmarkId:%d:userId" % (bookmark_id)
+	redis_obj.remove_key(key)
+
 def store_category(redis_obj,bookmark_id,category_id):
 	''' store the category bookmark association '''
 
 	key = "bookmarkId:%d:categoryId" %(bookmark_id)
 	redis_obj.set_value(key,category_id)
+
+def delete_category(redis_obj,bookmark_id):
+	''' Delete the bookmark category mapping '''
+
+	key = "bookmarkId:%d:categoryId" % (bookmark_id)
+	redis_obj.remove_key(key)
 
 def store_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
 	''' store the user's bookmarks in a list (stack implementation) '''
@@ -78,43 +148,19 @@ def get_bookmark_uid_mapping_all(redis_obj, user_id):
 	''' Retrieve the user's bookmark ids '''
 
 	key = "userId:%d:bookmarks" % (int(user_id))
-	return redis_obj.get_value(key)
+	return redis_obj.get_elements_in_range(key)
+
+def delete_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
+	''' Remove bookmark id from user id mapping ''' 
+
+	key = "userId:%d:bookmarks" %(int(user_id))
+	redis_obj.remove_from_stack(key,0,value)
 
 def get_bookmark_uid_mapping_range(redis_obj, user_id, start, end):
 	''' Retrieve the user's bookmark ids '''
 
 	key = "userId:%d:bookmarks" % (int(user_id))
 	return redis_obj.get_elements_in_range(key, start, end)
-
-def get_name(redis_obj, bookmark_id):
-	''' Retrieve bookmark name '''
-
-	key = "bookmarkId:%d:name" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_created_date(redis_obj, bookmark_id):
-	''' Retrieve bookmark creation time '''
-
-	key = "bookmarkId:%d:created.date" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_description(redis_obj, bookmark_id):
-	''' Retrieve bookmark description '''
-
-	key = "bookmarkId:%d:description" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_url(redis_obj, bookmark_id):
-	''' Retrieve bookmark URL '''
-
-	key = "bookmarkId:%d:url" % (bookmark_id)
-	return redis_obj.get_value(key)
-
-def get_visibility(redis_obj, bookmark_id):
-	''' Retrieve bookmark visibility '''
-
-	key = "bookmarkId:%d:visibility" % (bookmark_id)
-	return redis_obj.get_value(key)
 
 def store_bookmark(request,bookmark_form):
 	''' A controller which calls the individual store methods '''
@@ -135,6 +181,19 @@ def store_bookmark(request,bookmark_form):
 	
 	store_userId(redis_obj,bookmark_id,get_userId(request))
 	store_bookmark_uid_mapping(redis_obj,bookmark_id,get_userId(request))
+
+def clear_bookmark(user_id,bookmark_id):
+	''' Delete all mappings associated with bookmark id '''
+
+	redis_obj = Redis()
+	delete_url(redis_obj,bookmark_id)
+	delete_name(redis_obj,bookmark_id)
+	delete_description(redis_obj,bookmark_id)
+	delete_visibility(redis_obj,bookmark_id)
+	delete_created_date(redis_obj,bookmark_id)
+	delete_userId(redis_obj,bookmark_id)
+	delete_category(redis_obj,bookmark_id)
+	delete_bookmark_uid_mapping(redis_obj,bookmark_id,user_id)
 
 def get_bookmarks(request):
 
@@ -189,6 +248,25 @@ def create_bookmark(request):
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
 
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+	if not is_logged_in(email,auth_token):
+		return login(request)
+
 	uid , data = get_bookmarks(request)		
 
 	return render_to_response('home.html', {'uid' : uid, 'bookmarks' : data})	
+
+def delete_bookmark(request):
+	''' Delete a bookmark '''
+
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+	if not is_logged_in(email,auth_token):
+		return login(request)
+
+	bookmark_id = request.POST.get("bookmark_id","")
+	user_id = get_userId(request)
+
+	if bookmark_id != "":
+		clear_bookmark(int(user_id),int(bookmark_id))
