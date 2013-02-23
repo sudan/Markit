@@ -55,15 +55,22 @@ def store_bookmark_category_mapping(redis_obj,user_id,category_id,bookmark_id):
 	''' store the bookmark category user mapping 
 	and add bookmark to categorized list '''
 
-	key = "userId:%d:categoryId:%d:bookmarkId" %(int(user_id),int(category_id))
-	redis_obj.add_to_set(key,bookmark_id)
-
-	key = "userId:%d:bookmarkId:%d:categoryId" %(int(user_id),int(bookmark_id))
-	if redis_obj.check_existence(key) == 1:
-		redis_obj.remove_key(key)
+	key = "userId:%d:bookmarkId:%d:categoryId" %(user_id,bookmark_id)
+	if redis_obj.check_existence(key):
+		old_category_id = int(redis_obj.get_value(key))
+	else:
+		old_category_id = None
 	redis_obj.set_value(key,category_id)
 
-	key = "userId:%d:categorized.bookmarks" %(int(user_id))
+	if  old_category_id != None:
+		key = "userId:%d:categoryId:%d:bookmarkId" %(user_id,old_category_id)
+		redis_obj.remove_from_set(key,bookmark_id) 
+	
+	key = "userId:%d:categoryId:%d:bookmarkId" %(user_id,category_id)
+	redis_obj.add_to_set(key,bookmark_id)
+
+
+	key = "userId:%d:categorized.bookmarks" %(user_id)
 	redis_obj.add_to_set(key,bookmark_id)
 
 
@@ -118,7 +125,7 @@ def add_bookmarks_to_category(request):
 		category_id = request.POST.get("category_id","")
 
 		redis_obj = Redis()
-		store_bookmark_category_mapping(redis_obj,get_userId(request),category_id,bookmark_id)
+		store_bookmark_category_mapping(redis_obj,int(get_userId(request)),int(category_id),int(bookmark_id))
 
 		return HttpResponseRedirect('/success/')
 
