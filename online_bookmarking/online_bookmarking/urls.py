@@ -21,5 +21,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'auth.views.login'),
     url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
     url(r'^tags/$','tags.views.tag_bundle'),
+    url(r'^category/$','category.views.create_category'),
+    url(r'^add_bookmarks_to_category/$','category.views.add_bookmarks_to_category'),
     url(r'', include('social_auth.urls')),
 )
