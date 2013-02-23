@@ -108,4 +108,23 @@ def add_bookmarks_to_category(request):
 
 	return render_to_response('add_bookmarks_to_category.html',context_instance=RequestContext(request))
 
+def clear_category(request):
+	''' clear the category '''
+
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+
+	if not is_logged_in(email,auth_token):
+		return login(request)
+
+	if request.method == "POST":
+		user_id = get_userId(request)
+		category_id = request.POST.get("category_id","")
+
+		redis_obj = Redis()
+		delete_category_name(redis_obj,category_id)
+		delete_categoryId_uid_mapping(redis_obj,user_id,category_id)
+		delete_category_name_uid_mapping(redis_obj,user_id,category_id)
+		delete_category_name_userId_uid_mapping(redis_obj,user_id,category_id)
+
 
