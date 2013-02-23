@@ -56,6 +56,12 @@ def clear_bookmark(user_id,bookmark_id):
 
 def get_bookmarks(request):
 
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+
+	if not is_logged_in(email,auth_token):
+		return login(request)
+
 	redis_obj = Redis()
 	uid = get_userId(request)
 
@@ -84,6 +90,7 @@ def create_bookmark(request):
 
 	email = request.COOKIES.get("email","")
 	auth_token = request.COOKIES.get("auth","")
+
 	if not is_logged_in(email,auth_token):
 		return login(request)
 
@@ -109,6 +116,7 @@ def display_bookmarks(request):
 
 	email = request.COOKIES.get("email","")
 	auth_token = request.COOKIES.get("auth","")
+
 	if not is_logged_in(email,auth_token):
 		return login(request)
 
@@ -121,6 +129,7 @@ def delete_bookmark(request):
 
 	email = request.COOKIES.get("email","")
 	auth_token = request.COOKIES.get("auth","")
+	
 	if not is_logged_in(email,auth_token):
 		return login(request)
 
