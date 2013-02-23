@@ -56,11 +56,16 @@ def tag_bundle(request):
 		
 		if tag_form.is_valid():
 
-			tag_form = tag_form.cleaned_data
-			tag_form['bookmark_list']  = request.POST.getlist('bookmark_list')
-			store_tag_info(tag_form)
+			tag_form_cleaned = tag_form.cleaned_data
+			tag_form_cleaned['bookmark_list']  = request.POST.getlist('bookmark_list')
+			store_tag_info(tag_form_cleaned)
 
 			return HttpResponseRedirect('/success/')
+
+		userId , data = get_bookmarks(request)
+		bookmark_list = get_bookmark_list(data)
+		tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
+		return render_to_response('tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))	
 
 	userId , data = get_bookmarks(request)
 	bookmark_list = get_bookmark_list(data)

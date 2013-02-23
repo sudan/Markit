@@ -77,11 +77,14 @@ def create_category(request):
 		category_form = CategoryForm(data=request.POST)
 		if category_form.is_valid():
 
-			category_form = category_form.cleaned_data
+			category_form_cleaned = category_form.cleaned_data
 			user_id = get_userId(request)
-			store_category_user(user_id,category_form)
+			store_category_user(user_id,category_form_cleaned)
 	
 			return HttpResponseRedirect('/success/')
+
+		return render_to_response('category.html',{'category_form':category_form},
+			context_instance=RequestContext(request))
 
 	category_form = CategoryForm()
 	return render_to_response('category.html',{'category_form':category_form},

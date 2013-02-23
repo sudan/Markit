@@ -100,8 +100,8 @@ def create_bookmark(request):
 		bookmark_form = BookmarkForm(data=request.POST)
 		
 		if bookmark_form.is_valid():
-			bookmark_form = bookmark_form.cleaned_data
-			store_bookmark(request,bookmark_form)
+			bookmark_form_cleaned = bookmark_form.cleaned_data
+			store_bookmark(request,bookmark_form_cleaned)
 			return HttpResponseRedirect('/success/')
 
 		return render_to_response('add.html',

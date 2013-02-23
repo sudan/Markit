@@ -51,15 +51,15 @@ def login(request):
 		login_form = LoginForm(data=request.POST)
 		
 		if login_form.is_valid():
-			login_form = login_form.cleaned_data
-			email = login_form['email']
+			login_form_cleaned = login_form.cleaned_data
+			email = login_form_cleaned['email']
 			redis_obj = Redis()
 
 			if account_existence(redis_obj,email) == 1:
 				user_id = get_key(redis_obj,email)
 				password = get_password(redis_obj,user_id)
 				
-				if password == encrypt_password(login_form['password']):
+				if password == encrypt_password(login_form_cleaned['password']):
 					auth_token = get_auth_token()
 					
 					update_auth_token(redis_obj,auth_token,user_id,email)
@@ -71,7 +71,6 @@ def login(request):
 					response.set_cookie('email',email,max_age=max_age, expires=expires)
 					return response
 		
-		login_form = LoginForm()
 		return render_to_response('login.html',{'login_form':login_form,'error':'invalid username or password'},context_instance=RequestContext(request))
 	
 	login_form = LoginForm()

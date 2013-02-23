@@ -140,34 +140,30 @@ def register(request):
 		signup_form = SignUpForm(data=request.POST)
 		if signup_form.is_valid():
 			
-			signup_form = signup_form.cleaned_data
+			signup_form_cleaned = signup_form.cleaned_data
 
-			if  signup_form['password'] != signup_form['password_confirmation']:
-				signup_form = SignUpForm(data=request.POST)
+			if  signup_form_cleaned['password'] != signup_form_cleaned['password_confirmation']:
 				return render_to_response('signup.html',{'signup_form':signup_form,'error':'password doesnt match'},context_instance=RequestContext(request))
 			
-			if username_exists(signup_form['username']) == 1:
-				signup_form = SignUpForm(data=request.POST)
+			if username_exists(signup_form_cleaned['username']) == 1:
 				return render_to_response('signup.html',{'signup_form':signup_form,'error':'username already exists'},context_instance=RequestContext(request))
 			
-			if email_exists(signup_form['email']) == 1:
-				signup_form = SignUpForm(data=request.POST)
+			if email_exists(signup_form_cleaned['email']) == 1:
 				return render_to_response('signup.html',{'signup_form':signup_form,'error':'email id has already taken'},context_instance=RequestContext(request))
 
-			password = encrypt_password(signup_form['password'])
-			password_confirmation = encrypt_password(signup_form['password_confirmation'])
-			signup_form['auth_token'] = get_auth_token()
+			password = encrypt_password(signup_form_cleaned['password'])
+			password_confirmation = encrypt_password(signup_form_cleaned['password_confirmation'])
+			signup_form_cleaned['auth_token'] = get_auth_token()
 
-			store_user_info(signup_form)
+			store_user_info(signup_form_cleaned)
 			response = HttpResponseRedirect('/home')
 
 			max_age = 7 * 24 * 60 * 60
 			expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-			response.set_cookie('auth',signup_form['auth_token'], max_age=max_age, expires=expires)
-			response.set_cookie('email',signup_form['email'], max_age=max_age, expires=expires)
+			response.set_cookie('auth',signup_form_cleaned['auth_token'], max_age=max_age, expires=expires)
+			response.set_cookie('email',signup_form_cleaned['email'], max_age=max_age, expires=expires)
 			return response
 		
-		signup_form = SignUpForm()
 		return render_to_response('signup.html',{'signup_form':signup_form},context_instance=RequestContext(request))
 
 	signup_form = SignUpForm()
