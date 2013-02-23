@@ -120,12 +120,19 @@ def store_bookmark(request,bookmark_form):
 	''' A controller which calls the individual store methods '''
 
 	redis_obj = Redis()
-	bookmark_id = get_next_bookmarkId(redis_obj)
+
+	#PUT and POST requests are handled in the same view
+	if bookmark_form.get('bookmark_id','') != '':
+		bookmark_id = bookmark_form['bookmark_id']
+	else:
+		bookmark_id = get_next_bookmarkId(redis_obj)
+		store_created_date(redis_obj,bookmark_id,str(datetime.datetime.now()))
+
 	store_url(redis_obj,bookmark_id,bookmark_form['url'])
 	store_name(redis_obj,bookmark_id,bookmark_form['name'])
 	store_description(redis_obj,bookmark_id,bookmark_form['description'])
 	store_visibility(redis_obj,bookmark_id,bookmark_form['visibility'])
-	store_created_date(redis_obj,bookmark_id,str(datetime.datetime.now()))
+	
 	store_userId(redis_obj,bookmark_id,get_userId(request))
 	store_bookmark_uid_mapping(redis_obj,bookmark_id,get_userId(request))
 

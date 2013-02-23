@@ -21,11 +21,17 @@ def category_name_exists(redis_obj,user_id,name):
 	key = "userId:%d:categoryName" %(int(user_id))
 	return redis_obj.is_member_in_set(key,name)
 
-def get_category_name(redis_obj,user_id,name):
+def get_categoryId(redis_obj,user_id,name):
 	''' return the category id given the user id and category name '''
 
 	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
 	return redis_obj.get_value(key,category_id)
+
+def get_category_name(redis_obj,category_id):
+	''' return the category name given the id '''
+
+	key = "categoryId:%d:name" %(category_id)
+	return redis_obj.get_value(key)
 
 def store_category_name(redis_obj,category_id,name):
 	''' store the category name '''
@@ -50,6 +56,13 @@ def store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,name):
 
 	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
 	redis_obj.set_value(key,category_id)
+
+def remove_category_name_userId_uid_mapping(redis_obj,user_id,name):
+	''' remove the mapping to update the category name '''
+
+	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
+	redis_obj.remove_key(key)
+
 
 def store_bookmark_category_mapping(redis_obj,user_id,category_id,bookmark_id):
 	''' store the bookmark category user mapping 
@@ -80,12 +93,21 @@ def store_category_user(user_id,category_form):
 
 	redis_obj = Redis()
 
+	#POST and PUT requests handled in the same view
 	if category_name_exists(redis_obj,user_id,category_form['name']) == 0:
 		category_id = get_next_categoryId(redis_obj)
 		store_category_name(redis_obj,category_id,category_form['name'])
 		store_categoryId_uid_mapping(redis_obj,user_id,category_id)
 		store_category_name_uid_mapping(redis_obj,user_id,category_form['name'])
 		store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
+	else:
+		category_id = category_form.get('category_id','')
+		old_category_name = get_category_name(category_id)
+		store_category_name(redis_obj,category_id,category_form['name'])
+		store_category_name_uid_mapping(redis_obj,user_id,category_form['name'])
+		remove_category_name_userId_uid_mapping(redis_obj,user_id,old_category_name)
+		store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
+
 
 def create_category(request):
 	''' create a new category '''
