@@ -9,35 +9,15 @@ from bookmark.bookmarks import get_bookmarks
 from auth.login_status import is_logged_in
 from auth.signin import login
 
-def get_next_tagId(redis_obj):
-	''' Get the next unique tag id '''
-	
-	key = "global:tagId"
-	return redis_obj.next_unique_key(key)
+from tags.getters import *
+from tags.setters import *
+from tags.deleters import *
 
 def tag_name_exists(redis_obj,name):
 	''' Check if the tag name already exists '''
 
 	key = "name:%s:tagId" % (name)
 	return redis_obj.check_existence(key)
-
-def store_tag_name(redis_obj,tag_id,name):
-	''' store the name of the tag '''
-
-	key = "tagId:%d:name" % (tag_id)
-	redis_obj.set_value(key,name)
-
-def add_bookmark_to_tag(redis_obj,tag_id,bookmark_id):
-	''' add the bookmark to the set in tag ids '''
-
-	key = "tagId:%d:bookmarkIds" % (tag_id)
-	redis_obj.add_to_set(key,bookmark_id)
-
-def store_tagId_name_mapping(redis_obj,tag_id,name):
-	''' reverse mapping of tag name with tag id '''
-
-	key = "name:%s:tagId" % (name)
-	redis_obj.set_value(key,tag_id)
 
 def create_tag(redis_obj,name):
 	''' create a tag if exists and return the tag id
@@ -52,12 +32,6 @@ def create_tag(redis_obj,name):
 	store_tagId_name_mapping(redis_obj,tag_id,name)
 	return tag_id
 
-def get_bookmark_list(data):
-	''' Function which returns id value format of bookmarks
-	suitable for multi select dropdown '''
-
-	return tuple([(i['bookmark_id'],i['name']) for i in data])
-
 def store_tag_info(tag_form):
 	''' store the tag information '''
 
@@ -66,7 +40,6 @@ def store_tag_info(tag_form):
 	bookmark_list = tag_form['bookmark_list']
 	for bookmark in bookmark_list:
 		add_bookmark_to_tag(redis_obj,tag_id,bookmark)
-	
 
 def tag_bundle(request):
 	''' create a tag if it doesnt exist.Add urls to the

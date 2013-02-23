@@ -9,60 +9,17 @@ from auth.login_status import is_logged_in
 from auth.signin import login
 from bookmark.bookmarks import store_category
 
-def get_next_categoryId(redis_obj):
-	''' Get the next category id '''
+from category.getters import *
+from category.setters import *
+from category.deleters import *
 
-	key = "global:categoryId"
-	return redis_obj.next_unique_key(key)
+
 
 def category_name_exists(redis_obj,user_id,name):
 	''' Check for the existence of a category '''
 
 	key = "userId:%d:categoryName" %(int(user_id))
 	return redis_obj.is_member_in_set(key,name)
-
-def get_categoryId(redis_obj,user_id,name):
-	''' return the category id given the user id and category name '''
-
-	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
-	return redis_obj.get_value(key,category_id)
-
-def get_category_name(redis_obj,category_id):
-	''' return the category name given the id '''
-
-	key = "categoryId:%d:name" %(category_id)
-	return redis_obj.get_value(key)
-
-def store_category_name(redis_obj,category_id,name):
-	''' store the category name '''
-
-	key = "categoryId:%d:name" %(category_id)
-	redis_obj.set_value(key,name)
-
-def store_categoryId_uid_mapping(redis_obj,user_id,category_id):
-	''' store the category id  associating it with the user '''
-
-	key = "userId:%d:categoryId" %(int(user_id))
-	redis_obj.add_to_set(key,category_id)
-
-def store_category_name_uid_mapping(redis_obj,user_id,name):
-	''' store the category name associating with the user '''
-
-	key = "userId:%d:categoryName" %(int(user_id))
-	redis_obj.add_to_set(key,name)
-
-def store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,name):
-	''' store the category id corresponding to name and user Id '''
-
-	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
-	redis_obj.set_value(key,category_id)
-
-def remove_category_name_userId_uid_mapping(redis_obj,user_id,name):
-	''' remove the mapping to update the category name '''
-
-	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
-	redis_obj.remove_key(key)
-
 
 def store_bookmark_category_mapping(redis_obj,user_id,category_id,bookmark_id):
 	''' store the bookmark category user mapping 
@@ -86,7 +43,6 @@ def store_bookmark_category_mapping(redis_obj,user_id,category_id,bookmark_id):
 	key = "userId:%d:categorized.bookmarks" %(user_id)
 	redis_obj.add_to_set(key,bookmark_id)
 
-
 def store_category_user(user_id,category_form):
 	''' A controller which calls remaining methods for creating 
 	a new category '''
@@ -107,7 +63,6 @@ def store_category_user(user_id,category_form):
 		store_category_name_uid_mapping(redis_obj,user_id,category_form['name'])
 		remove_category_name_userId_uid_mapping(redis_obj,user_id,old_category_name)
 		store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
-
 
 def create_category(request):
 	''' create a new category '''
