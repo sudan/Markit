@@ -11,7 +11,6 @@ def get_auth_token():
 	m.update(str(random_range))
 	return m.hexdigest()
 
-
 def store_auth_token(redis_obj,user_id,email,auth_token):
 	''' store auth token of the user '''
 	

@@ -9,6 +9,7 @@ from auth.helpers import get_userId
 from auth.getters import *
 
 def get_users(redis_obj,current_user_id):
+	''' Returns the users excluding the current user '''
 	
 	key = "global:users:userId"
 	user_ids = redis_obj.members_in_set(key)
@@ -31,7 +32,6 @@ def get_users(redis_obj,current_user_id):
 			users_list.append(user_info)
 	
 	return users_list
-
 
 def get_followers(redis_obj,current_user_id):
 	''' Returns the list of followers info  for the user id '''

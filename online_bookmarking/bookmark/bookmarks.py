@@ -1,9 +1,6 @@
 #change the name of the template
 #update page after adding bookmarks
-#blocked coz of auth module
 #if public add bookmarks to followers
-#once signed in should be redirected to corresponding page
-#add bookmark to tags
 
 from django.shortcuts import render_to_response,redirect
 from django.http import  Http404,HttpResponseRedirect,HttpResponse

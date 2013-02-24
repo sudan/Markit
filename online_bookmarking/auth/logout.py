@@ -5,7 +5,6 @@ from django.shortcuts import render_to_response
 from redis_helpers.views import Redis
 from auth.helpers import get_auth_token
 
-
 def logout(request):
 	''' Logout functionality '''
 	

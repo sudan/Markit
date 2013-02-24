@@ -3,7 +3,6 @@ from django.utils.hashcompat import md5_constructor, sha_constructor
 
 import md5
 
-
 def get_hexdigest(algorithm, salt, raw_password):
     ''' Implementation for hex digest '''
 
@@ -20,7 +19,6 @@ def get_hexdigest(algorithm, salt, raw_password):
     elif algorithm == 'sha1':
         return sha_constructor(salt + raw_password).hexdigest()
     raise ValueError("Got unknown password algorithm type in password.")
-
 
 def encrypt_password(password):
     ''' encryption algorithm md5 or sha1 '''
