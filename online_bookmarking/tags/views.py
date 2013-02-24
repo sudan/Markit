@@ -49,7 +49,7 @@ def tag_bundle(request):
 	auth_token = request.COOKIES.get("auth","")
 
 	if not is_logged_in(email,auth_token):
-		return login(request)
+		return login(request,redirect_uri='/tags')
 
 	if request.method == "POST":
 		tag_form = TagForm(data=request.POST)

@@ -5,7 +5,7 @@
 #once signed in should be redirected to corresponding page
 #add bookmark to tags
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,redirect
 from django.http import  Http404,HttpResponseRedirect,HttpResponse
 from django.template import RequestContext
 
@@ -56,12 +56,6 @@ def clear_bookmark(user_id,bookmark_id):
 
 def get_bookmarks(request):
 
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request)
-
 	redis_obj = Redis()
 	uid = get_userId(request)
 
@@ -92,8 +86,7 @@ def create_bookmark(request):
 	auth_token = request.COOKIES.get("auth","")
 
 	if not is_logged_in(email,auth_token):
-		return login(request)
-
+		return login(request,redirect_uri='/bookmark')
 
 	if request.method == "POST":
 
@@ -107,9 +100,12 @@ def create_bookmark(request):
 		return render_to_response('add.html',
 			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
 
+	
 	bookmark_form = BookmarkForm()
 	return render_to_response('add.html',
-		{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
+			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
+
+
 
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
@@ -118,7 +114,7 @@ def display_bookmarks(request):
 	auth_token = request.COOKIES.get("auth","")
 
 	if not is_logged_in(email,auth_token):
-		return login(request)
+		return login(request,redirect_uri='/home')
 
 	uid , data = get_bookmarks(request)		
 
@@ -131,7 +127,7 @@ def delete_bookmark(request):
 	auth_token = request.COOKIES.get("auth","")
 	
 	if not is_logged_in(email,auth_token):
-		return login(request)
+		return login(request,redirect_uri='/home')
 
 	bookmark_id = request.POST.get("bookmark_id","")
 	user_id = get_userId(request)

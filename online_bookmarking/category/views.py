@@ -71,7 +71,7 @@ def create_category(request):
 	auth_token = request.COOKIES.get("auth","")
 
 	if not is_logged_in(email,auth_token):
-		return login(request)
+		return login(request,redirect_uri='/category')
 
 	if request.method == "POST":
 		category_form = CategoryForm(data=request.POST)
@@ -97,7 +97,7 @@ def add_bookmarks_to_category(request):
 	auth_token = request.COOKIES.get("auth","")
 
 	if not is_logged_in(email,auth_token):
-		return login(request)
+		return login(request,redirect_uri='/add_bookmarks_to_category')
 
 
 	if request.method == "POST":
@@ -118,7 +118,7 @@ def clear_category(request):
 	auth_token = request.COOKIES.get("auth","")
 
 	if not is_logged_in(email,auth_token):
-		return login(request)
+		return login(request,redirect_uri='/home')
 
 	if request.method == "POST":
 		user_id = get_userId(request)
