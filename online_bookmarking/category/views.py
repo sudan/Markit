@@ -13,8 +13,6 @@ from category.getters import *
 from category.setters import *
 from category.deleters import *
 
-
-
 def category_name_exists(redis_obj,user_id,name):
 	''' Check for the existence of a category '''
 
@@ -129,5 +127,7 @@ def clear_category(request):
 		delete_categoryId_uid_mapping(redis_obj,user_id,category_id)
 		delete_category_name_uid_mapping(redis_obj,user_id,category_id)
 		delete_category_name_userId_uid_mapping(redis_obj,user_id,category_id)
+
+	return render_to_response('home.html',context_instance=RequestContext(request))
 
 

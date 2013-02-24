@@ -1,6 +1,3 @@
-#todos timestamp required??
-#after signup login again
-#custom error messages for forms in auth and bookmarks
 
 from django.http import Http404,HttpResponseRedirect
 from django.shortcuts import render_to_response

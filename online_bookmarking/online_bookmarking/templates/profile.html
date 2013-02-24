@@ -17,5 +17,13 @@
 			<input type="hidden" name="others_id" value="{{user_info.others_id}}"/>
 		{% endif %}
 		</form>
+
+		<div>
+			<span>bookmarks</span>
+			{% for bookmark in public_bookmarks %}
+				<span>{{bookmark.url}}</span><br/>
+				<span>{{bookmark.name}}</span><br/>
+			{% endfor %}
+		</div>
 	</body>
 </html>
