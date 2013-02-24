@@ -21,6 +21,12 @@ def get_next_userId(redis_obj):
 	key = "global:userId"
 	return Redis.next_unique_key(redis_obj,key)
 
+def store_global_userIds(redis_obj,user_id):
+	''' Store the list of user ids '''
+
+	key = "global:users:userId"
+	redis_obj.add_to_set(key,user_id)
+
 def store_email(redis_obj,user_id,email):
 	''' store the email id of the user '''
 	
@@ -76,13 +82,11 @@ def store_uid_with_email(redis_obj,user_id,email):
 	key = "email:%s:userId" % (email)
 	redis_obj.set_value(key,user_id)
 
-
 def store_uid_with_auth_token(redis_obj,user_id,auth_token):
 	''' store the reverse mapping for auth token '''
 	
 	key = "auth.token:%s:userId" % (auth_token)
 	redis_obj.set_value(key,user_id)
-
 
 def store_email_with_auth_token(redis_obj,email,auth_token):
 	''' store the reverse mapping for auth token '''
@@ -116,7 +120,7 @@ def store_user_info(signup_form):
 	store_uid_with_email(redis_obj,user_id,email)
 	store_uid_with_auth_token(redis_obj,user_id,auth_token)
 	store_email_with_auth_token(redis_obj,email,auth_token)
-
+	store_global_userIds(redis_obj,user_id)
 
 def username_exists(username):
 	'''  check for the existence of a username '''

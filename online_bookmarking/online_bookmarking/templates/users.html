@@ -1,0 +1,21 @@
+<html>
+	<body>
+		{% for user in users_list %}
+			<form method="POST" action="/toggle/">{% csrf_token %}
+				<input type="text" name="email" value="{{user.email}}"/>
+				<input type="text" name="username" value="{{user.username}}"/>
+				<input type="text" name="first_name" value="{{user.first_name}}"/>
+				<input type="text" name="last_name" value="{{user.last_name}}"/>
+				<input type="text" name="image_url" value="{{user.image_url}}"/>
+				<input type="text" name="timestamp" value="{{user.timestamp}}"/>
+				<input type="hidden" name="others_id" value="{{user.others_id}}"/>
+				<input type="text" value="{{user.follow}}"/>
+				{% if user.follow %}
+					<input type="submit" value="unfollow" name="relationship_button"/>
+				{% else %}
+					<input type="submit" value="follow" name="relationship_button"/>
+				{% endif %}
+			</form>
+		{% endfor %}
+	</body>
+</html>
