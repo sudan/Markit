@@ -70,10 +70,11 @@ def login(request,redirect_uri='/home'):
 					response.set_cookie('email',email,max_age=max_age, expires=expires)
 					return response
 		
-		return render_to_response('login.html',{'login_form':login_form,'error':'invalid username or password'},context_instance=RequestContext(request))
+		redirect_uri =  request.POST.get('redirect_uri','/home')
+		return render_to_response('login.html',{'login_form':login_form,'redirect_uri':redirect_uri,'error':'invalid username or password'},context_instance=RequestContext(request))
 	
 	login_form = LoginForm()
-	return render_to_response('login.html',{'login_form':login_form,'redirect_uri':redirect_uri},context_instance=RequestContext(request))
+	return render_to_response('login.html',{'login_form':login_form,'redirect_uri':redirect_uri,},context_instance=RequestContext(request))
 				
 
 
