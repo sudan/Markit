@@ -27,4 +27,4 @@ def get_userId(request):
 	auth_token = request.COOKIES.get('auth','')
 
 	key = "auth.token:%s:userId" %(auth_token)
-	return redis_obj.get_value(key)
+	return int(redis_obj.get_value(key))

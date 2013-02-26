@@ -32,3 +32,9 @@ class PasswordChangeForm(forms.Form):
 		if password != password_confirmation:
 			raise forms.ValidationError('Passwords do not match')
 		return self.cleaned_data
+
+class EditProfileForm(forms.Form):
+	username = forms.CharField(error_messages={'required':'Invalid Username'},widget=forms.widgets.TextInput(attrs={'placeholder':'username'}))
+	first_name = forms.CharField(error_messages={'required':'Invalid First Name'},widget=forms.widgets.TextInput(attrs={'placeholder':'First name'}))
+	last_name = forms.CharField(required=False,widget=forms.widgets.TextInput(attrs={'placeholder':'Last name'}))
+

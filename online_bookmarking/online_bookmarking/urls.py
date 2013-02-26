@@ -27,5 +27,6 @@ urlpatterns = patterns('',
     url(r'^toggle/$','socialize.relationship.toggle_relationship'),
     url(r'^profile/(?P<profile_name>\w+)/$','socialize.profile.profile'),
     url(r'^change_password/$','auth.change_password.change_password'),
+    url(r'^edit_profile/$','auth.edit_profile.edit_profile'),
     url(r'', include('social_auth.urls')),
 )

@@ -45,3 +45,9 @@ def get_password(redis_obj,user_id):
 
 	key = "userId:%d:password" %(user_id)
 	return redis_obj.get_value(key)
+
+def get_auth_token(redis_obj,user_id):
+	''' get the auth token of the user '''
+
+	key = "userId:%d:auth.token" %(user_id)
+	return redis_obj.get_value(key)
