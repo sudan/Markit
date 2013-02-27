@@ -39,11 +39,11 @@ def get_created_date(redis_obj, bookmark_id):
 def get_bookmark_uid_mapping_all(redis_obj, user_id):
 	''' Retrieve the user's bookmark ids '''
 
-	key = "userId:%d:bookmarks" % (int(user_id))
+	key = "userId:%d:bookmarks" % (user_id)
 	return redis_obj.get_elements_in_range(key)
 
 def get_bookmark_uid_mapping_range(redis_obj, user_id, start, end):
 	''' Retrieve the user's bookmark ids '''
 
-	key = "userId:%d:bookmarks" % (int(user_id))
+	key = "userId:%d:bookmarks" % (user_id)
 	return redis_obj.get_elements_in_range(key, start, end)

@@ -9,7 +9,7 @@ def get_next_categoryId(redis_obj):
 def get_categoryId(redis_obj,user_id,name):
 	''' return the category id given the user id and category name '''
 
-	key = "userId:%d:categoryName:%s:categoryId" %(int(user_id),name)
+	key = "userId:%d:categoryName:%s:categoryId" %(user_id,name)
 	return redis_obj.get_value(key,category_id)
 
 def get_category_name(redis_obj,category_id):

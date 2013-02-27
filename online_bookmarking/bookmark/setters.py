@@ -45,5 +45,5 @@ def store_category(redis_obj,bookmark_id,category_id):
 def store_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
 	''' store the user's bookmarks in a list (stack implementation) '''
 
-	key = "userId:%d:bookmarks" % (int(user_id))
+	key = "userId:%d:bookmarks" % (user_id)
 	redis_obj.add_to_stack(key,bookmark_id)

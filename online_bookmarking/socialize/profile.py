@@ -24,14 +24,14 @@ def get_user_info(redis_obj,profile_name,current_user_id):
 
 	user_id = get_unique_id(redis_obj,profile_name)
 	user_info = {}
-	user_info['others_id'] = int(user_id)
-	user_info['email'] = get_email(redis_obj,int(user_id))
-	user_info['username'] = get_username(redis_obj,int(user_id))
-	user_info['first_name'] = get_first_name(redis_obj,int(user_id))
-	user_info['last_name'] = get_last_name(redis_obj,int(user_id))
-	user_info['image_url'] = get_image_url(redis_obj,int(user_id))
-	user_info['timestamp'] = get_timestamp(redis_obj,int(user_id))
-	user_info['follow'] = is_following(redis_obj,int(current_user_id),int(user_id))
+	user_info['others_id'] = user_id
+	user_info['email'] = get_email(redis_obj,user_id)
+	user_info['username'] = get_username(redis_obj,user_id)
+	user_info['first_name'] = get_first_name(redis_obj,user_id)
+	user_info['last_name'] = get_last_name(redis_obj,user_id)
+	user_info['image_url'] = get_image_url(redis_obj,user_id)
+	user_info['timestamp'] = get_timestamp(redis_obj,user_id)
+	user_info['follow'] = is_following(redis_obj,current_user_id,user_id)
 
 	return user_info
 
@@ -40,7 +40,7 @@ def get_following_count(redis_obj,profile_name):
 
 	user_id = get_unique_id(redis_obj,profile_name)
 
-	key = "userId:%d:following" %(int(user_id))
+	key = "userId:%d:following" %(user_id)
 	return redis_obj.total_members(key)
 
 def get_followers_count(redis_obj,profile_name):
@@ -48,7 +48,7 @@ def get_followers_count(redis_obj,profile_name):
 
 	user_id = get_unique_id(redis_obj,profile_name)
 
-	key = "userId:%d:followers" %(int(user_id))
+	key = "userId:%d:followers" %(user_id)
 	return redis_obj.total_members(key)
 
 def get_public_bookmarks(redis_obj,profile_name):
@@ -56,7 +56,7 @@ def get_public_bookmarks(redis_obj,profile_name):
 
 	user_id = get_unique_id(redis_obj,profile_name)
 	
-	key = "userId:%d:bookmarks" %(int(user_id))
+	key = "userId:%d:bookmarks" %(user_id)
 	bookmark_ids = redis_obj.get_elements_in_range(key,0,25)
 
 	bookmarks_list = []
@@ -86,18 +86,18 @@ def profile(request,profile_name=''):
 	if profile_name != '':
 		redis_obj = Redis()
 		user_id = get_unique_id(redis_obj,profile_name)
-
+		
 		user_info = get_user_info(redis_obj,profile_name,user_id)
 		followers_count = get_followers_count(redis_obj,profile_name)
 		following_count = get_following_count(redis_obj,profile_name)
 		public_bookmarks = get_public_bookmarks(redis_obj,profile_name)
 
-		if int(user_id) == int(current_user_id):
+		if user_id == current_user_id:
 			my_profile = True
 		else:
 			my_profile = False
-		print my_profile
-		follow = is_following(redis_obj,int(current_user_id),int(user_id))
+		
+		follow = is_following(redis_obj,current_user_id,user_id)
 
 		return render_to_response('profile.html',
 			{

@@ -45,5 +45,5 @@ def delete_category(redis_obj,bookmark_id):
 def delete_bookmark_uid_mapping(redis_obj,bookmark_id,user_id):
 	''' Remove bookmark id from user id mapping ''' 
 
-	key = "userId:%d:bookmarks" %(int(user_id))
+	key = "userId:%d:bookmarks" %(user_id)
 	redis_obj.remove_from_stack(key,0,value)

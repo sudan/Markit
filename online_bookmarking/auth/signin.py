@@ -19,22 +19,22 @@ def get_key(redis_obj,email):
 	''' Get the key using email '''
 	
 	key = "email:%s:userId" % (email)
-	return redis_obj.get_value(key)
+	return int(redis_obj.get_value(key))
 
 def get_password(redis_obj,user_id):
 	''' Get the encrypted password using userid '''
 
-	key = "userId:%d:password" % (int(user_id))
+	key = "userId:%d:password" % (user_id)
 	return redis_obj.get_value(key)
 
 def update_auth_token(redis_obj,auth_token,user_id,email):	
 	''' Get the old auth token and update it accordingly '''
 	
-	key = "userId:%d:auth.token" % (int(user_id))
+	key = "userId:%d:auth.token" % (user_id)
 	old_auth_token = redis_obj.get_value(key)
 	redis_obj.remove_key("auth.token:%s:userId" % (old_auth_token))
 	
-	store_auth_token(redis_obj,int(user_id),email,auth_token)
+	store_auth_token(redis_obj,user_id,email,auth_token)
 
 	key = "auth.token:%s:userId" % (auth_token)
 	redis_obj.set_value(key,user_id)

@@ -54,9 +54,9 @@ def clear_bookmark(user_id,bookmark_id):
 def get_bookmarks(request):
 
 	redis_obj = Redis()
-	uid = get_userId(request)
+	user_id = get_userId(request)
 
-	bookmarks = get_bookmark_uid_mapping_range(redis_obj, uid, 0, 10)
+	bookmarks = get_bookmark_uid_mapping_range(redis_obj, user_id, 0, 10)
 	data = [{} for i in xrange(len(bookmarks))]
 	
 	for i, bookmark_id in enumerate(bookmarks):
@@ -72,7 +72,7 @@ def get_bookmarks(request):
 		
 		data[i] = data_dic
 
-	return uid , data
+	return user_id , data
 
 
 def create_bookmark(request):
@@ -113,9 +113,9 @@ def display_bookmarks(request):
 	if not is_logged_in(email,auth_token):
 		return login(request,redirect_uri='/home')
 
-	uid , data = get_bookmarks(request)		
+	user_id , data = get_bookmarks(request)		
 
-	return render_to_response('home.html', {'uid' : uid, 'bookmarks' : data})	
+	return render_to_response('home.html', {'user_id' : user_id, 'bookmarks' : data})	
 
 def delete_bookmark(request):
 	''' Delete a bookmark '''
@@ -130,6 +130,6 @@ def delete_bookmark(request):
 	user_id = get_userId(request)
 
 	if bookmark_id != "":
-		clear_bookmark(int(user_id),int(bookmark_id))
+		clear_bookmark(user_id,int(bookmark_id))
 
 	return render_to_response('home.html',context_instance=RequestContext(request))

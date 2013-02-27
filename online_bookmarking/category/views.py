@@ -16,30 +16,34 @@ from category.deleters import *
 def category_name_exists(redis_obj,user_id,name):
 	''' Check for the existence of a category '''
 
-	key = "userId:%d:categoryName" %(int(user_id))
+	key = "userId:%d:categoryName" %(user_id)
 	return redis_obj.is_member_in_set(key,name)
 
 def store_bookmark_category_mapping(redis_obj,user_id,category_id,bookmark_id):
 	''' store the bookmark category user mapping 
 	and add bookmark to categorized list '''
 
-	key = "userId:%d:bookmarkId:%d:categoryId" %(user_id,bookmark_id)
-	if redis_obj.check_existence(key):
-		old_category_id = int(redis_obj.get_value(key))
-	else:
-		old_category_id = None
-	redis_obj.set_value(key,category_id)
+	key = "userId:%d:categoryId" %(user_id)
+	value = category_id
 
-	if  old_category_id != None:
-		key = "userId:%d:categoryId:%d:bookmarkId" %(user_id,old_category_id)
-		redis_obj.remove_from_set(key,bookmark_id) 
+	if redis_obj.is_member_in_set(key,value) == 1:
+		
+		key = "userId:%d:bookmarkId:%d:categoryId" %(user_id,bookmark_id)
+		if redis_obj.check_existence(key):
+			old_category_id = int(redis_obj.get_value(key))
+		else:
+			old_category_id = None
+		redis_obj.set_value(key,category_id)
+
+		if  old_category_id != None:
+			key = "userId:%d:categoryId:%d:bookmarkId" %(user_id,old_category_id)
+			redis_obj.remove_from_set(key,bookmark_id) 
 	
-	key = "userId:%d:categoryId:%d:bookmarkId" %(user_id,category_id)
-	redis_obj.add_to_set(key,bookmark_id)
+		key = "userId:%d:categoryId:%d:bookmarkId" %(user_id,category_id)
+		redis_obj.add_to_set(key,bookmark_id)
 
-
-	key = "userId:%d:categorized.bookmarks" %(user_id)
-	redis_obj.add_to_set(key,bookmark_id)
+		key = "userId:%d:categorized.bookmarks" %(user_id)
+		redis_obj.add_to_set(key,bookmark_id)
 
 def store_category_user(user_id,category_form):
 	''' A controller which calls remaining methods for creating 
@@ -56,11 +60,15 @@ def store_category_user(user_id,category_form):
 		store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
 	else:
 		category_id = category_form.get('category_id','')
-		old_category_name = get_category_name(category_id)
-		store_category_name(redis_obj,category_id,category_form['name'])
-		store_category_name_uid_mapping(redis_obj,user_id,category_form['name'])
-		remove_category_name_userId_uid_mapping(redis_obj,user_id,old_category_name)
-		store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
+		if category_id == '':
+			pass
+		else:
+			category_id = int(category_id)
+			old_category_name = get_category_name(redis_obj,category_id)
+			store_category_name(redis_obj,category_id,category_form['name'])
+			store_category_name_uid_mapping(redis_obj,user_id,category_form['name'])
+			remove_category_name_userId_uid_mapping(redis_obj,user_id,old_category_name)
+			store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
 
 def create_category(request):
 	''' create a new category '''
@@ -101,9 +109,11 @@ def add_bookmarks_to_category(request):
 	if request.method == "POST":
 		bookmark_id = request.POST.get("bookmark_id","")
 		category_id = request.POST.get("category_id","")
+		user_id = get_userId(request)
 
 		redis_obj = Redis()
-		store_bookmark_category_mapping(redis_obj,int(get_userId(request)),int(category_id),int(bookmark_id))
+
+		store_bookmark_category_mapping(redis_obj,get_userId(request),int(category_id),int(bookmark_id))
 
 		return HttpResponseRedirect('/success/')
 

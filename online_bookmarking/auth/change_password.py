@@ -31,8 +31,8 @@ def change_password(request):
 			user_id = get_userId(request)
 			redis_obj = Redis()
 			
-			if get_password(redis_obj,int(user_id)) == old_password:
-				store_password(redis_obj,int(user_id),encrypt_password(password_change_form_cleaned['new_password']))
+			if get_password(redis_obj,user_id) == old_password:
+				store_password(redis_obj,user_id,encrypt_password(password_change_form_cleaned['new_password']))
 				return HttpResponseRedirect('/success/')
 			
 			return render_to_response('change_password.html',

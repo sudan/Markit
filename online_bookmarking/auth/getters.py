@@ -38,7 +38,7 @@ def get_unique_id(redis_obj,username):
 	''' get the user id given the username '''
 
 	key = "username:%s:userId" %(username)
-	return redis_obj.get_value(key)
+	return int(redis_obj.get_value(key))
 
 def get_password(redis_obj,user_id):
 	''' get the password of the user '''

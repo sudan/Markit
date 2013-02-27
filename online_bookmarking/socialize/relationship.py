@@ -17,17 +17,18 @@ def get_users(redis_obj,current_user_id):
 	users_list = []
 	for i, user_id in enumerate(user_ids):
 		
-		if int(user_id) != int(current_user_id):
+		if int(user_id) != current_user_id:
 			
+			user_id = int(user_id)
 			user_info = {}
-			user_info['others_id'] = int(user_id)
-			user_info['email'] = get_email(redis_obj,int(user_id))
-			user_info['username'] = get_username(redis_obj,int(user_id))
-			user_info['first_name'] = get_first_name(redis_obj,int(user_id))
-			user_info['last_name'] = get_last_name(redis_obj,int(user_id))
-			user_info['image_url'] = get_image_url(redis_obj,int(user_id))
-			user_info['timestamp'] = get_timestamp(redis_obj,int(user_id))
-			user_info['follow'] = is_following(redis_obj,int(current_user_id),int(user_id))
+			user_info['others_id'] = user_id
+			user_info['email'] = get_email(redis_obj,user_id)
+			user_info['username'] = get_username(redis_obj,user_id)
+			user_info['first_name'] = get_first_name(redis_obj,user_id)
+			user_info['last_name'] = get_last_name(redis_obj,user_id)
+			user_info['image_url'] = get_image_url(redis_obj,user_id)
+			user_info['timestamp'] = get_timestamp(redis_obj,user_id)
+			user_info['follow'] = is_following(redis_obj,current_user_id,user_id)
 
 			users_list.append(user_info)
 	
@@ -51,7 +52,7 @@ def get_followers(redis_obj,current_user_id):
 		follower_info['last_name'] = get_last_name(redis_obj,follower_id)
 		follower_info['image_url'] = get_image_url(redis_obj,follower_id)
 		follower_info['timestamp'] = get_timestamp(redis_obj,follower_id)	
-		follower_info['follow'] = is_following(redis_obj,int(current_user_id),int(follower_id))
+		follower_info['follow'] = is_following(redis_obj,current_user_id,follower_id)
 
 		followers_list[i] = follower_info
 
@@ -129,9 +130,9 @@ def toggle_relationship(request):
 
 			redis_obj = Redis()
 			if relationship_request == "follow":
-				follow_user(redis_obj,int(current_user_id),int(others_id)) 
+				follow_user(redis_obj,current_user_id,int(others_id)) 
 			else:
-				unfollow_user(redis_obj,int(current_user_id),int(others_id))
+				unfollow_user(redis_obj,current_user_id,int(others_id))
 
 	current_user_id = get_userId(request)
 	redis_obj = Redis()
