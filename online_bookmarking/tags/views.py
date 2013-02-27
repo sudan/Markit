@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response,HttpResponseRedirect
 from django.template import RequestContext
+from django.http import Http404
 from django import forms
 
 from redis_helpers.views import Redis
@@ -12,6 +13,8 @@ from auth.signin import login
 from tags.getters import *
 from tags.setters import *
 from tags.deleters import *
+
+from bookmark.getters import *
 
 def tag_name_exists(redis_obj,name):
 	''' Check if the tag name already exists '''
@@ -28,6 +31,7 @@ def create_tag(redis_obj,name):
 		return redis_obj.get_value(key)
 
 	tag_id = get_next_tagId(redis_obj)
+	store_global_tagIds(redis_obj,tag_id)
 	store_tag_name(redis_obj,tag_id,name)
 	store_tagId_name_mapping(redis_obj,tag_id,name)
 	return tag_id
@@ -40,6 +44,23 @@ def store_tag_info(tag_form):
 	bookmark_list = tag_form['bookmark_list']
 	for bookmark in bookmark_list:
 		add_bookmark_to_tag(redis_obj,tag_id,bookmark)
+
+def get_tag_names(redis_obj):
+	''' Returns a dictionary of tag info '''
+
+	key = "global:tags:tagId"
+	tag_ids = redis_obj.members_in_set(key)
+
+	tag_info = [{} for i in xrange(len(tag_ids))]
+
+	for i,tag_id in enumerate(tag_ids):
+		tag_dict = {}
+		tag_id = int(tag_id)
+		tag_dict['tag_id'] = tag_id
+		tag_dict['name'] = get_tag_name(redis_obj,tag_id)
+		tag_info[i] = tag_dict
+
+	return tag_info
 
 def tag_bundle(request):
 	''' create a tag if it doesnt exist.Add urls to the
@@ -72,7 +93,49 @@ def tag_bundle(request):
 	tag_form = TagForm()
 	tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
 	
-	return render_to_response('tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))	
+	return render_to_response('tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))
+
+def retrieve_tags(request):
+	''' Retrieve all the tag names '''
+
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+
+	if not is_logged_in(email,auth_token):
+		return login(request,redirect_uri='/tag_names')
+
+	redis_obj = Redis()
+	tag_info = get_tag_names(redis_obj)
+	return render_to_response('tag_names.html',{'tag_info':tag_info},context_instance=RequestContext(request))
+
+def get_bookmarks_for_tags(request,tag_id):
+	''' Retrieve the bookmarks corresponding to the tag id '''
+
+	email = request.COOKIES.get("email","")
+	auth_token = request.COOKIES.get("auth","")
+
+	if not is_logged_in(email,auth_token):
+		redirect_uri = '/tags/' + tag_id
+		return login(request,redirect_uri=redirect_uri)
+
+	redis_obj = Redis()
+	bookmark_ids = bookmark_for_tags(redis_obj,int(tag_id))
+
+	bookmark_list = [{} for i in xrange(len(bookmark_ids))]
+
+	for i,bookmark_id in enumerate(bookmark_ids):
+		bookmark_info = {}
+		bookmark_id = int(bookmark_id)
+		bookmark_info['url'] = get_url(redis_obj,bookmark_id)
+		bookmark_info['name'] = get_name(redis_obj,bookmark_id)
+		bookmark_info['description'] = get_description(redis_obj,bookmark_id)
+
+		bookmark_list[i] = bookmark_info
+
+	return render_to_response('bookmark_for_tags.html',{'bookmark_list':bookmark_list},
+			context_instance=RequestContext(request))
+
+	return Http404()
 
 
 

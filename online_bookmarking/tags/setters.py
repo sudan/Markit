@@ -17,3 +17,9 @@ def add_bookmark_to_tag(redis_obj,tag_id,bookmark_id):
 
 	key = "tagId:%d:bookmarkIds" % (tag_id)
 	redis_obj.add_to_set(key,bookmark_id)
+
+def store_global_tagIds(redis_obj,tag_id):
+	''' add the tag id to the set of global tags '''
+
+	key = "global:tags:tagId"
+	redis_obj.add_to_set(key,tag_id)

@@ -1,0 +1,9 @@
+<html>
+	<body>
+		<form method="POST" action="/tag_names/">{% csrf_token %}
+			{% for tag in tag_info %}
+				{{tag}}
+			{% endfor %}
+		</form>
+	</body>
+</html>

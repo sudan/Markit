@@ -28,5 +28,7 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<profile_name>\w+)/$','socialize.profile.profile'),
     url(r'^change_password/$','auth.change_password.change_password'),
     url(r'^edit_profile/$','auth.edit_profile.edit_profile'),
+    url(r'^tag_names/$','tags.views.retrieve_tags'),
+    url(r'^tags/(?P<tag_id>\d+)','tags.views.get_bookmarks_for_tags'),
     url(r'', include('social_auth.urls')),
 )
