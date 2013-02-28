@@ -94,7 +94,7 @@ def profile(request,profile_name=''):
 		
 		follow = is_following(redis_obj,current_user_id,user_id)
 
-		return render_to_response('profile.html',
+		return render_to_response('socialize/profile.html',
 			{
 				'user_info':user_info,
 				'followers_count':followers_count,

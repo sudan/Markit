@@ -1,6 +1,5 @@
 from django.http import Http404,HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render_to_response
 
 from redis_helpers.views import Redis
 from auth.helpers import get_auth_token

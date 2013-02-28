@@ -81,14 +81,14 @@ def tag_bundle(request):
 		userId , data = get_bookmarks(request)
 		bookmark_list = get_bookmark_list(data)
 		tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
-		return render_to_response('tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))	
+		return render_to_response('tags/tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))	
 
 	userId , data = get_bookmarks(request)
 	bookmark_list = get_bookmark_list(data)
 	tag_form = TagForm()
 	tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
 	
-	return render_to_response('tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))
+	return render_to_response('tags/tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))
 
 @authentication('/tag_names')
 def retrieve_tags(request):
@@ -96,7 +96,7 @@ def retrieve_tags(request):
 
 	redis_obj = Redis()
 	tag_info = get_tag_names(redis_obj)
-	return render_to_response('tag_names.html',{'tag_info':tag_info},context_instance=RequestContext(request))
+	return render_to_response('tags/tag_names.html',{'tag_info':tag_info},context_instance=RequestContext(request))
 
 def get_bookmarks_for_tags(request,tag_id):
 	''' Retrieve the bookmarks corresponding to the tag id '''
@@ -122,7 +122,7 @@ def get_bookmarks_for_tags(request,tag_id):
 
 		bookmark_list[i] = bookmark_info
 
-	return render_to_response('bookmark_for_tags.html',{'bookmark_list':bookmark_list},
+	return render_to_response('tags/bookmark_for_tags.html',{'bookmark_list':bookmark_list},
 			context_instance=RequestContext(request))
 
 	return Http404()

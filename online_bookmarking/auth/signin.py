@@ -91,10 +91,10 @@ def login(request,redirect_uri='/home'):
 					return response
 		
 		redirect_uri =  request.POST.get('redirect_uri','/home')
-		return render_to_response('login.html',{'login_form':login_form,'redirect_uri':redirect_uri,'error':'invalid username or password'},context_instance=RequestContext(request))
+		return render_to_response('auth/login.html',{'login_form':login_form,'redirect_uri':redirect_uri,'error':'invalid username or password'},context_instance=RequestContext(request))
 	
 	login_form = LoginForm()
-	return render_to_response('login.html',{'login_form':login_form,'redirect_uri':redirect_uri,},context_instance=RequestContext(request))
+	return render_to_response('auth/login.html',{'login_form':login_form,'redirect_uri':redirect_uri,},context_instance=RequestContext(request))
 				
 
 

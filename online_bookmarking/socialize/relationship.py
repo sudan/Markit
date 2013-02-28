@@ -133,7 +133,7 @@ def toggle_relationship(request):
 	redis_obj = Redis()
 	users_list = get_users(redis_obj,current_user_id)
 
-	return render_to_response('users.html',{'users_list':users_list},
+	return render_to_response('socialize/users.html',{'users_list':users_list},
 		context_instance=RequestContext(request))
 
 @authentication('/users')
@@ -144,6 +144,6 @@ def users(request):
 	redis_obj = Redis()
 	users_list = get_users(redis_obj,current_user_id)
 	
-	return render_to_response('users.html',{'users_list':users_list},
+	return render_to_response('socialize/users.html',{'users_list':users_list},
 		context_instance=RequestContext(request))
 

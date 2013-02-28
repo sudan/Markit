@@ -88,12 +88,12 @@ def create_bookmark(request):
 			store_bookmark(request,bookmark_form_cleaned)
 			return HttpResponseRedirect('/success/')
 
-		return render_to_response('add.html',
+		return render_to_response('bookmark/add.html',
 			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
 
 	
 	bookmark_form = BookmarkForm()
-	return render_to_response('add.html',
+	return render_to_response('bookmark/add.html',
 			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
 
 
@@ -103,7 +103,7 @@ def display_bookmarks(request):
 
 	user_id , data = get_bookmarks(request)		
 
-	return render_to_response('home.html', {'user_id' : user_id, 'bookmarks' : data})	
+	return render_to_response('auth/home.html', {'user_id' : user_id, 'bookmarks' : data})	
 
 @authentication('/home')
 def delete_bookmark(request):
@@ -115,4 +115,4 @@ def delete_bookmark(request):
 	if bookmark_id != "":
 		clear_bookmark(user_id,int(bookmark_id))
 
-	return render_to_response('home.html',context_instance=RequestContext(request))
+	return render_to_response('auth/home.html',context_instance=RequestContext(request))
