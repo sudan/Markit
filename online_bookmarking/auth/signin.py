@@ -8,6 +8,8 @@ from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
 from auth.login_status import is_logged_in
 
+from online_bookmarking.settings import LOGIN_TEMPLATE_PATH
+
 import datetime
 
 def  account_existence(redis_obj,email):
@@ -91,10 +93,21 @@ def login(request,redirect_uri='/home'):
 					return response
 		
 		redirect_uri =  request.POST.get('redirect_uri','/home')
-		return render_to_response('auth/login.html',{'login_form':login_form,'redirect_uri':redirect_uri,'error':'invalid username or password'},context_instance=RequestContext(request))
+		return render_to_response(LOGIN_TEMPLATE_PATH,
+			{
+				'login_form':login_form,
+				'redirect_uri':redirect_uri,
+				'error':'invalid username or password'
+			},
+			context_instance=RequestContext(request))
 	
 	login_form = LoginForm()
-	return render_to_response('auth/login.html',{'login_form':login_form,'redirect_uri':redirect_uri,},context_instance=RequestContext(request))
+	return render_to_response(LOGIN_TEMPLATE_PATH,
+		{
+			'login_form':login_form,
+			'redirect_uri':redirect_uri
+		},
+		context_instance=RequestContext(request))
 				
 
 

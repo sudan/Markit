@@ -12,6 +12,8 @@ from auth.signin import login,authentication
 
 from auth.forms import EditProfileForm
 
+from online_bookmarking.settings import EDIT_PROFILE_TEMPLATE_PATH
+
 def update_profile(redis_obj,edit_profile_form,user_id,old_username):
 	''' a controller for update user profile '''
 
@@ -40,7 +42,10 @@ def edit_profile(request):
 				update_profile(redis_obj,edit_profile_form_cleaned,user_id,username)
 				return HttpResponseRedirect('/success/')
 
-			return render_to_response('auth/edit_profile.html',{'edit_profile_form':edit_profile_form},
+			return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,
+				{
+					'edit_profile_form':edit_profile_form
+				},
 				context_instance=RequestContext(request))
 
 	username = get_username(redis_obj,user_id)
@@ -51,5 +56,8 @@ def edit_profile(request):
 		'username':username,'first_name':first_name,'last_name':last_name
 	})
 	
-	return render_to_response('auth/edit_profile.html',{'edit_profile_form':edit_profile_form},
+	return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,
+		{
+			'edit_profile_form':edit_profile_form
+		},
 		context_instance=RequestContext(request))

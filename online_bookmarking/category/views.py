@@ -13,6 +13,10 @@ from category.getters import *
 from category.setters import *
 from category.deleters import *
 
+from online_bookmarking.settings import CATEGORY_CREATE_TEMPLATE_PATH
+from online_bookmarking.settings import ADD_BOOKMARKS_TO_CATEGORY_TEMPLATE_PATH
+from online_bookmarking.settings import HOME_TEMPLATE_PATH
+
 def category_name_exists(redis_obj,user_id,name):
 	''' Check for the existence of a category '''
 
@@ -84,11 +88,17 @@ def create_category(request):
 	
 			return HttpResponseRedirect('/success/')
 
-		return render_to_response('category/category.html',{'category_form':category_form},
+		return render_to_response(CATEGORY_CREATE_TEMPLATE_PATH,
+			{
+				'category_form':category_form
+			},
 			context_instance=RequestContext(request))
 
 	category_form = CategoryForm()
-	return render_to_response('category/category.html',{'category_form':category_form},
+	return render_to_response(CATEGORY_CREATE_TEMPLATE_PATH,
+		{
+			'category_form':category_form
+		},
 		context_instance=RequestContext(request))
 
 @authentication('/add_bookmarks_to_category')
@@ -106,7 +116,8 @@ def add_bookmarks_to_category(request):
 
 		return HttpResponseRedirect('/success/')
 
-	return render_to_response('category/add_bookmarks_to_category.html',context_instance=RequestContext(request))
+	return render_to_response(ADD_BOOKMARKS_TO_CATEGORY_TEMPLATE_PATH,
+		context_instance=RequestContext(request))
 
 @authentication('/home')
 def clear_category(request):
@@ -122,6 +133,7 @@ def clear_category(request):
 		delete_category_name_uid_mapping(redis_obj,user_id,category_id)
 		delete_category_name_userId_uid_mapping(redis_obj,user_id,category_id)
 
-	return render_to_response('auth/home.html',context_instance=RequestContext(request))
+	return render_to_response(HOME_TEMPLATE_PATH,
+		context_instance=RequestContext(request))
 
 

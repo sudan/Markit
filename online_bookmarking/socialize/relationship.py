@@ -8,6 +8,8 @@ from auth.login_status import is_logged_in
 from auth.helpers import get_userId
 from auth.getters import *
 
+from online_bookmarking.settings import USERS_LIST_TEMPLATE_PATH
+
 def get_users(redis_obj,current_user_id):
 	''' Returns the users excluding the current user '''
 	
@@ -133,7 +135,10 @@ def toggle_relationship(request):
 	redis_obj = Redis()
 	users_list = get_users(redis_obj,current_user_id)
 
-	return render_to_response('socialize/users.html',{'users_list':users_list},
+	return render_to_response(USERS_LIST_TEMPLATE_PATH,
+		{
+			'users_list':users_list
+		},
 		context_instance=RequestContext(request))
 
 @authentication('/users')
@@ -144,6 +149,9 @@ def users(request):
 	redis_obj = Redis()
 	users_list = get_users(redis_obj,current_user_id)
 	
-	return render_to_response('socialize/users.html',{'users_list':users_list},
+	return render_to_response(USERS_LIST_TEMPLATE_PATH,
+		{
+			'users_list':users_list
+		},
 		context_instance=RequestContext(request))
 

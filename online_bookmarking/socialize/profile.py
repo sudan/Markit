@@ -9,6 +9,8 @@ from auth.helpers import get_userId
 from auth.getters import *
 from bookmark.getters import *
 
+from online_bookmarking.settings import USER_PROFILE_TEMPLATE_PATH
+
 def is_following(redis_obj,current_user_id,others_id):
 	''' Returns true if the current user follows other user else false '''
 
@@ -94,7 +96,7 @@ def profile(request,profile_name=''):
 		
 		follow = is_following(redis_obj,current_user_id,user_id)
 
-		return render_to_response('socialize/profile.html',
+		return render_to_response(USER_PROFILE_TEMPLATE_PATH,
 			{
 				'user_info':user_info,
 				'followers_count':followers_count,

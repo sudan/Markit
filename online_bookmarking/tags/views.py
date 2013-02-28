@@ -16,6 +16,10 @@ from tags.deleters import *
 
 from bookmark.getters import *
 
+from online_bookmarking.settings import CREATE_TAG_TEMPLATE_PATH
+from online_bookmarking.settings import TAG_NAMES_LIST_TEMPLATE_PATH
+from online_bookmarking.settings import BOOKMARKS_FOR_TAGS_TEMPLATE_PATH
+
 def tag_name_exists(redis_obj,name):
 	''' Check if the tag name already exists '''
 
@@ -81,14 +85,22 @@ def tag_bundle(request):
 		userId , data = get_bookmarks(request)
 		bookmark_list = get_bookmark_list(data)
 		tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
-		return render_to_response('tags/tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))	
+		return render_to_response(CREATE_TAG_TEMPLATE_PATH,
+			{
+				'tag_form':tag_form
+			},
+			context_instance=RequestContext(request))	
 
 	userId , data = get_bookmarks(request)
 	bookmark_list = get_bookmark_list(data)
 	tag_form = TagForm()
 	tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
 	
-	return render_to_response('tags/tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))
+	return render_to_response(CREATE_TAG_TEMPLATE_PATH,
+		{
+			'tag_form':tag_form
+		},
+		context_instance=RequestContext(request))
 
 @authentication('/tag_names')
 def retrieve_tags(request):
@@ -96,7 +108,11 @@ def retrieve_tags(request):
 
 	redis_obj = Redis()
 	tag_info = get_tag_names(redis_obj)
-	return render_to_response('tags/tag_names.html',{'tag_info':tag_info},context_instance=RequestContext(request))
+	return render_to_response(TAG_NAMES_LIST_TEMPLATE_PATH,
+		{
+			'tag_info':tag_info
+		},
+		context_instance=RequestContext(request))
 
 def get_bookmarks_for_tags(request,tag_id):
 	''' Retrieve the bookmarks corresponding to the tag id '''
@@ -122,8 +138,11 @@ def get_bookmarks_for_tags(request,tag_id):
 
 		bookmark_list[i] = bookmark_info
 
-	return render_to_response('tags/bookmark_for_tags.html',{'bookmark_list':bookmark_list},
-			context_instance=RequestContext(request))
+	return render_to_response(BOOKMARKS_FOR_TAGS_TEMPLATE_PATH,
+		{
+			'bookmark_list':bookmark_list
+		},
+		context_instance=RequestContext(request))
 
 	return Http404()
 

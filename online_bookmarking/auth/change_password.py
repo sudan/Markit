@@ -12,6 +12,8 @@ from auth.signin import login,authentication
 
 from redis_helpers.views import Redis
 
+from online_bookmarking.settings import CHANGE_PASSWORD_TEMPLATE_PATH
+
 @authentication('/change_password')
 def change_password(request):
 	''' Module for changing the password of the user '''
@@ -30,19 +32,23 @@ def change_password(request):
 				store_password(redis_obj,user_id,encrypt_password(password_change_form_cleaned['new_password']))
 				return HttpResponseRedirect('/success/')
 			
-			return render_to_response('auth/change_password.html',
+			return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
 				{
 				'password_change_form':password_change_form,
 				'error':'Password you gave is incorrect'
 				},
 				context_instance=RequestContext(request))
 		
-		return render_to_response('auth/change_password.html',{
+		return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
+			{
 				'password_change_form':password_change_form,
 				'error':'Invalid password entries'
 			},
 			context_instance=RequestContext(request))
 	
 	password_change_form = PasswordChangeForm()
-	return render_to_response('auth/change_password.html',{'password_change_form':password_change_form},
+	return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
+		{
+			'password_change_form':password_change_form
+		},
 		context_instance=RequestContext(request))

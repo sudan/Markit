@@ -18,6 +18,8 @@ from bookmark.getters import *
 from bookmark.setters import *
 from bookmark.deleters import *
 
+from online_bookmarking.settings import BOOKMARK_ADD_TEMPLATE_PATH,HOME_TEMPLATE_PATH
+
 def store_bookmark(request,bookmark_form):
 	''' A controller which calls the individual store methods '''
 
@@ -88,13 +90,19 @@ def create_bookmark(request):
 			store_bookmark(request,bookmark_form_cleaned)
 			return HttpResponseRedirect('/success/')
 
-		return render_to_response('bookmark/add.html',
-			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
+		return render_to_response(BOOKMARK_ADD_TEMPLATE_PATH,
+			{
+				'bookmark_form':bookmark_form
+			},
+			context_instance=RequestContext(request))
 
 	
 	bookmark_form = BookmarkForm()
-	return render_to_response('bookmark/add.html',
-			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
+	return render_to_response(BOOKMARK_ADD_TEMPLATE_PATH,
+			{
+				'bookmark_form':bookmark_form
+			},
+			context_instance=RequestContext(request))
 
 
 @authentication('/home')
@@ -103,7 +111,11 @@ def display_bookmarks(request):
 
 	user_id , data = get_bookmarks(request)		
 
-	return render_to_response('auth/home.html', {'user_id' : user_id, 'bookmarks' : data})	
+	return render_to_response(HOME_TEMPLATE_PATH, 
+		{
+			'user_id' : user_id, 
+			'bookmarks' : data
+		})	
 
 @authentication('/home')
 def delete_bookmark(request):
@@ -115,4 +127,5 @@ def delete_bookmark(request):
 	if bookmark_id != "":
 		clear_bookmark(user_id,int(bookmark_id))
 
-	return render_to_response('auth/home.html',context_instance=RequestContext(request))
+	return render_to_response(HOME_TEMPLATE_PATH,
+		context_instance=RequestContext(request))

@@ -10,6 +10,20 @@ HOSTNAME = "localhost"
 PORT_NUMBER = 6379
 DATABASE = 0
 
+CHANGE_PASSWORD_TEMPLATE_PATH = "auth/change_password.html"
+EDIT_PROFILE_TEMPLATE_PATH = "auth/edit_profile.html"
+LOGIN_TEMPLATE_PATH = "auth/login.html"
+SIGNUP_TEMPLATE_PATH = "auth/signup.html"
+BOOKMARK_ADD_TEMPLATE_PATH = "bookmark/add.html"
+HOME_TEMPLATE_PATH = "auth/home.html"
+CATEGORY_CREATE_TEMPLATE_PATH = "category/category.html"
+ADD_BOOKMARKS_TO_CATEGORY_TEMPLATE_PATH = "category/add_bookmarks_to_category.html"
+USER_PROFILE_TEMPLATE_PATH = "socialize/profile.html"
+USERS_LIST_TEMPLATE_PATH = "socialize/users.html"
+CREATE_TAG_TEMPLATE_PATH = "tags/tags.html"
+TAG_NAMES_LIST_TEMPLATE_PATH = "tags/tag_names.html"
+BOOKMARKS_FOR_TAGS_TEMPLATE_PATH = "tags/bookmark_for_tags.html"
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
