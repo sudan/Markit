@@ -1,9 +1,4 @@
-a
+.navbar-inner
 {
-	text-decoration: none;
-}
-
-a:hover
-{
-	font-size: 1em;
+	background-color: #2C2C2C;
 }
