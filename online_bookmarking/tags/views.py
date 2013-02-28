@@ -8,7 +8,7 @@ from redis_helpers.views import Redis
 from tags.forms import TagForm
 from bookmark.bookmarks import get_bookmarks
 from auth.login_status import is_logged_in
-from auth.signin import login
+from auth.signin import login,authentication
 
 from tags.getters import *
 from tags.setters import *
@@ -62,15 +62,10 @@ def get_tag_names(redis_obj):
 
 	return tag_info
 
+@authentication('/tags')
 def tag_bundle(request):
 	''' create a tag if it doesnt exist.Add urls to the
 	existing ones '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/tags')
 
 	if request.method == "POST":
 		tag_form = TagForm(data=request.POST)
@@ -95,14 +90,9 @@ def tag_bundle(request):
 	
 	return render_to_response('tags.html',{'tag_form':tag_form},context_instance=RequestContext(request))
 
+@authentication('/tag_names')
 def retrieve_tags(request):
 	''' Retrieve all the tag names '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/tag_names')
 
 	redis_obj = Redis()
 	tag_info = get_tag_names(redis_obj)

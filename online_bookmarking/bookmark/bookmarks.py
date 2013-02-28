@@ -12,7 +12,7 @@ import datetime
 from bookmark.forms import BookmarkForm
 from redis_helpers.views import Redis
 from auth.login_status import is_logged_in
-from auth.signin import login
+from auth.signin import login,authentication
 from auth.helpers import get_userId
 from bookmark.getters import *
 from bookmark.setters import *
@@ -74,16 +74,10 @@ def get_bookmarks(request):
 
 	return user_id , data
 
-
+@authentication('/bookmark')
 def create_bookmark(request):
 	''' View function which handles rendering the bookmark form and 
 	stores them if valid or re-renders '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/bookmark')
 
 	if request.method == "POST":
 
@@ -103,28 +97,17 @@ def create_bookmark(request):
 			{'bookmark_form':bookmark_form},context_instance=RequestContext(request))
 
 
-
+@authentication('/home')
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/home')
 
 	user_id , data = get_bookmarks(request)		
 
 	return render_to_response('home.html', {'user_id' : user_id, 'bookmarks' : data})	
 
+@authentication('/home')
 def delete_bookmark(request):
 	''' Delete a bookmark '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-	
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/home')
 
 	bookmark_id = request.POST.get("bookmark_id","")
 	user_id = get_userId(request)

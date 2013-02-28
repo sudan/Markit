@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response,redirect
 from django.template import RequestContext
 
 from redis_helpers.views import Redis
-from auth.signin import login
+from auth.signin import login,authentication
 from auth.login_status import is_logged_in
 from auth.helpers import get_userId
 from auth.getters import *
@@ -110,14 +110,9 @@ def unfollow_user(redis_obj,current_user_id,others_id):
 	key = "userId:%d:followers" %(others_id)
 	redis_obj.remove_from_set(key,current_user_id)
 
+@authentication('/users')
 def toggle_relationship(request):
 	''' Follow a user '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/users')
 
 	current_user_id = get_userId(request)
 	
@@ -141,14 +136,9 @@ def toggle_relationship(request):
 	return render_to_response('users.html',{'users_list':users_list},
 		context_instance=RequestContext(request))
 
+@authentication('/users')
 def users(request):
 	''' Displays list of users '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/users')
 
 	current_user_id = get_userId(request)
 	redis_obj = Redis()

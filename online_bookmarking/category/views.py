@@ -6,7 +6,7 @@ from redis_helpers.views import Redis
 from category.forms import CategoryForm
 from auth.helpers import get_userId
 from auth.login_status import is_logged_in
-from auth.signin import login
+from auth.signin import login,authentication
 from bookmark.bookmarks import store_category
 
 from category.getters import *
@@ -70,14 +70,9 @@ def store_category_user(user_id,category_form):
 			remove_category_name_userId_uid_mapping(redis_obj,user_id,old_category_name)
 			store_category_name_userId_uid_mapping(redis_obj,user_id,category_id,category_form['name'])
 
+@authentication('/category')
 def create_category(request):
 	''' create a new category '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/category')
 
 	if request.method == "POST":
 		category_form = CategoryForm(data=request.POST)
@@ -96,15 +91,9 @@ def create_category(request):
 	return render_to_response('category.html',{'category_form':category_form},
 		context_instance=RequestContext(request))
 
+@authentication('/add_bookmarks_to_category')
 def add_bookmarks_to_category(request):
 	''' add bookmark to category '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/add_bookmarks_to_category')
-
 
 	if request.method == "POST":
 		bookmark_id = request.POST.get("bookmark_id","")
@@ -119,14 +108,9 @@ def add_bookmarks_to_category(request):
 
 	return render_to_response('add_bookmarks_to_category.html',context_instance=RequestContext(request))
 
+@authentication('/home')
 def clear_category(request):
 	''' clear the category '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/home')
 
 	if request.method == "POST":
 		user_id = get_userId(request)

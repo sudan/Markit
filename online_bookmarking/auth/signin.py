@@ -6,6 +6,7 @@ from auth.forms import LoginForm
 from redis_helpers.views import Redis
 from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
+from auth.login_status import is_logged_in
 
 import datetime
 
@@ -41,6 +42,25 @@ def update_auth_token(redis_obj,auth_token,user_id,email):
 
 	key = "auth.token:%s:email" % (auth_token)
 	redis_obj.set_value(key,email)
+
+def authentication(redirect_uri):
+	''' A decorator for authentication '''
+
+	def authentication_wrapper(func):
+		
+		def wrapper_func(request,*args,**kwargs):
+			
+			email = request.COOKIES.get("email","")
+			auth_token = request.COOKIES.get("auth","")
+
+			if not is_logged_in(email,auth_token):
+				return login(request,redirect_uri)
+
+			return func(request,*args,**kwargs)
+		
+		return wrapper_func
+	
+	return authentication_wrapper
 
 def login(request,redirect_uri='/home'):
 	''' login functionality which returns a empty form when given a GET request 

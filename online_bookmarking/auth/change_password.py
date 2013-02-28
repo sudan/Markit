@@ -8,18 +8,13 @@ from auth.encrypt import encrypt_password
 from auth.getters import get_password
 from auth.signup import store_password
 from auth.login_status import is_logged_in
-from auth.signin import login
+from auth.signin import login,authentication
 
 from redis_helpers.views import Redis
 
+@authentication('/change_password')
 def change_password(request):
 	''' Module for changing the password of the user '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/change_password')
 
 	if request.method == "POST":
 		

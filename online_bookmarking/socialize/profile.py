@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.http import Http404
 
 from redis_helpers.views import Redis
-from auth.signin import login
+from auth.signin import login,authentication
 from auth.login_status import is_logged_in
 from auth.helpers import get_userId
 from auth.getters import *
@@ -71,15 +71,10 @@ def get_public_bookmarks(redis_obj,profile_name):
 		bookmarks_list.append(bookmark_info)
 		
 	return bookmarks_list
-			
+
+@authentication('/users')
 def profile(request,profile_name=''):
 	''' profile for a user '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/users')
 
 	current_user_id = get_userId(request)
 	

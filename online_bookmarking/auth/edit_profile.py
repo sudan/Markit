@@ -8,7 +8,7 @@ from auth.helpers import get_userId
 from auth.getters import *
 from auth.setters import *
 from auth.deleters import *
-from auth.signin import login
+from auth.signin import login,authentication
 
 from auth.forms import EditProfileForm
 
@@ -23,14 +23,9 @@ def update_profile(redis_obj,edit_profile_form,user_id,old_username):
 
 	store_uid_with_username(redis_obj,user_id,edit_profile_form['username'])
 
+@authentication('/edit_profile')
 def edit_profile(request):
 	''' Edit a user's profile '''
-
-	email = request.COOKIES.get("email","")
-	auth_token = request.COOKIES.get("auth","")
-
-	if not is_logged_in(email,auth_token):
-		return login(request,redirect_uri='/edit_profile')
 
 	redis_obj = Redis()
 	user_id = get_userId(request)
