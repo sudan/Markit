@@ -49,7 +49,7 @@ def authentication(redirect_uri):
 	def authentication_wrapper(func):
 		
 		def wrapper_func(request,*args,**kwargs):
-			
+			print func
 			email = request.COOKIES.get("email","")
 			auth_token = request.COOKIES.get("auth","")
 

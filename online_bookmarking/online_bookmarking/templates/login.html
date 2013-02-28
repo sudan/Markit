@@ -1,5 +1,7 @@
 <html>
-	<head></head>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootstrap/css/bootstrap.css"/>
+	</head>
 	<body>
 		<a href="{% url socialauth_begin 'facebook' %}?{{ 'redirecting' }}">login with facebook</a>
 
