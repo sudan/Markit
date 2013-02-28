@@ -4,11 +4,54 @@
 	<head>
 		
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css"/>
-	
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootstrap/css/bootstrap-responsive.min.css">
 	</head>
 
 	<body>
 
+		<header>
+
+			<div class="wrapper">
+				{%  block login %}
+
+				<div class="navbar navbar-fixed-top">
+					<div class="navbar-inner">
+						<div class="container">
+							<ul class="nav">
+								<li class="active"><a href="#">Home</a></li>
+								<li><a href="/users/">Public Profile</a></li>
+								<li><a href="/profile/{{username}}">My Profile</a></li>
+							</ul>
+
+							<ul class="nav pull-right">  
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome {{username}}  
+          							<b class="caret"></b>  
+    							</a> 
+    							<ul class="dropdown-menu"> 
+    									<li><a href="/logout/">Logout</a></li>
+    								</form>
+    							</ul>
+							</ul>								
+						
+						</div>
+					</div>
+				</div>
+
+				{% endblock %}
+			</div>
+		
+		</header>
+
+		<div class="content">
+			<div class="wrapper">
+				{% block content %}
+				{% endblock %}
+			</div>
+		</div>
+
+		<footer>
+
+		</footer>	
 
 		<script type="text/javascript" src="{{STATIC_URL}}jquery/js/jquery.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
