@@ -17,7 +17,7 @@
                 Name    :   "Left",
                 Dock    :   $.layoutEngine.DOCK.LEFT,
                 EleID   :   "left",
-                Width   :   300
+                Width   :   500
             },
             {
                 Name    :   "Fill",

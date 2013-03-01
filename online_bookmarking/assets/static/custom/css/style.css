@@ -49,7 +49,7 @@ body
 	text-align: center;
 }
 
-tr
+tr,.btn,.btn-primary
 {
  	vertical-align:text-bottom;
 }
@@ -57,4 +57,9 @@ tr
 .errorlist
 {
 	list-style-type: none;
+}
+
+.follow_unfollow_wrapper
+{
+	height: 50px;
 }

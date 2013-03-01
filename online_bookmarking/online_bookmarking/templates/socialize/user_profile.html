@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block middle_pane %}
+	
+	<div class="profile_container">
+
+		<div class="image_wrapper inline-fields">
+			<a href="/profile/{{user_info.username}}/">
+				<img width="150px" height="150px" src="{{user_info.image_url}}" alt="{{user_info.username}}"/>
+			</a>
+		</div>
+
+		<div class="username_wrapper">
+			<span><h1>{{user_info.username}}</h1></span>
+		</div>
+
+		<div class="socialize_wrapper">
+			<span><a href="#">{{following_count}}&nbsp;following</a></span>
+			<span><a href="#">{{followers_count}}&nbsp;followers</a></span>
+		
+		</div>
+
+		<div class="follow_unfollow_wrapper">
+			<form class="custom_form" method="POST" action="/toggle/">{% csrf_token %}
+				{% if not  my_profile %}
+					{% if follow %}
+						<input type="submit" class="btn-primary" value="unfollow" name="relationship_button"/>
+					{% else %}
+						<input type="submit" class="btn" value="follow" name="relationship_button"/>
+					{% endif %}
+					<input type="hidden" name="others_id" value="{{user_info.others_id}}"/>
+				{% endif %}
+			</form>
+		</div>
+		
+		<div class="bookmarks_wrapper">
+
+			{% for bookmark in public_bookmarks %}
+				<span><a href="{{bookmark.url}}">{{bookmark.url}}</a></span>
+				<span>-</span>
+				<span>{{bookmark.name}}</span>
+			{% empty %}
+				<span>Hurray! no public bookmarks has been shared!</span>
+			{% endfor %}
+
+		</div>
+
+	</div>
+
+{%  endblock %}
+
+<!-- <html>
+	<body>
+		<div><span>{{user_info.username}}</span><span>username</span></div>
+		<div><span>{{user_info.first_name}}</span><s pan>first_name</span></div>
+		<div><span>{{user_info.last_name}}</span><span>last_name</span></div>
+		<div><span>{{user_info.image_url}}</span><span>image</span></div>
+		<div><span>{{user_info.timestamp}}</span><span>timestamp</span></div>
+		<div><span>{{followers_count}}</span><span>followers</span></div>
+		<div><span>{{following_count}}</span><span>following</span></div>
+		<form method="POST" action="/toggle/">{% csrf_token %}
+		{% if not  my_profile %}
+			{% if follow %}
+				<input type="submit" value="unfollow" name="relationship_button"/>
+			{% else %}
+				<input type="submit" value="follow" name="relationship_button"/>
+			{% endif %}
+			<input type="hidden" name="others_id" value="{{user_info.others_id}}"/>
+		{% endif %}
+		</form>
+
+		<div>
+			<span>bookmarks</span>
+			{% for bookmark in public_bookmarks %}
+				<span>{{bookmark.url}}</span><br/>
+				<span>{{bookmark.name}}</span><br/>
+			{% endfor %}
+		</div>
+	</body>
+</html> -->
