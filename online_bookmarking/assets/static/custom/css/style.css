@@ -1,3 +1,8 @@
+body
+{
+	background-color: #F7F7F9;
+}
+
 .profile_name
 {
 	color:white;
@@ -28,7 +33,7 @@
 .signup_form
 {
 	margin: 1em;
-
+	border:1px solid #F8F8F8;
 }
 
 .error-messages
@@ -39,10 +44,9 @@
 
 }
 
-#top,#right
+.title
 {
-	background-color: #F7F7F9;
-	border: 1px solid #E1E1E8;
+	text-align: center;
 }
 
 tr
