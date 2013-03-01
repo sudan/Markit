@@ -11,7 +11,7 @@
 
 .margin-adjust
 {
-	margin-top: 0.8em;
+	margin-top: 1em;
 }
 
 .margin-ve-adjust
@@ -22,5 +22,29 @@
 .signin_form
 {
 	float: right;
-	margin-right: 1em;
+	margin-right: 1.5em;
 }
+
+.signup_form
+{
+	margin: 1em;
+
+}
+
+.error-messages
+{
+	margin-top: 0.2em;
+	text-align: center;
+}
+
+#top,#right
+{
+	background-color: #F7F7F9;
+	border: 1px solid #E1E1E8;
+}
+
+tr
+{
+ 	vertical-align:text-bottom;
+}
+

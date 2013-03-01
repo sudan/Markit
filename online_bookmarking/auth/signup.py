@@ -5,13 +5,13 @@ from django.template import RequestContext
 
 import datetime
 
-from auth.forms import SignUpForm
+from auth.forms import SignUpForm,LoginForm
 from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
 from redis_helpers.views import Redis
 from auth.setters import *
 
-from online_bookmarking.settings import SIGNUP_TEMPLATE_PATH
+from online_bookmarking.settings import HOME_PAGE_TEMPLATE_PATH
 
 def get_next_userId(redis_obj):
 	''' Get the next unique user id '''
@@ -71,25 +71,29 @@ def register(request):
 			
 			signup_form_cleaned = signup_form.cleaned_data
 
+			login_form = LoginForm()
 			if  signup_form_cleaned['password'] != signup_form_cleaned['password_confirmation']:
-				return render_to_response(SIGNUP_TEMPLATE_PATH,
+				return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 					{
+						'login_form':login_form,
 						'signup_form':signup_form,
 						'error':'password doesnt match'
 					},
 					context_instance=RequestContext(request))
 			
 			if username_exists(signup_form_cleaned['username']) == 1:
-				return render_to_response(SIGNUP_TEMPLATE_PATH,
+				return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 					{
+						'login_form':login_form,
 						'signup_form':signup_form,
 						'error':'username already exists'
 					},
 					context_instance=RequestContext(request))
 			
 			if email_exists(signup_form_cleaned['email']) == 1:
-				return render_to_response(SIGNUP_TEMPLATE_PATH,
+				return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 					{
+						'login_form':login_form,
 						'signup_form':signup_form,
 						'error':'email id has already taken'
 					},
@@ -108,15 +112,19 @@ def register(request):
 			response.set_cookie('email',signup_form_cleaned['email'], max_age=max_age, expires=expires)
 			return response
 		
-		return render_to_response(SIGNUP_TEMPLATE_PATH,
+		login_form = LoginForm()
+		return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 			{
+				'login_form':login_form,
 				'signup_form':signup_form
 			},
 			context_instance=RequestContext(request))
 
+	login_form = LoginForm()
 	signup_form = SignUpForm()
-	return render_to_response(SIGNUP_TEMPLATE_PATH,
+	return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 		{
+			'login_form':login_form,
 			'signup_form':signup_form
 		},
 		context_instance=RequestContext(request))

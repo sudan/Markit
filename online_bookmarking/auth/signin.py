@@ -2,7 +2,7 @@ from django.http import Http404,HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from auth.forms import LoginForm
+from auth.forms import LoginForm,SignUpForm
 from redis_helpers.views import Redis
 from auth.encrypt import encrypt_password
 from auth.helpers import get_auth_token,store_auth_token
@@ -93,18 +93,22 @@ def login(request,redirect_uri='/home'):
 					return response
 		
 		redirect_uri =  request.POST.get('redirect_uri','/home')
+		signup_form = SignUpForm()
 		return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 			{
 				'login_form':login_form,
+				'signup_form':signup_form,
 				'redirect_uri':redirect_uri,
 				'error':'invalid username or password'
 			},
 			context_instance=RequestContext(request))
 	
 	login_form = LoginForm()
+	signup_form = SignUpForm()
 	return render_to_response(HOME_PAGE_TEMPLATE_PATH,
 		{
 			'login_form':login_form,
+			'signup_form':signup_form,
 			'redirect_uri':redirect_uri
 		},
 		context_instance=RequestContext(request))
