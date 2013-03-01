@@ -39,4 +39,4 @@ def logout(request):
 		pass
 
 
-	return HttpResponseRedirect('/home')
+	return HttpResponseRedirect('/')

@@ -20,14 +20,14 @@ class LoginForm(forms.Form):
 	email = forms.CharField(error_messages={'required':'Invalid Email'},widget=forms.widgets.TextInput(attrs={'placeholder':'Enter your email'}))
 	password = forms.CharField(error_messages={'required':'Invalid Password'},widget=forms.widgets.PasswordInput(attrs={'placeholder':'Password'}))
 
-class PasswordChangeForm(forms.Form):
+class ChangePasswordForm(forms.Form):
 	old_password = forms.CharField(error_messages={'required':'Invalid Password'},widget=forms.widgets.PasswordInput(attrs={'placeholder':'old password'}))
 	new_password = forms.CharField(error_messages={'required':'Invalid new password'},widget=forms.widgets.PasswordInput(attrs={'placeholder':'new password'}))
 	new_password_confirmation = forms.CharField(error_messages={'required':'Invalid password confirmation'},widget=forms.widgets.PasswordInput(attrs={'placeholder':'password confirmation'}))
 
 	def clean(self):
-		password = self.cleaned_data['new_password']
-		password_confirmation = self.cleaned_data['new_password_confirmation']
+		password = self.cleaned_data.get('new_password','')
+		password_confirmation = self.cleaned_data.get('new_password_confirmation','')
 
 		if password != password_confirmation:
 			raise forms.ValidationError('Passwords do not match')

@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response,redirect
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 
-from auth.forms import PasswordChangeForm
+from auth.forms import ChangePasswordForm
 from auth.helpers import get_userId
 from auth.encrypt import encrypt_password
 from auth.getters import get_password
@@ -20,35 +20,35 @@ def change_password(request):
 
 	if request.method == "POST":
 		
-		password_change_form = PasswordChangeForm(data=request.POST)
-		if password_change_form.is_valid():
+		change_password_form = ChangePasswordForm(data=request.POST)
+		if change_password_form.is_valid():
 			
-			password_change_form_cleaned = password_change_form.cleaned_data
-			old_password = encrypt_password(password_change_form_cleaned['old_password'])
+			change_password_form_cleaned = change_password_form.cleaned_data
+			old_password = encrypt_password(change_password_form_cleaned['old_password'])
 			user_id = get_userId(request)
 			redis_obj = Redis()
 			
 			if get_password(redis_obj,user_id) == old_password:
-				store_password(redis_obj,user_id,encrypt_password(password_change_form_cleaned['new_password']))
-				return HttpResponseRedirect('/success/')
+				store_password(redis_obj,user_id,encrypt_password(change_password_form_cleaned['new_password']))
+				return HttpResponseRedirect('/home')
 			
 			return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
 				{
-				'password_change_form':password_change_form,
-				'error':'Password you gave is incorrect'
+				'change_password_form':change_password_form,
+				'change_password_error':'Password you gave is incorrect'
 				},
 				context_instance=RequestContext(request))
 		
 		return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
 			{
-				'password_change_form':password_change_form,
-				'error':'Invalid password entries'
+				'change_password_form':change_password_form,
+				'change_password_error':'Invalid password entries'
 			},
 			context_instance=RequestContext(request))
 	
-	password_change_form = PasswordChangeForm()
+	change_password_form = ChangePasswordForm()
 	return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
 		{
-			'password_change_form':password_change_form
+			'change_password_form':change_password_form
 		},
 		context_instance=RequestContext(request))
