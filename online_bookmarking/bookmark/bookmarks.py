@@ -14,6 +14,8 @@ from redis_helpers.views import Redis
 from auth.login_status import is_logged_in
 from auth.signin import login,authentication
 from auth.helpers import get_userId
+from auth.getters import *
+
 from bookmark.getters import *
 from bookmark.setters import *
 from bookmark.deleters import *
@@ -57,6 +59,7 @@ def get_bookmarks(request):
 
 	redis_obj = Redis()
 	user_id = get_userId(request)
+	username = get_username(redis_obj,user_id)
 
 	bookmarks = get_bookmark_uid_mapping_range(redis_obj, user_id, 0, 10)
 	data = [{} for i in xrange(len(bookmarks))]
@@ -74,7 +77,7 @@ def get_bookmarks(request):
 		
 		data[i] = data_dic
 
-	return user_id , data
+	return username, data
 
 @authentication('/bookmark')
 def create_bookmark(request):
@@ -109,13 +112,14 @@ def create_bookmark(request):
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
 
-	user_id , data = get_bookmarks(request)		
-
+	username , data = get_bookmarks(request)		
+	
 	return render_to_response(HOME_TEMPLATE_PATH, 
 		{
-			'user_id' : user_id, 
+			'username' : username, 
 			'bookmarks' : data
-		})	
+		},
+		context_instance=RequestContext(request))	
 
 @authentication('/home')
 def delete_bookmark(request):
