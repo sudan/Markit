@@ -3,3 +3,24 @@
 	color:white;
 	padding-top: 0.8em;
 }
+
+.inline-fields
+{
+	display: inline-block;
+}
+
+.margin-adjust
+{
+	margin-top: 0.8em;
+}
+
+.margin-ve-adjust
+{
+	margin-top: -1.5em;
+}
+
+.signin_form
+{
+	float: right;
+	margin-right: 1em;
+}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{%  block login %}
+
+	<div class="signin_form">
+		<form method="POST" action="/login/">{% csrf_token %}
+
+			<div class="inline-fields margin-adjust">
+				<span class="inline-fields"><label for="id_email">Email:</label></span>
+				<span class="inline-fields">{{login_form.email}}</span>
+			</div>
+
+			<div class="inline-fields margin-adjust">
+				<span class="inline-fields"><label for="id_password">Password:</label></span>
+				<span class="inline-fields">{{login_form.password}}</span>
+			</div>
+
+			<div class="inline-fields">
+				<span class="inline-fields"></span>
+				<span class="inline-fields margin-ve-adjust"><input type="submit" value="Sign In" class="btn"/></span>
+			</div>
+
+			{% if error %}
+				<div>
+					<span class="alert alert-error">{{error}}</span>
+				</div>
+			{% endif %}
+
+		</form>
+	</div>
+
+{% endblock %}

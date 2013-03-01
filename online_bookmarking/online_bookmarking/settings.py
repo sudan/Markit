@@ -23,6 +23,7 @@ USERS_LIST_TEMPLATE_PATH = "socialize/users.html"
 CREATE_TAG_TEMPLATE_PATH = "tags/tags.html"
 TAG_NAMES_LIST_TEMPLATE_PATH = "tags/tag_names.html"
 BOOKMARKS_FOR_TAGS_TEMPLATE_PATH = "tags/bookmark_for_tags.html"
+HOME_PAGE_TEMPLATE_PATH = "home.html"
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
