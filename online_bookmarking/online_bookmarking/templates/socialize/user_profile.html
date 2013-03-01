@@ -32,7 +32,7 @@
 				{% endif %}
 			</form>
 		</div>
-		
+
 		<div class="bookmarks_wrapper">
 
 			{% for bookmark in public_bookmarks %}
@@ -49,32 +49,3 @@
 
 {%  endblock %}
 
-<!-- <html>
-	<body>
-		<div><span>{{user_info.username}}</span><span>username</span></div>
-		<div><span>{{user_info.first_name}}</span><s pan>first_name</span></div>
-		<div><span>{{user_info.last_name}}</span><span>last_name</span></div>
-		<div><span>{{user_info.image_url}}</span><span>image</span></div>
-		<div><span>{{user_info.timestamp}}</span><span>timestamp</span></div>
-		<div><span>{{followers_count}}</span><span>followers</span></div>
-		<div><span>{{following_count}}</span><span>following</span></div>
-		<form method="POST" action="/toggle/">{% csrf_token %}
-		{% if not  my_profile %}
-			{% if follow %}
-				<input type="submit" value="unfollow" name="relationship_button"/>
-			{% else %}
-				<input type="submit" value="follow" name="relationship_button"/>
-			{% endif %}
-			<input type="hidden" name="others_id" value="{{user_info.others_id}}"/>
-		{% endif %}
-		</form>
-
-		<div>
-			<span>bookmarks</span>
-			{% for bookmark in public_bookmarks %}
-				<span>{{bookmark.url}}</span><br/>
-				<span>{{bookmark.name}}</span><br/>
-			{% endfor %}
-		</div>
-	</body>
-</html> -->
