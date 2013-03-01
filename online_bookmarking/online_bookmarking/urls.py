@@ -17,13 +17,16 @@ urlpatterns = patterns('',
     url(r'^$','auth.views.index'),
     url(r'^signup/$','auth.signup.register'),
     url(r'^login/$','auth.signin.login'), 
-
+    url(r'^logout/$','auth.logout.logout'),
+    url(r'^change_password/$','auth.change_password.change_password'),
+    url(r'^edit_profile/$','auth.edit_profile.edit_profile'),
+    
     url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
 
 
     url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),
   
-    url(r'^logout/$','auth.logout.logout'),
+    
     
     url(r'^tags/$','tags.views.tag_bundle'),
     url(r'^category/$','category.views.create_category'),
@@ -31,8 +34,8 @@ urlpatterns = patterns('',
     url(r'^users/$','socialize.relationship.users'),
     url(r'^toggle/$','socialize.relationship.toggle_relationship'),
     url(r'^profile/(?P<profile_name>\w+)/$','socialize.profile.profile'),
-    url(r'^change_password/$','auth.change_password.change_password'),
-    url(r'^edit_profile/$','auth.edit_profile.edit_profile'),
+    
+    
     url(r'^tag_names/$','tags.views.retrieve_tags'),
     url(r'^tags/(?P<tag_id>\d+)','tags.views.get_bookmarks_for_tags'),
     url(r'', include('social_auth.urls')),

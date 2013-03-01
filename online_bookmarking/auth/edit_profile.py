@@ -40,7 +40,7 @@ def edit_profile(request):
 				username = get_username(redis_obj,user_id)
 
 				update_profile(redis_obj,edit_profile_form_cleaned,user_id,username)
-				return HttpResponseRedirect('/success/')
+				return HttpResponseRedirect('/home')
 
 			return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,
 				{

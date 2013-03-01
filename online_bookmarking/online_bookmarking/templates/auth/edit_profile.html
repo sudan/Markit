@@ -1,8 +1,43 @@
-<html>
-	<body>
-		<form method="POST" action="/edit_profile/">{% csrf_token %}
-			{{edit_profile_form}}
-			<input type="submit"/>
-		</form>
-	</body>
-</html>
+{% extends "base.html" %}
+
+{% block middle_pane %}
+	
+	<form method="POST" action="/edit_profile/">{% csrf_token %}
+
+		<table>
+
+			<tr>
+				<td><label for="id_username">Username</label></td>
+				<td>{{edit_profile_form.username}}</td>
+			</tr>
+
+			<tr>
+				<td><label for="id_first_name">First Name</label></td>
+				<td>{{edit_profile_form.first_name}}</td>
+			</tr>
+
+			<tr>
+				<td><label for="id_last_name">Last Name</label></td>
+				<td>{{edit_profile_form.last_name}}</td>
+			</tr>
+
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Save" class="btn btn-primary"/></td>
+                <td></td>
+            </tr>
+
+            <tr>
+            	<td></td>
+                {% if edit_profile_form.errors %}
+                    <td class="error-messages">Invalid entries</td>
+                {% endif %} 
+            	<td></td>
+            </tr>
+
+		</table>
+
+	</form>
+
+{% endblock %}
+
