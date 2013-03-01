@@ -28,7 +28,7 @@
 	            Name    :   "Right",
 	            Dock    :   $.layoutEngine.DOCK.RIGHT,
 	            EleID   :   "right",                          
-	           	Width   :   420,
+	           	Width   :   550,
 	           	Height  :   500
 	                        
 	        },                        

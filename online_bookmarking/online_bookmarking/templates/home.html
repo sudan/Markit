@@ -20,9 +20,9 @@
                 <span class="inline-fields margin-ve-adjust"><input type="submit" value="Sign In" class="btn btn-primary"/></span>
             </div>
 
-            {% if error %}
+            {% if signin_error %}
                 <div class="error-messages">
-                    <span class="alert alert-error">{{error}}</span>
+                    <span class="error-messages">{{signin_error}}</span>
                 </div>
             {% endif %}
 
@@ -44,37 +44,61 @@
                 <tr>
                     <td><label for="id_username">Username:</label></td>
                     <td>{{signup_form.username}}</td>
+                    {% if signup_form.username.errors %}
+                        <td class="error-messages">{{signup_form.username.errors}}</td>
+                    {% endif %}
                 </tr>
 
                 <tr>
                     <td><label for="id_email">Email:</label></td>
                     <td>{{signup_form.email}}</td>
+                    {% if signup_form.email.errors %}
+                        <td class="error-messages">{{signup_form.email.errors}}</td>
+                    {% endif %}
                 </tr>
 
                 <tr>
                     <td><label for="id_first_name">First Name:</label></td>
                     <td>{{signup_form.first_name}}</td>
+                    {% if signup_form.first_name.errors %}
+                        <td class="error-messages">{{signup_form.first_name.errors}}</td>
+                    {% endif %}
                 </tr>
 
                 <tr>
                     <td><label for="id_last_name">Last Name:</label></td>
                     <td>{{signup_form.last_name}}</td>
+                    {% if signup_form.last_name.errors %}
+                        <td class="error-messages">{{signup_form.last_name.errors}}</td>
+                    {% endif %}
                 </tr>
                 
                 <tr>
                     <td><label for="id_password">Password:</label></td>
                     <td>{{signup_form.password}}</td>
+                    {% if signup_form.password.errors %}
+                        <td class="error-messages">{{signup_form.password.errors}}</td>
+                    {% endif %}
                 </tr>
                 
                 <tr>
                     <td><label for="id_password_confirmation">Password Confirmation:</label></td>
                     <td>{{signup_form.password_confirmation}}</td>
+                    {% if signup_form.password_confirmation.errors %}
+                        <td class="error-messages">{{signup_form.password_confirmation.errors}}</td>
+                    {% endif %}
                 </tr>
 
                 <tr>
                     <td></td>
                     <td><input type="submit" value="Sign Up" class="btn btn-primary"/></td>
                     <td></td>
+                </tr>
+
+                <tr>
+                    {% if signup_error %}
+                        <td class="error-messages">{{signup_error}}</td>
+                    {% endif %} 
                 </tr>
             
             </table>

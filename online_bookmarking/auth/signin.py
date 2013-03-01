@@ -99,7 +99,7 @@ def login(request,redirect_uri='/home'):
 				'login_form':login_form,
 				'signup_form':signup_form,
 				'redirect_uri':redirect_uri,
-				'error':'invalid username or password'
+				'signin_error':'invalid username or password'
 			},
 			context_instance=RequestContext(request))
 	

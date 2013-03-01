@@ -77,7 +77,7 @@ def register(request):
 					{
 						'login_form':login_form,
 						'signup_form':signup_form,
-						'error':'password doesnt match'
+						'signup_error':'Passwords doesnt match'
 					},
 					context_instance=RequestContext(request))
 			
@@ -86,7 +86,7 @@ def register(request):
 					{
 						'login_form':login_form,
 						'signup_form':signup_form,
-						'error':'username already exists'
+						'signup_error':'Username already exists'
 					},
 					context_instance=RequestContext(request))
 			
@@ -95,7 +95,7 @@ def register(request):
 					{
 						'login_form':login_form,
 						'signup_form':signup_form,
-						'error':'email id has already taken'
+						'signup_error':'Email id has already taken'
 					},
 					context_instance=RequestContext(request))
 

@@ -35,6 +35,8 @@
 {
 	margin-top: 0.2em;
 	text-align: center;
+	color:#C09853;
+
 }
 
 #top,#right
@@ -48,3 +50,7 @@ tr
  	vertical-align:text-bottom;
 }
 
+.errorlist
+{
+	list-style-type: none;
+}
