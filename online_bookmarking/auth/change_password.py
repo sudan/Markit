@@ -29,9 +29,10 @@ def change_password(request):
 			
 			change_password_form_cleaned = change_password_form.cleaned_data
 			old_password = encrypt_password(change_password_form_cleaned['old_password'])
+			new_password = encrypt_password(change_password_form_cleaned['new_password'])
 			
 			if get_password(redis_obj, user_id) == old_password:
-				store_password(redis_obj, user_id, encrypt_password(change_password_form_cleaned['new_password']))
+				store_password(redis_obj, user_id, encrypt_password(new_password))
 				return HttpResponseRedirect('/home')
 			
 			return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,
