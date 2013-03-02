@@ -6,13 +6,13 @@ def get_next_categoryId(redis_obj):
 	key = "global:categoryId"
 	return redis_obj.next_unique_key(key)
 
-def get_categoryId(redis_obj,user_id,name):
+def get_categoryId(redis_obj, user_id, name):
 	''' return the category id given the user id and category name '''
 
-	key = "userId:%d:categoryName:%s:categoryId" %(user_id,name)
-	return redis_obj.get_value(key,category_id)
+	key = "userId:%d:categoryName:%s:categoryId" %(user_id, name)
+	return redis_obj.get_value(key, category_id)
 
-def get_category_name(redis_obj,category_id):
+def get_category_name(redis_obj, category_id):
 	''' return the category name given the id '''
 
 	key = "categoryId:%d:name" %(category_id)

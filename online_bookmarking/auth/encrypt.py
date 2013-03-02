@@ -26,10 +26,5 @@ def encrypt_password(password):
     algo = 'sha1'
     salt = get_hexdigest(algo, str(123456), str(123456))[:5]
     hsh = get_hexdigest(algo, salt, password)
-    return '%s$%s$%s' % (algo, salt, hsh)
-	
-
-
-
-    
+    return '%s$%s$%s' % (algo, salt, hsh)	
     

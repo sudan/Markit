@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 
@@ -8,7 +8,7 @@ from auth.encrypt import encrypt_password
 from auth.getters import get_password,get_username
 from auth.signup import store_password
 from auth.login_status import is_logged_in
-from auth.signin import login,authentication
+from auth.signin import login, authentication
 
 from redis_helpers.views import Redis
 
@@ -30,8 +30,8 @@ def change_password(request):
 			change_password_form_cleaned = change_password_form.cleaned_data
 			old_password = encrypt_password(change_password_form_cleaned['old_password'])
 			
-			if get_password(redis_obj,user_id) == old_password:
-				store_password(redis_obj,user_id,encrypt_password(change_password_form_cleaned['new_password']))
+			if get_password(redis_obj, user_id) == old_password:
+				store_password(redis_obj, user_id, encrypt_password(change_password_form_cleaned['new_password']))
 				return HttpResponseRedirect('/home')
 			
 			return render_to_response(CHANGE_PASSWORD_TEMPLATE_PATH,

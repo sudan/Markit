@@ -1,10 +1,10 @@
-from django.http import Http404,HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
 
 from redis_helpers.views import Redis
 from auth.helpers import get_auth_token
 
-def is_logged_in(cookie_email,cookie_auth_token):
+def is_logged_in(cookie_email, cookie_auth_token):
 	''' Helper function to check  the login status '''
 	
 	if cookie_auth_token == "" or cookie_email == "":

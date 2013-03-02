@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
-from auth.forms import SignUpForm,LoginForm
+from auth.forms import SignUpForm, LoginForm
 from online_bookmarking.settings import HOME_PAGE_TEMPLATE_PATH
 
 def login(request):

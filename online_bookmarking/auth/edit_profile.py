@@ -1,5 +1,5 @@
 from django.template import RequestContext
-from django.shortcuts import render_to_response,HttpResponseRedirect
+from django.shortcuts import render_to_response, HttpResponseRedirect
 
 from redis_helpers.views import Redis
 
@@ -8,22 +8,22 @@ from auth.helpers import get_userId
 from auth.getters import *
 from auth.setters import *
 from auth.deleters import *
-from auth.signin import login,authentication
+from auth.signin import login, authentication
 
 from auth.forms import EditProfileForm
 
 from online_bookmarking.settings import EDIT_PROFILE_TEMPLATE_PATH
 
-def update_profile(redis_obj,edit_profile_form,user_id,old_username):
+def update_profile(redis_obj, edit_profile_form, user_id, old_username):
 	''' a controller for update user profile '''
 
-	store_first_name(redis_obj,user_id,edit_profile_form['first_name'])
-	store_last_name(redis_obj,user_id,edit_profile_form['last_name'])
-	store_username(redis_obj,user_id,edit_profile_form['username'])
+	store_first_name(redis_obj, user_id, edit_profile_form['first_name'])
+	store_last_name(redis_obj, user_id, edit_profile_form['last_name'])
+	store_username(redis_obj, user_id, edit_profile_form['username'])
 
-	delete_uid_with_username(redis_obj,old_username)
+	delete_uid_with_username(redis_obj, old_username)
 
-	store_uid_with_username(redis_obj,user_id,edit_profile_form['username'])
+	store_uid_with_username(redis_obj, user_id, edit_profile_form['username'])
 
 @authentication('/edit_profile')
 def edit_profile(request):
@@ -31,14 +31,20 @@ def edit_profile(request):
 
 	redis_obj = Redis()
 	user_id = get_userId(request)
-	username = get_username(redis_obj,user_id)
+	username = get_username(redis_obj, user_id)
 
 	if request.method == "POST":
 			edit_profile_form = EditProfileForm(data=request.POST)
 			if edit_profile_form.is_valid():
 				edit_profile_form_cleaned = edit_profile_form.cleaned_data
 
-				update_profile(redis_obj,edit_profile_form_cleaned,user_id,username)
+
+				update_profile(redis_obj, edit_profile_form_cleaned, user_id, username)
+
+				username = get_username(redis_obj, user_id)
+
+				update_profile(redis_obj, edit_profile_form_cleaned, user_id, username)
+
 				return HttpResponseRedirect('/home')
 
 			return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,
@@ -48,12 +54,12 @@ def edit_profile(request):
 				},
 				context_instance=RequestContext(request))
 
-	username = get_username(redis_obj,user_id)
-	first_name = get_first_name(redis_obj,user_id)
-	last_name = get_last_name(redis_obj,user_id)
+	username = get_username(redis_obj, user_id)
+	first_name = get_first_name(redis_obj, user_id)
+	last_name = get_last_name(redis_obj, user_id)
 
 	edit_profile_form = EditProfileForm(initial={
-		'username':username,'first_name':first_name,'last_name':last_name
+		'username':username, 'first_name':first_name, 'last_name':last_name
 	})
 	
 	return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,

@@ -4,7 +4,7 @@ def get_next_bookmarkId(redis_obj):
 	''' Get the next unique bookmark id '''
 
 	key = "global:bookmarkId"
-	return Redis.next_unique_key(redis_obj,key)
+	return Redis.next_unique_key(redis_obj, key)
 
 def get_url(redis_obj, bookmark_id):
 	''' Retrieve bookmark URL '''

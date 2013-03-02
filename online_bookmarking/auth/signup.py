@@ -1,13 +1,13 @@
 
-from django.http import Http404,HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 import datetime
 
-from auth.forms import SignUpForm,LoginForm
+from auth.forms import SignUpForm, LoginForm
 from auth.encrypt import encrypt_password
-from auth.helpers import get_auth_token,store_auth_token
+from auth.helpers import get_auth_token, store_auth_token
 from redis_helpers.views import Redis
 from auth.setters import *
 
@@ -17,7 +17,7 @@ def get_next_userId(redis_obj):
 	''' Get the next unique user id '''
 	
 	key = "global:userId"
-	return Redis.next_unique_key(redis_obj,key)
+	return Redis.next_unique_key(redis_obj, key)
 
 def store_user_info(signup_form):
 	''' A controller which calls the individual store methods '''
@@ -33,19 +33,19 @@ def store_user_info(signup_form):
 
 	user_id = get_next_userId(redis_obj)
 
-	store_email(redis_obj,user_id,email)
-	store_username(redis_obj,user_id,username)
-	store_first_name(redis_obj,user_id,first_name)
-	store_last_name(redis_obj,user_id,last_name)
-	store_password(redis_obj,user_id,password)
-	store_image_url(redis_obj,user_id,email)
-	store_timestamp(redis_obj,user_id)
-	store_auth_token(redis_obj,user_id,email,auth_token)
-	store_uid_with_username(redis_obj,user_id,username)
-	store_uid_with_email(redis_obj,user_id,email)
-	store_uid_with_auth_token(redis_obj,user_id,auth_token)
-	store_email_with_auth_token(redis_obj,email,auth_token)
-	store_global_userIds(redis_obj,user_id)
+	store_email(redis_obj, user_id, email)
+	store_username(redis_obj, user_id, username)
+	store_first_name(redis_obj, user_id, first_name)
+	store_last_name(redis_obj, user_id, last_name)
+	store_password(redis_obj, user_id, password)
+	store_image_url(redis_obj, user_id, email)
+	store_timestamp(redis_obj, user_id)
+	store_auth_token(redis_obj, user_id, email, auth_token)
+	store_uid_with_username(redis_obj, user_id, username)
+	store_uid_with_email(redis_obj, user_id, email)
+	store_uid_with_auth_token(redis_obj, user_id, auth_token)
+	store_email_with_auth_token(redis_obj, email, auth_token)
+	store_global_userIds(redis_obj, user_id)
 
 def username_exists(username):
 	'''  check for the existence of a username '''
@@ -108,8 +108,8 @@ def register(request):
 
 			max_age = 7 * 24 * 60 * 60
 			expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-			response.set_cookie('auth',signup_form_cleaned['auth_token'], max_age=max_age, expires=expires)
-			response.set_cookie('email',signup_form_cleaned['email'], max_age=max_age, expires=expires)
+			response.set_cookie('auth', signup_form_cleaned['auth_token'], max_age=max_age, expires=expires)
+			response.set_cookie('email', signup_form_cleaned['email'], max_age=max_age, expires=expires)
 			return response
 		
 		login_form = LoginForm()
