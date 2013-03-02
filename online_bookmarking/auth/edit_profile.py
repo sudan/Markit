@@ -31,20 +31,20 @@ def edit_profile(request):
 
 	redis_obj = Redis()
 	user_id = get_userId(request)
+	username = get_username(redis_obj,user_id)
 
 	if request.method == "POST":
 			edit_profile_form = EditProfileForm(data=request.POST)
 			if edit_profile_form.is_valid():
 				edit_profile_form_cleaned = edit_profile_form.cleaned_data
 
-				username = get_username(redis_obj,user_id)
-
 				update_profile(redis_obj,edit_profile_form_cleaned,user_id,username)
 				return HttpResponseRedirect('/home')
 
 			return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,
 				{
-					'edit_profile_form':edit_profile_form
+					'edit_profile_form':edit_profile_form,
+					'username':username,
 				},
 				context_instance=RequestContext(request))
 
@@ -58,6 +58,7 @@ def edit_profile(request):
 	
 	return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,
 		{
-			'edit_profile_form':edit_profile_form
+			'edit_profile_form':edit_profile_form,
+			'username':username,
 		},
 		context_instance=RequestContext(request))

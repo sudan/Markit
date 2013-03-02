@@ -79,9 +79,11 @@ def profile(request,profile_name=''):
 	''' profile for a user '''
 
 	current_user_id = get_userId(request)
+	redis_obj = Redis()
+	username = get_username(redis_obj,current_user_id)
 	
 	if profile_name != '':
-		redis_obj = Redis()
+		
 		user_id = get_unique_id(redis_obj,profile_name)
 		
 		user_info = get_user_info(redis_obj,profile_name,user_id)
@@ -103,7 +105,8 @@ def profile(request,profile_name=''):
 				'following_count':following_count,
 				'public_bookmarks':public_bookmarks,
 				'my_profile':my_profile,
-				'follow': follow
+				'follow': follow,
+				'username':username,
 			},
 			context_instance=RequestContext(request))
 
