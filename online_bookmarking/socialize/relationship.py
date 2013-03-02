@@ -9,6 +9,7 @@ from auth.helpers import get_userId
 from auth.getters import *
 
 from online_bookmarking.settings import USERS_LIST_TEMPLATE_PATH
+from socialize.profile import get_following_count,get_followers_count
 
 def get_users(redis_obj, current_user_id):
 	''' Returns the users excluding the current user '''
@@ -31,6 +32,8 @@ def get_users(redis_obj, current_user_id):
 			user_info['image_url'] = get_image_url(redis_obj, user_id)
 			user_info['timestamp'] = get_timestamp(redis_obj, user_id)
 			user_info['follow'] = is_following(redis_obj, current_user_id, user_id)
+			user_info['followers'] = get_followers_count(redis_obj, user_info['username'])
+			user_info['following'] = get_following_count(redis_obj, user_info['username'])
 
 			users_list.append(user_info)
 	
@@ -117,6 +120,8 @@ def toggle_relationship(request):
 	''' Follow a user '''
 
 	current_user_id = get_userId(request)
+	redis_obj = Redis()
+	username = get_username(redis_obj, current_user_id)
 	
 	if request.method == "POST":
 
@@ -125,7 +130,6 @@ def toggle_relationship(request):
 		
 		if others_id != "" and relationship_request != "":
 
-			redis_obj = Redis()
 			if relationship_request == "follow":
 				follow_user(redis_obj, current_user_id, int(others_id)) 
 			else:
@@ -137,7 +141,8 @@ def toggle_relationship(request):
 
 	return render_to_response(USERS_LIST_TEMPLATE_PATH,
 		{
-			'users_list':users_list
+			'users_list':users_list,
+			'username':username,
 		},
 		context_instance=RequestContext(request))
 
@@ -148,10 +153,12 @@ def users(request):
 	current_user_id = get_userId(request)
 	redis_obj = Redis()
 	users_list = get_users(redis_obj, current_user_id)
+	username = get_username(redis_obj, current_user_id)
 	
 	return render_to_response(USERS_LIST_TEMPLATE_PATH,
 		{
-			'users_list':users_list
+			'users_list':users_list,
+			'username':username,
 		},
 		context_instance=RequestContext(request))
 

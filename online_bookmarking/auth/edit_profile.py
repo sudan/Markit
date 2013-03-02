@@ -38,13 +38,7 @@ def edit_profile(request):
 			if edit_profile_form.is_valid():
 				edit_profile_form_cleaned = edit_profile_form.cleaned_data
 
-
 				update_profile(redis_obj, edit_profile_form_cleaned, user_id, username)
-
-				username = get_username(redis_obj, user_id)
-
-				update_profile(redis_obj, edit_profile_form_cleaned, user_id, username)
-
 				return HttpResponseRedirect('/home')
 
 			return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,

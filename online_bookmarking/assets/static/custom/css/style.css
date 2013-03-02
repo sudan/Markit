@@ -63,3 +63,31 @@ tr,.btn,.btn-primary
 {
 	height: 50px;
 }
+
+.user_info
+{
+	margin: auto;
+	width: 500px;
+	height: 125px;
+}
+
+.user_info img
+{
+	float: left;
+}
+
+.users_list_wrapper
+{
+	height: 150px;
+}
+
+.left
+{
+	float:left;
+	width:180px;
+}
+
+.margin-top-adjustment
+{
+	margin-top: 1.5em;
+}

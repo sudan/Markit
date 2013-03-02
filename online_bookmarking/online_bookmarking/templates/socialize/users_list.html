@@ -1,23 +1,53 @@
 {% extends "base.html" %}
 
-<!-- <html>
-	<body>
-		{% for user in users_list %}
-			<form method="POST" action="/toggle/">{% csrf_token %}
-				<input type="text" name="email" value="{{user.email}}"/>
-				<input type="text" name="username" value="{{user.username}}"/>
-				<input type="text" name="first_name" value="{{user.first_name}}"/>
-				<input type="text" name="last_name" value="{{user.last_name}}"/>
-				<input type="text" name="image_url" value="{{user.image_url}}"/>
-				<input type="text" name="timestamp" value="{{user.timestamp}}"/>
-				<input type="hidden" name="others_id" value="{{user.others_id}}"/>
-				<input type="text" value="{{user.follow}}"/>
-				{% if user.follow %}
-					<input type="submit" value="unfollow" name="relationship_button"/>
-				{% else %}
-					<input type="submit" value="follow" name="relationship_button"/>
-				{% endif %}
-			</form>
+	{% block middle_pane %}
+
+		<div class="users_list">
+
+			{% for user in users_list %}
+				<div class="user_info">
+					
+					<div class="users_list_wrapper">
+						<form method="POST" action="/toggle/">{% csrf_token %}
+
+							<div class="left">
+								<a href="/profile/{{user.username}}/">
+									<img src="{{user.image_url}}" alt="{{user.username}}"/>
+								</a>
+							</div>
+
+
+							<div class="right">
+								<span><h2 class="inline-fields">{{user.username}}</h2></span>
+								<span>&nbsp;&nbsp;</span>
+								<input type="hidden" name="others_id" value="{{user.others_id}}"/>
+								{% if user.follow %}
+									<input type="submit" class="btn-primary margin-top-adjustment" value="unfollow" name="relationship_button"/>
+								{% else %}
+									<input type="submit"  class="btn margin-top-adjustment" value="follow" name="relationship_button"/>
+								{% endif %}
+							</div>
+
+							<div>
+								<span><a href="#">{{user.followers}}  &nbsp;Followers</a></span>
+							</div>
+
+							<div>
+								<span><a href="#">{{user.following}}  &nbsp;Following</a></span>
+							</div>
+
+						</form>
+					</div>
+
+				{% empty %}
+
+				<div class="user_info">
+					<span>No recommendations for you currently</span>
+				</div>
+
+			</div>
 		{% endfor %}
-	</body>
-</html> -->
+
+	</div>
+
+{% endblock %}
