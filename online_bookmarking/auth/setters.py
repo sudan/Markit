@@ -42,7 +42,7 @@ def store_image_url(redis_obj, user_id, email):
 	''' store the gravatar  image url of the user '''
 	
 	key = "userId:%d:image" %(user_id)
-	image_url = "http://www.gravatar.com/avatar/%s?s=50" 
+	image_url = "http://www.gravatar.com/avatar/%s?s=50" \
 		% hashlib.md5(email).hexdigest()
 	redis_obj.set_value(key, image_url)
 
