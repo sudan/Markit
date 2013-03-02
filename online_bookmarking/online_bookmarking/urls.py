@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^edit_profile/$','auth.edit_profile.edit_profile'),
     
     url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
+    url(r'^bookmarks/$', 'bookmark.bookmarks.display_bookmarks'),
 
 
     url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),

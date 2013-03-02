@@ -19,6 +19,8 @@ from auth.getters import *
 from bookmark.getters import *
 from bookmark.setters import *
 from bookmark.deleters import *
+from django.utils import simplejson
+
 
 from online_bookmarking.settings import BOOKMARK_ADD_TEMPLATE_PATH, HOME_TEMPLATE_PATH
 
@@ -114,10 +116,14 @@ def display_bookmarks(request):
 
 	username , data = get_bookmarks(request)		
 	
+	if request.is_ajax():
+		
+		data = simplejson.dumps(data)
+		return HttpResponse(data, mimetype='application/json')
+
 	return render_to_response(HOME_TEMPLATE_PATH, 
 		{
-			'username' : username, 
-			'bookmarks' : data
+			'username' : username
 		},
 		context_instance=RequestContext(request))	
 
