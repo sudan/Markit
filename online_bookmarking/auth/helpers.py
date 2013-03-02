@@ -21,7 +21,8 @@ def store_auth_token(redis_obj, user_id, email, auth_token):
 	redis_obj.set_value(key, auth_token)
 
 def get_userId(request):
-	''' Get the user id by extracting auth token from cookies which is passed in the request '''
+	''' Get the user id by extracting auth token from
+	 cookies which is passed in the request '''
 
 	redis_obj = Redis()
 	auth_token = request.COOKIES.get('auth', '')
