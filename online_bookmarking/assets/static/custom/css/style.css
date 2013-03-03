@@ -96,14 +96,14 @@ tr,.btn,.btn-primary
 {
 	width: 500px;
 	height: 100px;
-	border-top:1px solid #D3D3D3;
-	border-left: 1px solid #D3D3D3;
-	border-right: 1px solid #D3D3D3;
+	border-top:1px solid #E0E0E0;
+	border-left: 1px solid #E0E0E0;
+	border-right: 1px solid #E0E0E0;
 }
 
 .bookmark nth-child
 {
-	border-bottom: 1px solid #D3D3D3;
+	border-bottom: 1px solid #E0E0E0;
 }
 
 .bookmark a
@@ -124,6 +124,6 @@ tr,.btn,.btn-primary
 
 .bookmark:hover
 {
-	background-color: #D3D3D3;
+	background-color: #E0E0E0;
 	cursor: pointer;
 }

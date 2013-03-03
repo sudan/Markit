@@ -33,12 +33,10 @@
 			</form>
 		</div>
 
-		<div class="bookmarks_wrapper">
-
+		<div class="bookmarks">
+			<span>Public bookmarks</span>
 			{% for bookmark in public_bookmarks %}
-				<span><a href="{{bookmark.url}}">{{bookmark.url}}</a></span>
-				<span>-</span>
-				<span>{{bookmark.name}}</span>
+				<div><a href="{{bookmark.url}}">{{bookmark.name}}</a></div>
 			{% empty %}
 				<span>Hurray! no public bookmarks has been shared!</span>
 			{% endfor %}

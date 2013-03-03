@@ -1,7 +1,7 @@
 (function($,window,document,undefined){
 
 	"use strict"
-
+	
 	var Bookmark = Backbone.Model.extend({
 		defaults:{
 			url: '',

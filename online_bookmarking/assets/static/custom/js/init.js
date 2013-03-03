@@ -17,7 +17,7 @@
                 Name    :   "Left",
                 Dock    :   $.layoutEngine.DOCK.LEFT,
                 EleID   :   "left",
-                Width   :   500
+                Width   :   450
             },
             {
                 Name    :   "Fill",
@@ -43,6 +43,8 @@
 	};
 
 	$.layoutEngine(layoutSettings);
+
+	
 
 
 })(jQuery,window,document);
