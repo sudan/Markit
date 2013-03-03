@@ -114,7 +114,8 @@ def create_bookmark(request):
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
 
-	username , data = get_bookmarks(request)		
+	username , data = get_bookmarks(request)	
+	bookmark_form = BookmarkForm()	
 	
 	if request.is_ajax():
 		
@@ -123,7 +124,8 @@ def display_bookmarks(request):
 
 	return render_to_response(HOME_TEMPLATE_PATH, 
 		{
-			'username' : username
+			'username' : username,
+			'bookmark_form':bookmark_form,
 		},
 		context_instance=RequestContext(request))	
 

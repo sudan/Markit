@@ -127,3 +127,18 @@ tr,.btn,.btn-primary
 	background-color: #E0E0E0;
 	cursor: pointer;
 }
+
+.inline-fields li
+{
+	display: inline-block;
+}
+
+.inline-fields input[type=radio]
+{
+	display: inline-block;
+}
+
+#create_bookmark
+{
+	height: 450px;
+}

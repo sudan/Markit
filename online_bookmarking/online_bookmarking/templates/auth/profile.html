@@ -4,6 +4,38 @@
 	
 	<div id="bookmark_list">
 
+		<input type="button" id="display_bookmark_form_button" class="btn-primary" value="Create a bookmark"/>
+		<div id="create_bookmark" style="display:none">
+
+			<form method="POST" action="/bookmark/">{% csrf_token %}
+				
+            	<div>
+            		<span><label for="id_visibility">Visibility:</label></span>
+            		<span class="inline-fields"><label for="id_visibility">{{bookmark_form.visibility}}</label></span>
+            	</div>
+
+				<div class="inline-fields">
+                	<span><label for="id_url">URL:</label></span>
+                	<span>{{bookmark_form.url}}</span>
+            	</div>
+
+            	<div class="inline-fields">
+                	<span ><label for="id_name">Name:</label></span>
+                	<span>{{bookmark_form.name}}</span>
+            	</div>
+
+            	<div class="inline-fields">
+                	<span><label for="id_description">Description:</label></span>
+                	<span class="inline-fields">{{bookmark_form.description}}</span>
+            	</div>
+
+            	<div>
+					<input type="submit" value="Create" class="btn-primary" id="add_bookmark"/>             	
+				</div>
+
+			</form>
+		</div>
+		
 		<script type="text/template" id="bookmarkDisplayTemplate">
 			
 			<div><i><%= creation_date %></i></div>

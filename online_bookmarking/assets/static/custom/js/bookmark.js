@@ -37,6 +37,8 @@
 		initialize: function(){
 			
 			var self = this;
+			this.createBookmarkDiv = $('#create_bookmark');
+
 			this.collection = new Bookmarks();
 			this.collection.fetch({
 
@@ -65,7 +67,17 @@
 			});
 			this.$el.append(bookmarkView.render().el);
 
+		},
+
+		events:{
+			"click #display_bookmark_form_button": "addBookmark",
+		},
+
+		addBookmark: function(e){
+			
+			this.createBookmarkDiv.slideToggle();
 		}
+
 	});
 
 	var bookmarks = new BookmarksView();

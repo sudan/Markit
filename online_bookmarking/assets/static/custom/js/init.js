@@ -17,12 +17,13 @@
                 Name    :   "Left",
                 Dock    :   $.layoutEngine.DOCK.LEFT,
                 EleID   :   "left",
-                Width   :   450
+                Width   :   350
             },
             {
                 Name    :   "Fill",
                 Dock    :   $.layoutEngine.DOCK.FILL,
-                EleID   :   "fill"
+                EleID   :   "fill",
+                Width   :    700
             },
 	        {
 	            Name    :   "Right",
