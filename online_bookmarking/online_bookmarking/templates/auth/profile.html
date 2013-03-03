@@ -5,21 +5,19 @@
 	<div id="bookmark_list">
 
 		<script type="text/template" id="bookmarkDisplayTemplate">
-			<% _.each(bookmarks,function(bookmark){ %>
+			
+			<div class="left">	
+				<span><i><%= creation_date %></i></span>
+			</div>
 
-				<div class="left">
-					<span><i><%= bookmark.created_date %></i></span>
-				</div>
-
-				<div class="right">
-					<span><a href="<%= bookmark.url %>"><%= bookmark.url %></a></span>	
-					<span<%= bookmark.name %></span>
-					<span><%= bookmark.description %></span>
-					<span<%= bookmark.visibility %></span>
-					<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
-				</div>
-
-			<% }); %>
+			<div class="right">
+				<span><a href="<%= url %>"><%= url %></a></span>	
+				<span><%= name %></span>
+				<span><%= description %></span>
+				<span><%= visibility %></span>
+				<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
+			</div>
+			
 		</script>
 
 	</div>
