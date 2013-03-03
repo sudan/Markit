@@ -6,20 +6,18 @@
 
 		<script type="text/template" id="bookmarkDisplayTemplate">
 			
-			<div class="left">	
-				<span><i><%= creation_date %></i></span>
+			<div><i><%= creation_date %></i></div>
+			<div>
+				<span><h3><a href="<%= url %>"><%= name %></a></h3></span>
 			</div>
-
-			<div class="right">
-				<span><a href="<%= url %>"><%= url %></a></span>	
-				<span><%= name %></span>
-				<span><%= description %></span>
-				<span><%= visibility %></span>
-				<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
-			</div>
+			<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
+			<p><%= description %></p>
+			
 			
 		</script>
 
 	</div>
 
 {% endblock %}
+
+

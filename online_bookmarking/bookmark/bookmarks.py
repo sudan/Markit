@@ -74,7 +74,7 @@ def get_bookmarks(request):
 		data_dic['name'] = get_name(redis_obj, bookmark_id)
 		data_dic['url'] = get_url(redis_obj, bookmark_id)
 		data_dic['visibility'] = get_visibility(redis_obj, bookmark_id)
-		data_dic['creation_date'] = get_created_date(redis_obj, bookmark_id)
+		data_dic['creation_date'] = get_created_date(redis_obj, bookmark_id).split()[0]
 		data_dic['description'] = get_description(redis_obj, bookmark_id)
 		
 		data[i] = data_dic

@@ -19,7 +19,7 @@
 	});
 
 	var BookmarkView = Backbone.View.extend({
-		tagName: 'article',
+		tagName: 'div',
 		className: 'bookmark',
 		template: $('#bookmarkDisplayTemplate').html(),
 		
