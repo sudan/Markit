@@ -118,9 +118,10 @@
 
         	options.beforeSend = function(xhr){
             	    xhr.setRequestHeader('X-CSRFToken', $.getCookie('csrftoken'));
+            	    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8')
             	};
         	}
-
+       window.options = options;
             
         return Backbone._sync(method, model, options);
     };
