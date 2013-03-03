@@ -1,8 +1,28 @@
 (function($,window,document,undefined){
 
 	"use strict"
+
+	$.getCookie = function(name) 
+	{
+    	var cookieValue = null;
+    	if (document.cookie && document.cookie != '') 
+    	{
+        	var cookies = document.cookie.split(';');
+        	for (var i = 0; i < cookies.length; i++) 
+        	{
+            	var cookie = jQuery.trim(cookies[i]);
+            	
+            	if (cookie.substring(0, name.length + 1) == (name + '=')) 
+            	{
+                	cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                	break;
+            	}
+        	}
+    	}
+    	return cookieValue;
+	};
 	
-	var Bookmark = Backbone.Model.extend({
+	window.Bookmark = Backbone.Model.extend({
 		defaults:{
 			url: '',
 			name: '',
@@ -10,7 +30,8 @@
 			visibility: '',
 			creation_date: ''
 		},
-		urlRoot: '/bookmark'
+
+		urlRoot: '/bookmark/'
 	});
 
 	var Bookmarks = Backbone.Collection.extend({
@@ -38,6 +59,7 @@
 			
 			var self = this;
 			this.createBookmarkDiv = $('#create_bookmark');
+			this.createBookmarkFormDiv = $('#add_bookmark_form');
 
 			this.collection = new Bookmarks();
 			this.collection.fetch({
@@ -70,15 +92,38 @@
 		},
 
 		events:{
-			"click #display_bookmark_form_button": "addBookmark",
+			"click #display_bookmark_form_button": "displayBookmark",
+			"click #add_bookmark": "addBookmark",
+		},
+
+		displayBookmark: function(){
+			
+			this.createBookmarkDiv.slideToggle();
 		},
 
 		addBookmark: function(e){
+			e.preventDefault();
 			
-			this.createBookmarkDiv.slideToggle();
+			var bookmark = new Bookmark	
 		}
 
 	});
+
+	     
+    Backbone._sync = Backbone.sync;
+
+    Backbone.sync = function(method, model, options) {
+
+    	if (method == 'create' || method == 'update' || method == 'delete') {
+
+        	options.beforeSend = function(xhr){
+            	    xhr.setRequestHeader('X-CSRFToken', $.getCookie('csrftoken'));
+            	};
+        	}
+
+            
+        return Backbone._sync(method, model, options);
+    };
 
 	var bookmarks = new BookmarksView();
 

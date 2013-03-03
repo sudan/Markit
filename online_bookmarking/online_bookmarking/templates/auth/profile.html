@@ -7,7 +7,7 @@
 		<input type="button" id="display_bookmark_form_button" class="btn-primary" value="Create a bookmark"/>
 		<div id="create_bookmark" style="display:none">
 
-			<form method="POST" action="/bookmark/">{% csrf_token %}
+			<form id="add_bookmark_form" method="POST" action="/bookmark/">{% csrf_token %}
 				
             	<div>
             		<span><label for="id_visibility">Visibility:</label></span>
@@ -38,7 +38,7 @@
 		
 		<script type="text/template" id="bookmarkDisplayTemplate">
 			
-			<div><i><%= creation_date %></i></div>
+			<div><i>Created Date:<%= creation_date %></i></div>
 			<div>
 				<span><h3><a href="<%= url %>"><%= name %></a></h3></span>
 			</div>

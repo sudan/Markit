@@ -86,6 +86,9 @@ def create_bookmark(request):
 	''' View function which handles rendering the bookmark form and 
 	stores them if valid or re-renders '''
 
+	for key,value in request.POST.iteritems():
+		print key,value
+
 	if request.method == "POST":
 
 		bookmark_form = BookmarkForm(data=request.POST)
@@ -93,6 +96,7 @@ def create_bookmark(request):
 		if bookmark_form.is_valid():
 			bookmark_form_cleaned = bookmark_form.cleaned_data
 			store_bookmark(request, bookmark_form_cleaned)
+
 			return HttpResponseRedirect('/success/')
 
 		return render_to_response(BOOKMARK_ADD_TEMPLATE_PATH,
