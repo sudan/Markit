@@ -66,19 +66,16 @@
 					<div class="inline-fields">
                 		<span><label for="id_url">URL:</label></span>
                 		<span><input type="text" name="url" value="<%= url %>"/></span>
-                		<span class="bookmark_url_error error-messages"></span>
             		</div>
 
             		<div class="inline-fields">
                 		<span ><label for="id_name">Name:</label></span>
                 		<span><input type="text" name="name" value="<%=  name %>"/></span>
-                		<span class="bookmark_name_error error-messages"></span>
             		</div>
 
             		<div class="inline-fields">
                 		<span><label for="id_description">Description:</label></span>
                 		<span class="inline-fields"><input type="text" name="description" value="<%= description %>"/></span>
-                		<span class="bookmark_description_error error-messages"></span>
             		</div>
 
             		<div class="inline-fields">
@@ -96,6 +93,7 @@
             		<div>
 						<button class="save_bookmark btn-primary">Save</button>
 						<button class="cancel_bookmark btn-primary">Cancel</button>
+						<span class="edit_bookmark_error_messages error-messages"></span>
 					</div>
 
 				</form>

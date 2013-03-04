@@ -52,8 +52,19 @@
 			this.render();
 		},
 
+		displayErrorMessages: function(editBookmarkForm,responseText){
+
+			var responseText = responseText;
+			var self = this;
+			
+			if(responseText['url'] || responseText['name'] || responseText['visibility'] || responseText['description'])
+				editBookmarkForm.find($('.edit_bookmark_error_messages')).text('Invalid entries');
+
+		},
+
 		saveBookmark: function(e){
 			
+			var self = this;
 			e.preventDefault();
 			var prevModel = this.model.previousAttributes();
 
@@ -66,8 +77,6 @@
 			bookmark_form_data['bookmark_id'] = editBookmarkForm.find('input[name=bookmark_id]').val();
 			
 			var bookmark = new Bookmark(bookmark_form_data)
-			this.model.set(bookmark_form_data)
-			this.render();
 			
 			var response = bookmark.save({
 			 	success: function(response){
@@ -76,7 +85,17 @@
 			error: function(error){
 			 		console.log(error);
 				}
-			});
+			}).complete(function(response){
+				var responseText = JSON.parse(response.responseText);
+				if(responseText.status == "failure")
+					self.displayErrorMessages(editBookmarkForm,responseText);
+				else
+				{
+					self.model.set(bookmark_form_data)
+					self.render();
+				}
+			});	
+
 
 		}
 
