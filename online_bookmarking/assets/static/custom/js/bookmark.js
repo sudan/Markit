@@ -41,6 +41,10 @@
 			this.createBookmarkDiv = $('#create_bookmark');
 			this.createBookmarkFormDiv = $('#add_bookmark_form');
 			this.bookmarkWrapperDiv = $('#bookmark_wrapper');
+			this.bookmarkUrlErrorSpan = $('.bookmark_url_error');
+			this.bookmarkNameErrorSpan = $('.bookmark_name_error');
+			this.bookmarkDescriptionErrorSpan = $('.bookmark_description_error');
+			this.bookmarkVisibilityErrorSpan = $('.bookmark_visibility_error');
 
 			this.collection = new Bookmarks();
 			this.collection.fetch({
@@ -73,11 +77,11 @@
 
 			if(bookmark.get('status') == 'success')
 			{
-				this.$el.find("#bookmark_wrapper").prepend(bookmarkView.render().el).hide().slideDown();
+				this.$el.find(this.bookmarkWrapperDiv).prepend(bookmarkView.render().el).hide().slideDown();
 				this.showHideBookmarkForm();
 			}	
 			else
-				this.$el.find("#bookmark_wrapper").append(bookmarkView.render().el);
+				this.$el.find(this.bookmarkWrapperDiv).append(bookmarkView.render().el);
 
 		},
 
@@ -102,15 +106,17 @@
 
 		displayErrorMessages: function(responseText){
 
-			window.responseText = responseText;
+			var responseText = responseText;
+			var self = this;
+
 			if(responseText['url'])
-				this.createBookmarkFormDiv.find(".bookmark_url_error").text(responseText['url']);
+				self.createBookmarkFormDiv.find(self.bookmarkUrlErrorSpan).text(responseText['url']);
 			if(responseText['name'])
-				this.createBookmarkFormDiv.find(".bookmark_name_error").text(responseText['name']);
+				self.createBookmarkFormDiv.find(self.bookmarkNameErrorSpan).text(responseText['name']);
 			if(responseText['description'])
-				this.createBookmarkFormDiv.find(".bookmark_description_error").text(responseText['description']);
+				self.createBookmarkFormDiv.find(self.bookmarkDescriptionErrorSpan).text(responseText['description']);
 			if(responseText['visibility'])
-				this.createBookmarkFormDiv.find(".bookmark_visibility_error").text(responseText['visibility']);
+				self.createBookmarkFormDiv.find(self.bookmarkVisibilityErrorSpan).text(responseText['visibility']);
 
 		},
 

@@ -49,7 +49,7 @@
 
                 <tr>
                     <td><label for="id_username" class="title">Username:</label></td>
-                    <td>{{signup_form.username}}</td>
+                    <td>{{signup_form.username}}<span class="error-messages">&nbsp;*</span></td>
                     {% if signup_form.username.errors %}
                         <td class="error-messages">{{signup_form.username.errors}}</td>
                     {% endif %}
@@ -57,7 +57,7 @@
 
                 <tr>
                     <td><label for="id_email" class="title">Email:</label></td>
-                    <td>{{signup_form.email}}</td>
+                    <td>{{signup_form.email}}<span class="error-messages">&nbsp;*</span></td>
                     {% if signup_form.email.errors %}
                         <td class="error-messages">{{signup_form.email.errors}}</td>
                     {% endif %}
@@ -65,7 +65,7 @@
 
                 <tr>
                     <td><label for="id_first_name" class="title">First Name:</label></td>
-                    <td>{{signup_form.first_name}}</td>
+                    <td>{{signup_form.first_name}}<span class="error-messages">&nbsp;*</span></td>
                     {% if signup_form.first_name.errors %}
                         <td class="error-messages">{{signup_form.first_name.errors}}</td>
                     {% endif %}
@@ -81,7 +81,7 @@
                 
                 <tr>
                     <td><label for="id_password" class="title">Password:</label></td>
-                    <td>{{signup_form.password}}</td>
+                    <td>{{signup_form.password}}<span class="error-messages">&nbsp;*</span></td>
                     {% if signup_form.password.errors %}
                         <td class="error-messages">{{signup_form.password.errors}}</td>
                     {% endif %}
@@ -89,7 +89,7 @@
                 
                 <tr>
                     <td><label for="id_password_confirmation" class="title">Password Confirmation:</label></td>
-                    <td>{{signup_form.password_confirmation}}</td>
+                    <td>{{signup_form.password_confirmation}}<span class="error-messages">&nbsp;*</span></td>
                     {% if signup_form.password_confirmation.errors %}
                         <td class="error-messages">{{signup_form.password_confirmation.errors}}</td>
                     {% endif %}
