@@ -12,21 +12,25 @@
             	<div>
             		<span><label for="id_visibility">Visibility:</label></span>
             		<span class="inline-fields"><label for="id_visibility">{{bookmark_form.visibility}}</label></span>
+            		<span class="bookmark_visibility_error error-messages"></span>
             	</div>
 
 				<div class="inline-fields">
                 	<span><label for="id_url">URL:</label></span>
                 	<span>{{bookmark_form.url}}</span>
+                	<span class="bookmark_url_error error-messages"></span>
             	</div>
 
             	<div class="inline-fields">
                 	<span ><label for="id_name">Name:</label></span>
                 	<span>{{bookmark_form.name}}</span>
+                	<span class="bookmark_name_error error-messages"></span>
             	</div>
 
             	<div class="inline-fields">
                 	<span><label for="id_description">Description:</label></span>
                 	<span class="inline-fields">{{bookmark_form.description}}</span>
+                	<span class="bookmark_description_error error-messages"></span>
             	</div>
 
             	<div>
@@ -35,18 +39,21 @@
 
 			</form>
 		</div>
+
+		<div id="bookmark_wrapper">
 		
-		<script type="text/template" id="bookmarkDisplayTemplate">
+			<script type="text/template" id="bookmarkDisplayTemplate">
 			
-			<div><i>Created Date:<%= creation_date %></i></div>
-			<div>
-				<span><h3><a href="<%= url %>"><%= name %></a></h3></span>
-			</div>
-			<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
-			<p><%= description %></p>
+				<div><i>Created Date:<%= creation_date %></i></div>
+				<div>
+					<span><h3><a href="<%= url %>"><%= name %></a></h3></span>
+				</div>
+				<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
+				<p><%= description %></p>
 			
-			
-		</script>
+			</script>
+
+		</div>
 
 	</div>
 

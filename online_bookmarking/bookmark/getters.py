@@ -1,4 +1,5 @@
 from redis_helpers.views import Redis
+import simplejson
 
 def get_next_bookmarkId(redis_obj):
 	''' Get the next unique bookmark id '''
@@ -47,3 +48,16 @@ def get_bookmark_uid_mapping_range(redis_obj, user_id, start, end):
 
 	key = "userId:%d:bookmarks" % (user_id)
 	return redis_obj.get_elements_in_range(key, start, end)
+
+def get_json_bookmark(redis_obj,bookmark_id):
+
+	bookmark = {}
+	bookmark['bookmark_id'] = bookmark_id
+	bookmark['url'] = get_url(redis_obj,bookmark_id)
+	bookmark['name'] = get_name(redis_obj,bookmark_id)
+	bookmark['description'] = get_description(redis_obj,bookmark_id)
+	bookmark['visibility'] = get_visibility(redis_obj,bookmark_id)
+	bookmark['creation_date'] = get_created_date(redis_obj,bookmark_id).split()[0]
+	bookmark['status'] = 'success'
+
+	return simplejson.dumps(bookmark)

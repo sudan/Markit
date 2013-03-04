@@ -31,7 +31,7 @@ def store_bookmark(request, bookmark_form):
 
 	#PUT and POST requests are handled in the same view
 	if bookmark_form.get('bookmark_id', '') != '':
-		bookmark_id = bookmark_form['bookmark_id']
+		bookmark_id = int(bookmark_form['bookmark_id'])
 	else:
 		bookmark_id = get_next_bookmarkId(redis_obj)
 		store_created_date(redis_obj, bookmark_id, str(datetime.datetime.now()))
@@ -43,6 +43,8 @@ def store_bookmark(request, bookmark_form):
 	
 	store_userId(redis_obj, bookmark_id, get_userId(request))
 	store_bookmark_uid_mapping(redis_obj, bookmark_id, get_userId(request))
+
+	return get_json_bookmark(redis_obj,bookmark_id)
 
 def clear_bookmark(user_id, bookmark_id):
 	''' Delete all mappings associated with bookmark id '''
@@ -85,45 +87,33 @@ def get_bookmarks(request):
 def create_bookmark(request):
 	''' View function which handles rendering the bookmark form and 
 	stores them if valid or re-renders '''
-
-	
 	
 	if request.method == "POST":
-
+		
 		if request.is_ajax():
 			data = simplejson.loads(request.POST.keys()[0])
 		else:
 			data = request.POST
+		
 
 		bookmark_form = BookmarkForm(data=data)
 		
 		if bookmark_form.is_valid():
 			bookmark_form_cleaned = bookmark_form.cleaned_data
-			store_bookmark(request, bookmark_form_cleaned)
+			bookmark_json = store_bookmark(request, bookmark_form_cleaned)			
+			return HttpResponse(bookmark_json, mimetype='application/json')
 
-			return HttpResponseRedirect('/success/')
+		bookmark_form.errors['status'] = 'failure'
+		return HttpResponse(simplejson.dumps(bookmark_form.errors),mimetype='application/json')
 
-		return render_to_response(BOOKMARK_ADD_TEMPLATE_PATH,
-			{
-				'bookmark_form':bookmark_form
-			},
-			context_instance=RequestContext(request))
-
-	
-	bookmark_form = BookmarkForm()
-	return render_to_response(BOOKMARK_ADD_TEMPLATE_PATH,
-			{
-				'bookmark_form':bookmark_form
-			},
-			context_instance=RequestContext(request))
-
+	raise Http404()
 
 @authentication('/home')
 def display_bookmarks(request):
 	''' Display existing bookmarks '''
 
 	username , data = get_bookmarks(request)	
-	bookmark_form = BookmarkForm()	
+	bookmark_form = BookmarkForm(initial={'visibility':'public'})	
 	
 	if request.is_ajax():
 		
