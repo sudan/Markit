@@ -20,4 +20,14 @@
     	return cookieValue;
 	};
 
+    $.loadImage = function()
+    {
+        $('#image-loader').fadeIn();
+    };
+
+    $.hideImage = function()
+    {
+        $('#image-loader').fadeOut();
+    };
+
 })(jQuery,window,document);

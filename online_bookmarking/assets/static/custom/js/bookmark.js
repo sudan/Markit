@@ -93,6 +93,7 @@
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			
+			$.loadImage();
 			var response = bookmark.save({
 
 			 	success: function(response)
@@ -105,6 +106,7 @@
 				}
 			}).complete(function(response){
 
+				$.hideImage();
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "failure")
 					self.displayErrorMessages(editBookmarkForm,responseText);
@@ -135,10 +137,12 @@
 			this.bookmarkVisibilityErrorSpan = $('.bookmark_visibility_error');
 
 			this.collection = new Bookmarks();
+			$.loadImage();
 			this.collection.fetch({
 
 				success: function(response)
 				{
+					$.hideImage();
 					self.render();
 				},
 				error: function(error)
@@ -251,6 +255,7 @@
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			
+			$.loadImage();
 			bookmark.save({
 				
 				success: function(response)
@@ -264,6 +269,7 @@
 			
 			}).complete(function(response){
 
+				$.hideImage();
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "success")
 					self.collection.add(new Bookmark(responseText));

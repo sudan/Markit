@@ -145,3 +145,10 @@ tr,.btn,.btn-primary
 {
 	height: 500px;
 }
+
+#image-loader
+{
+	position: fixed;
+	top: 50%
+	left:50%;
+}
