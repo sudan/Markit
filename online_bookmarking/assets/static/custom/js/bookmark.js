@@ -2,7 +2,7 @@
 
 	"use strict"
 	
-	window.Bookmark = Backbone.Model.extend({
+	var Bookmark = Backbone.Model.extend({
 		defaults:{
 			url: '',
 			name: '',
@@ -11,11 +11,10 @@
 			creation_date: '',
 			bookmark_id: ''
 		},
-
 		urlRoot: '/bookmark/'
 	});
 
-	window.Bookmarks = Backbone.Collection.extend({
+	var Bookmarks = Backbone.Collection.extend({
 		model: Bookmark,
 		url: '/bookmarks/'
 	});
@@ -26,66 +25,86 @@
 		template: $('#bookmarkDisplayTemplate').html(),
 		editTemplate: $('#bookmarkEditTemplate').html(),
 		
-		render: function(){
-			
+		render: function()
+		{			
 			var tmpl = _.template(this.template);
 			this.$el.html(tmpl(this.model.toJSON()));
 			return this;
 		},
 
-		events:{
+		events:
+		{	
 			'click button.edit_bookmark':'editBookmark',
 			'click button.cancel_bookmark':'cancelBookmark',
 			'click button.save_bookmark':'saveBookmark',
 		},
 
-		editBookmark: function(){
-			
+		editBookmark: function()
+		{	
 			var tmpl = _.template(this.editTemplate);
 			this.$el.html(tmpl(this.model.toJSON())).hide().slideDown();
-
 		},
 
-		cancelBookmark: function(e){
-			
+		cancelBookmark: function(e)
+		{	
 			e.preventDefault();
 			this.render();
 		},
 
-		displayErrorMessages: function(editBookmarkForm,responseText){
-
+		displayErrorMessages: function(editBookmarkForm,responseText)
+		{
 			var responseText = responseText;
 			var self = this;
 			
 			if(responseText['url'] || responseText['name'] || responseText['visibility'] || responseText['description'])
-				editBookmarkForm.find($('.edit_bookmark_error_messages')).text('Invalid entries');
-
+				editBookmarkForm
+					.find($('.edit_bookmark_error_messages'))
+					.text('Invalid entries');
 		},
 
-		saveBookmark: function(e){
-			
+		saveBookmark: function(e)
+		{	
 			var self = this;
 			e.preventDefault();
 			var prevModel = this.model.previousAttributes();
 
 			var bookmark_form_data = {}
 			var editBookmarkForm = $('#edit_bookmark_form');
-			bookmark_form_data['url'] = editBookmarkForm.find('input[name=url]').val();
-			bookmark_form_data['name'] = editBookmarkForm.find('input[name=name]').val();
-			bookmark_form_data['description'] = editBookmarkForm.find('input[name=description]').val();
-			bookmark_form_data['visibility'] = editBookmarkForm.find('input[name=visibility]').val();
-			bookmark_form_data['bookmark_id'] = editBookmarkForm.find('input[name=bookmark_id]').val();
+
+			bookmark_form_data['url'] = editBookmarkForm
+											.find('input[name=url]')
+											.val();
+
+			bookmark_form_data['name'] = editBookmarkForm
+											.find('input[name=name]')
+											.val();
+
+			bookmark_form_data['description'] = editBookmarkForm
+												.find('input[name=description]')
+												.val();
+
+			bookmark_form_data['visibility'] = editBookmarkForm
+												.find('input[name=visibility]')
+												.val();
+
+			bookmark_form_data['bookmark_id'] = editBookmarkForm
+													.find('input[name=bookmark_id]')
+													.val();
 			
-			var bookmark = new Bookmark(bookmark_form_data)
+			var bookmark = new Bookmark(bookmark_form_data);
 			
 			var response = bookmark.save({
-			 	success: function(response){
-			 		console.log(response)
+
+			 	success: function(response)
+			 	{
+			 		
 				},
-			error: function(error){
-			 		console.log(error);
+				error: function(error)
+				{
+			 		
 				}
 			}).complete(function(response){
+
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "failure")
 					self.displayErrorMessages(editBookmarkForm,responseText);
@@ -94,17 +113,17 @@
 					self.model.set(bookmark_form_data)
 					self.render();
 				}
+
 			});	
-
-
 		}
 
 	});
 
-	window.BookmarksView = Backbone.View.extend({
+	var BookmarksView = Backbone.View.extend({
 		el: $('#bookmark_list'),
 
-		initialize: function(){
+		initialize: function()
+		{
 			
 			var self = this;
 			this.createBookmarkDiv = $('#create_bookmark');
@@ -118,49 +137,56 @@
 			this.collection = new Bookmarks();
 			this.collection.fetch({
 
-				success: function(){
+				success: function(response)
+				{
 					self.render();
 				},
-				error: function(){
+				error: function(error)
+				{
 
 				}
-
 			});
 
 			this.collection.on("add",this.renderBookmark,this);
+		
 		},
 
-		render: function(){
-
+		render: function()
+		{
 			var self = this;
 			_.each(this.collection.models,function(bookmark){
 				self.renderBookmark(bookmark);
 			},this);
 		},
 
-		renderBookmark: function(bookmark){
-
+		renderBookmark: function(bookmark)
+		{
 			var bookmarkView = new BookmarkView({
 				model: bookmark
 			});
 
 			if(bookmark.get('status') == 'success')
 			{
-				this.$el.find(this.bookmarkWrapperDiv).prepend(bookmarkView.render().el).hide().slideDown();
+				this.$el.find(this.bookmarkWrapperDiv)
+					.prepend(bookmarkView.render().el)
+					.hide()
+					.slideDown();
 				this.showHideBookmarkForm();
 			}	
 			else
-				this.$el.find(this.bookmarkWrapperDiv).append(bookmarkView.render().el);
+				this.$el.find(this.bookmarkWrapperDiv)
+					.append(bookmarkView.render().el);
 
 		},
 
-		events:{
+		events:
+		{
 			"click #display_bookmark_form_button": "showHideBookmarkForm",
 			"click #add_bookmark": "addBookmark",
 		},
 
-		showHideBookmarkForm: function(){
-			
+		showHideBookmarkForm: function()
+		{
 			var self = this;
 			self.createBookmarkDiv.slideToggle(); 
 			
@@ -174,70 +200,95 @@
 			self.createBookmarkFormDiv.find(self.bookmarkVisibilityErrorSpan).empty();
 		},
 
-		displayErrorMessages: function(responseText){
-
+		displayErrorMessages: function(responseText)
+		{
 			var responseText = responseText;
 			var self = this;
 
 			if(responseText['url'])
-				self.createBookmarkFormDiv.find(self.bookmarkUrlErrorSpan).text(responseText['url']);
+				self.createBookmarkFormDiv
+					.find(self.bookmarkUrlErrorSpan)
+					.text(responseText['url']);
+			
 			if(responseText['name'])
-				self.createBookmarkFormDiv.find(self.bookmarkNameErrorSpan).text(responseText['name']);
+				self.createBookmarkFormDiv
+					.find(self.bookmarkNameErrorSpan)
+					.text(responseText['name']);
+			
 			if(responseText['description'])
-				self.createBookmarkFormDiv.find(self.bookmarkDescriptionErrorSpan).text(responseText['description']);
+				self.createBookmarkFormDiv
+					.find(self.bookmarkDescriptionErrorSpan)
+					.text(responseText['description']);
+			
 			if(responseText['visibility'])
-				self.createBookmarkFormDiv.find(self.bookmarkVisibilityErrorSpan).text(responseText['visibility']);
-
+				self.createBookmarkFormDiv
+					.find(self.bookmarkVisibilityErrorSpan)
+					.text(responseText['visibility']);
 		},
 
-		addBookmark: function(e){
-			
-			e.preventDefault();
+		addBookmark: function(e)
+		{
 			var self = this;
+			e.preventDefault();
 			
 			var bookmark_form_data = {};
-			bookmark_form_data['url'] = this.createBookmarkFormDiv.find('input[name=url]').val();
-			bookmark_form_data['name'] = this.createBookmarkFormDiv.find('input[name=name]').val();
-			bookmark_form_data['description'] = this.createBookmarkFormDiv.find('textarea[name=description]').val();
-			bookmark_form_data['visibility'] = this.createBookmarkFormDiv.find('input[name=visibility]').val();
+			
+			bookmark_form_data['url'] = this.createBookmarkFormDiv
+											.find('input[name=url]')
+											.val();
+
+			bookmark_form_data['name'] = this.createBookmarkFormDiv
+											.find('input[name=name]')
+											.val();
+
+			bookmark_form_data['description'] = this.createBookmarkFormDiv
+												.find('textarea[name=description]')
+												.val();
+			
+			bookmark_form_data['visibility'] = this.createBookmarkFormDiv
+													.find('input[name=visibility]')
+													.val();
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			
 			bookmark.save({
-				success: function(response){
-					console.log(response)
+				
+				success: function(response)
+				{
+					
 				},
-				error: function(error){
-					console.log(error);
+				error: function(error)
+				{
+				
 				}
+			
 			}).complete(function(response){
+
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "success")
 					self.collection.add(new Bookmark(responseText));
 				else
-					self.displayErrorMessages(responseText);
-				
-			});
-
-			
+					self.displayErrorMessages(responseText);	
+			});			
 		}
 
 	});
-
 	     
     Backbone._sync = Backbone.sync;
 
-    Backbone.sync = function(method, model, options) {
+    Backbone.sync = function(method, model, options) 
+    {
 
-    	if (method == 'create' || method == 'update' || method == 'delete') {
-
-        	options.beforeSend = function(xhr){
-            	    xhr.setRequestHeader('X-CSRFToken', $.getCookie('csrftoken'));
-            	    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8')
-            	};
-        	}
-            
+    	if (method == 'create' || method == 'update' || method == 'delete')
+    	{
+        	options.beforeSend = function(xhr)
+        	{
+            	xhr.setRequestHeader('X-CSRFToken', $.getCookie('csrftoken'));
+            	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8')
+           	};
+        }
         return Backbone._sync(method, model, options);
+    
     };
 
 	var bookmarks = new BookmarksView();
