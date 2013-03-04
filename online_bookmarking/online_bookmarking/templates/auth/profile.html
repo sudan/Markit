@@ -49,11 +49,62 @@
 					<span><h3><a target="_blank" href="<%= url %>"><%= name %></a></h3></span>
 				</div>
 				<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
-				<p><%= description %></p>
-			
+				<p><%= description %>
+					<button class="btn-primary edit_bookmark">Edit</button>
+				</p>
+				
 			</script>
 
 		</div>
+
+		<div class="bookmark_edit_wrapper">
+
+			<script type="text/template" id="bookmarkEditTemplate">
+
+				<form id="edit_bookmark_form" method="POST" action="/bookmark/">{% csrf_token %}
+
+					<div class="inline-fields">
+                		<span><label for="id_url">URL:</label></span>
+                		<span><input type="text" name="url" value="<%= url %>"/></span>
+                		<span class="bookmark_url_error error-messages"></span>
+            		</div>
+
+            		<div class="inline-fields">
+                		<span ><label for="id_name">Name:</label></span>
+                		<span><input type="text" name="name" value="<%=  name %>"/></span>
+                		<span class="bookmark_name_error error-messages"></span>
+            		</div>
+
+            		<div class="inline-fields">
+                		<span><label for="id_description">Description:</label></span>
+                		<span class="inline-fields"><input type="text" name="description" value="<%= description %>"/></span>
+                		<span class="bookmark_description_error error-messages"></span>
+            		</div>
+
+            		<div class="inline-fields">
+						<span><label for="id_visibility">Visibility:</label></span>
+						<span>
+							<label class="inline-fields"><input type="radio" checked="checked" name="visibility" value="public"/>Public</label>
+						</span>
+						<span>
+							<label class="inline-fields"><input type="radio" name="visibility" value="private"/>Private</label>
+						</span>
+					</div>
+
+            		<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
+
+            		<div>
+						<button class="save_bookmark btn-primary">Save</button>
+						<button class="cancel_bookmark btn-primary">Cancel</button>
+					</div>
+
+				</form>
+
+
+
+			</script>
+
+		</div>	
 
 	</div>
 

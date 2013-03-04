@@ -8,7 +8,8 @@
 			name: '',
 			description: '',
 			visibility: '',
-			creation_date: ''
+			creation_date: '',
+			bookmark_id: ''
 		},
 
 		urlRoot: '/bookmark/'
@@ -16,23 +17,72 @@
 
 	window.Bookmarks = Backbone.Collection.extend({
 		model: Bookmark,
-		url: '/bookmarks'
+		url: '/bookmarks/'
 	});
 
 	var BookmarkView = Backbone.View.extend({
 		tagName: 'div',
 		className: 'bookmark',
 		template: $('#bookmarkDisplayTemplate').html(),
+		editTemplate: $('#bookmarkEditTemplate').html(),
 		
 		render: function(){
 			
 			var tmpl = _.template(this.template);
 			this.$el.html(tmpl(this.model.toJSON()));
 			return this;
+		},
+
+		events:{
+			'click button.edit_bookmark':'editBookmark',
+			'click button.cancel_bookmark':'cancelBookmark',
+			'click button.save_bookmark':'saveBookmark',
+		},
+
+		editBookmark: function(){
+			
+			var tmpl = _.template(this.editTemplate);
+			this.$el.html(tmpl(this.model.toJSON())).hide().slideDown();
+
+		},
+
+		cancelBookmark: function(e){
+			
+			e.preventDefault();
+			this.render();
+		},
+
+		saveBookmark: function(e){
+			
+			e.preventDefault();
+			var prevModel = this.model.previousAttributes();
+
+			var bookmark_form_data = {}
+			var editBookmarkForm = $('#edit_bookmark_form');
+			bookmark_form_data['url'] = editBookmarkForm.find('input[name=url]').val();
+			bookmark_form_data['name'] = editBookmarkForm.find('input[name=name]').val();
+			bookmark_form_data['description'] = editBookmarkForm.find('input[name=description]').val();
+			bookmark_form_data['visibility'] = editBookmarkForm.find('input[name=visibility]').val();
+			bookmark_form_data['bookmark_id'] = editBookmarkForm.find('input[name=bookmark_id]').val();
+			
+			var bookmark = new Bookmark(bookmark_form_data)
+			this.model.set(bookmark_form_data)
+			this.render();
+			
+			var response = bookmark.save({
+			 	success: function(response){
+			 		console.log(response)
+				},
+			error: function(error){
+			 		console.log(error);
+				}
+			});
+
 		}
+
 	});
 
-	var BookmarksView = Backbone.View.extend({
+	window.BookmarksView = Backbone.View.extend({
 		el: $('#bookmark_list'),
 
 		initialize: function(){
@@ -92,16 +142,17 @@
 
 		showHideBookmarkForm: function(){
 			
-			this.createBookmarkDiv.slideToggle(); 
+			var self = this;
+			self.createBookmarkDiv.slideToggle(); 
 			
-			this.createBookmarkFormDiv.find('input[name=url]').val('');
-			this.createBookmarkFormDiv.find('input[name=name]').val('');
-			this.createBookmarkFormDiv.find('textarea[name=description]').val('');
+			self.createBookmarkFormDiv.find('input[name=url]').val('');
+			self.createBookmarkFormDiv.find('input[name=name]').val('');
+			self.createBookmarkFormDiv.find('textarea[name=description]').val('');
 
-			this.createBookmarkFormDiv.find(".bookmark_url_error").empty();
-			this.createBookmarkFormDiv.find(".bookmark_name_error").empty();
-			this.createBookmarkFormDiv.find(".bookmark_description_error").empty();
-			this.createBookmarkFormDiv.find(".bookmark_visibility_error").empty();
+			self.createBookmarkFormDiv.find(self.bookmarkUrlErrorSpan).empty();
+			self.createBookmarkFormDiv.find(self.bookmarkNameErrorSpan).empty();
+			self.createBookmarkFormDiv.find(self.bookmarkDescriptionErrorSpan).empty();
+			self.createBookmarkFormDiv.find(self.bookmarkVisibilityErrorSpan).empty();
 		},
 
 		displayErrorMessages: function(responseText){
@@ -132,8 +183,7 @@
 			bookmark_form_data['visibility'] = this.createBookmarkFormDiv.find('input[name=visibility]').val();
 			
 			var bookmark = new Bookmark(bookmark_form_data);
-			console.log(bookmark);
-
+			
 			bookmark.save({
 				success: function(response){
 					console.log(response)
@@ -142,7 +192,7 @@
 					console.log(error);
 				}
 			}).complete(function(response){
-				window.responseText = JSON.parse(response.responseText);
+				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "success")
 					self.collection.add(new Bookmark(responseText));
 				else
@@ -167,7 +217,6 @@
             	    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8')
             	};
         	}
-       window.options = options;
             
         return Backbone._sync(method, model, options);
     };

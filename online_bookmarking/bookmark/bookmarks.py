@@ -24,25 +24,27 @@ from django.utils import simplejson
 
 from online_bookmarking.settings import BOOKMARK_ADD_TEMPLATE_PATH, HOME_TEMPLATE_PATH
 
-def store_bookmark(request, bookmark_form):
+def store_bookmark(request, bookmark_form,edit_bookmark_id=''):
 	''' A controller which calls the individual store methods '''
 
 	redis_obj = Redis()
 
 	#PUT and POST requests are handled in the same view
-	if bookmark_form.get('bookmark_id', '') != '':
-		bookmark_id = int(bookmark_form['bookmark_id'])
+	if edit_bookmark_id != '':
+		bookmark_id = int(edit_bookmark_id)
 	else:
 		bookmark_id = get_next_bookmarkId(redis_obj)
 		store_created_date(redis_obj, bookmark_id, str(datetime.datetime.now()))
-
+		store_bookmark_uid_mapping(redis_obj, bookmark_id, get_userId(request))
+		store_userId(redis_obj, bookmark_id, get_userId(request))
+	
 	store_url(redis_obj, bookmark_id, bookmark_form['url'])
 	store_name(redis_obj, bookmark_id, bookmark_form['name'])
 	store_description(redis_obj, bookmark_id, bookmark_form['description'])
 	store_visibility(redis_obj, bookmark_id, bookmark_form['visibility'])
 	
-	store_userId(redis_obj, bookmark_id, get_userId(request))
-	store_bookmark_uid_mapping(redis_obj, bookmark_id, get_userId(request))
+	
+	
 
 	return get_json_bookmark(redis_obj,bookmark_id)
 
@@ -65,7 +67,7 @@ def get_bookmarks(request):
 	user_id = get_userId(request)
 	username = get_username(redis_obj, user_id)
 
-	bookmarks = get_bookmark_uid_mapping_range(redis_obj, user_id, 0, 10)
+	bookmarks = get_bookmark_uid_mapping_range(redis_obj, user_id, 0, 50)
 	data = [{} for i in xrange(len(bookmarks))]
 	
 	for i, bookmark_id in enumerate(bookmarks):
@@ -95,12 +97,14 @@ def create_bookmark(request):
 		else:
 			data = request.POST
 		
-
 		bookmark_form = BookmarkForm(data=data)
-		
+		bookmark_id = data.get('bookmark_id','')
+		if bookmark_id != '':
+			bookmark_id = int(bookmark_id)
+
 		if bookmark_form.is_valid():
 			bookmark_form_cleaned = bookmark_form.cleaned_data
-			bookmark_json = store_bookmark(request, bookmark_form_cleaned)			
+			bookmark_json = store_bookmark(request, bookmark_form_cleaned,bookmark_id)			
 			return HttpResponse(bookmark_json, mimetype='application/json')
 
 		bookmark_form.errors['status'] = 'failure'

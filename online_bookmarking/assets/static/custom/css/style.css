@@ -95,7 +95,7 @@ tr,.btn,.btn-primary
 .bookmark
 {
 	width: 500px;
-	height: 100px;
+	height: 160px;
 	border-top:1px solid #E0E0E0;
 	border-left: 1px solid #E0E0E0;
 	border-right: 1px solid #E0E0E0;
@@ -120,6 +120,9 @@ tr,.btn,.btn-primary
 .bookmark p
 {
 	font-size: 15px;
+	width: 500px;
+	height: 120px;
+	word-wrap: break-word;
 }
 
 .bookmark:hover
@@ -140,5 +143,5 @@ tr,.btn,.btn-primary
 
 #create_bookmark
 {
-	height: 450px;
+	height: 500px;
 }
