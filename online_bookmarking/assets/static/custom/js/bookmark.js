@@ -74,7 +74,10 @@
 			bookmark_form_data['url'] = editBookmarkForm.find('input[name=url]').val();
 			bookmark_form_data['name'] = editBookmarkForm.find('input[name=name]').val();
 			bookmark_form_data['description'] = editBookmarkForm.find('input[name=description]').val();
-			bookmark_form_data['visibility'] = editBookmarkForm.find('input[name=visibility]').val();
+			if(editBookmarkForm.find('input[value=public]').is(':checked'))
+				bookmark_form_data['visibility'] = 'public';
+			else
+				bookmark_form_data['visibility'] = 'private';			
 			bookmark_form_data['bookmark_id'] = editBookmarkForm.find('input[name=bookmark_id]').val();
 			
 			var bookmark = new Bookmark(bookmark_form_data);
@@ -226,7 +229,10 @@
 			bookmark_form_data['url'] = this.createBookmarkFormDiv.find('input[name=url]').val();
 			bookmark_form_data['name'] = this.createBookmarkFormDiv.find('input[name=name]').val();
 			bookmark_form_data['description'] = this.createBookmarkFormDiv.find('textarea[name=description]').val();
-			bookmark_form_data['visibility'] = this.createBookmarkFormDiv.find('input[name=visibility]').val();
+			if(this.createBookmarkFormDiv.find('input[value=public]').is(':checked'))
+				bookmark_form_data['visibility'] = 'public';
+			else
+				bookmark_form_data['visibility'] = 'private';			
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			

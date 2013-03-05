@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 import datetime
+import logging
 
 from auth.forms import SignUpForm, LoginForm
 from auth.encrypt import encrypt_password
