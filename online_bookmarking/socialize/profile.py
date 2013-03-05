@@ -37,6 +37,7 @@ def get_user_info(redis_obj, profile_name, current_user_id):
 	user_info['image_url'] = get_image_url(redis_obj, user_id)
 	user_info['timestamp'] = get_timestamp(redis_obj, user_id)
 	user_info['follow'] = is_following(redis_obj, current_user_id, user_id)
+	user_info['summary'] = get_summary(redis_obj,user_id)
 
 	return user_info
 

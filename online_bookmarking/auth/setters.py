@@ -52,6 +52,12 @@ def store_timestamp(redis_obj, user_id):
 	key = "userId:%d:timestamp" %(user_id)
 	redis_obj.set_value(key, str(datetime.datetime.now()))
 
+def store_summary(redis_obj, user_id, summary):
+	''' store the summary of the user '''
+
+	key = "userId:%d:summary" %(user_id)
+	redis_obj.set_value(key,summary)
+
 def store_uid_with_username(redis_obj, user_id, username):
 	''' store the reverse mapping for the username '''
 	

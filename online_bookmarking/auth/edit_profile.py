@@ -20,6 +20,7 @@ def update_profile(redis_obj, edit_profile_form, user_id, old_username):
 	store_first_name(redis_obj, user_id, edit_profile_form['first_name'])
 	store_last_name(redis_obj, user_id, edit_profile_form['last_name'])
 	store_username(redis_obj, user_id, edit_profile_form['username'])
+	store_summary(redis_obj, user_id, edit_profile_form['summary'])
 
 	delete_uid_with_username(redis_obj, old_username)
 
@@ -51,9 +52,10 @@ def edit_profile(request):
 	username = get_username(redis_obj, user_id)
 	first_name = get_first_name(redis_obj, user_id)
 	last_name = get_last_name(redis_obj, user_id)
+	summary = get_summary(redis_obj, user_id)
 
 	edit_profile_form = EditProfileForm(initial={
-		'username':username, 'first_name':first_name, 'last_name':last_name
+		'username':username, 'first_name':first_name, 'last_name':last_name, 'summary':summary
 	})
 	
 	return render_to_response(EDIT_PROFILE_TEMPLATE_PATH,

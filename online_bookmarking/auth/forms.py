@@ -40,6 +40,12 @@ class SignUpForm(forms.Form):
 			)
 		)
 
+	summary = forms.CharField(
+			widget=forms.widgets.Textarea(
+				attrs={'placeholder':'Describe Yourself'}
+			)
+		)
+
 	def clean_username(self):
 		username = self.cleaned_data['username']
 		valid = re.match('^[\w]+$', username) is not None
@@ -110,6 +116,12 @@ class EditProfileForm(forms.Form):
 		required=False,
 		widget=forms.widgets.TextInput(
 			attrs={'placeholder':'Last name'}
+			)
+		)
+
+	summary = forms.CharField(
+		widget=forms.widgets.Textarea(
+			attrs={'placeholder':'Describe Yourself'}
 			)
 		)
 

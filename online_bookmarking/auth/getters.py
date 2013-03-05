@@ -34,6 +34,12 @@ def get_timestamp(redis_obj, user_id):
 	key = "userId:%d:timestamp" %(user_id)
 	return redis_obj.get_value(key)
 
+def get_summary(redis_obj, user_id):
+	''' get the summary of the user '''
+
+	key = "userId:%d:summary" %(user_id)
+	return redis_obj.get_value(key)
+
 def get_unique_id(redis_obj, username):
 	''' get the user id given the username '''
 

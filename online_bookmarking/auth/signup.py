@@ -31,6 +31,7 @@ def store_user_info(signup_form):
 	last_name = signup_form['last_name']
 	password = encrypt_password(signup_form['password'])
 	auth_token = signup_form['auth_token']
+	summary = signup_form['summary']
 
 	user_id = get_next_userId(redis_obj)
 
@@ -41,6 +42,7 @@ def store_user_info(signup_form):
 	store_password(redis_obj, user_id, password)
 	store_image_url(redis_obj, user_id, email)
 	store_timestamp(redis_obj, user_id)
+	store_summary(redis_obj,user_id,summary)
 	store_auth_token(redis_obj, user_id, email, auth_token)
 	store_uid_with_username(redis_obj, user_id, username)
 	store_uid_with_email(redis_obj, user_id, email)
