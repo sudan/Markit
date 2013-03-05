@@ -71,25 +71,11 @@
 			var bookmark_form_data = {}
 			var editBookmarkForm = $('#edit_bookmark_form');
 
-			bookmark_form_data['url'] = editBookmarkForm
-											.find('input[name=url]')
-											.val();
-
-			bookmark_form_data['name'] = editBookmarkForm
-											.find('input[name=name]')
-											.val();
-
-			bookmark_form_data['description'] = editBookmarkForm
-												.find('input[name=description]')
-												.val();
-
-			bookmark_form_data['visibility'] = editBookmarkForm
-												.find('input[name=visibility]')
-												.val();
-
-			bookmark_form_data['bookmark_id'] = editBookmarkForm
-													.find('input[name=bookmark_id]')
-													.val();
+			bookmark_form_data['url'] = editBookmarkForm.find('input[name=url]').val();
+			bookmark_form_data['name'] = editBookmarkForm.find('input[name=name]').val();
+			bookmark_form_data['description'] = editBookmarkForm.find('input[name=description]').val();
+			bookmark_form_data['visibility'] = editBookmarkForm.find('input[name=visibility]').val();
+			bookmark_form_data['bookmark_id'] = editBookmarkForm.find('input[name=bookmark_id]').val();
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			
@@ -237,21 +223,10 @@
 			
 			var bookmark_form_data = {};
 			
-			bookmark_form_data['url'] = this.createBookmarkFormDiv
-											.find('input[name=url]')
-											.val();
-
-			bookmark_form_data['name'] = this.createBookmarkFormDiv
-											.find('input[name=name]')
-											.val();
-
-			bookmark_form_data['description'] = this.createBookmarkFormDiv
-												.find('textarea[name=description]')
-												.val();
-			
-			bookmark_form_data['visibility'] = this.createBookmarkFormDiv
-													.find('input[name=visibility]')
-													.val();
+			bookmark_form_data['url'] = this.createBookmarkFormDiv.find('input[name=url]').val();
+			bookmark_form_data['name'] = this.createBookmarkFormDiv.find('input[name=name]').val();
+			bookmark_form_data['description'] = this.createBookmarkFormDiv.find('textarea[name=description]').val();
+			bookmark_form_data['visibility'] = this.createBookmarkFormDiv.find('input[name=visibility]').val();
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			
