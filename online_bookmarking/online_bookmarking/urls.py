@@ -23,11 +23,7 @@ urlpatterns = patterns('',
     
     url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
     url(r'^bookmarks/$', 'bookmark.bookmarks.display_bookmarks'),
-
-
     url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),
-  
-    
     
     url(r'^tags/$','tags.views.tag_bundle'),
     url(r'^category/$','category.views.create_category'),
