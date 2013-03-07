@@ -101,7 +101,7 @@ def create_category(request):
 			category_form_cleaned = category_form.cleaned_data
 			user_id = get_userId(request)
 			category_json = store_category_user(user_id, category_form_cleaned)
-			print category_json
+		
 			return HttpResponse(category_json, mimetype='application/json')
 
 		category_form.errors['status'] = 'failure'
