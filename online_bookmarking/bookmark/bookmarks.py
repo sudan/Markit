@@ -8,6 +8,7 @@ from django.template import RequestContext
 
 import json
 import datetime
+from time import strftime
 
 from bookmark.forms import BookmarkForm
 from category.forms import CategoryForm
@@ -24,6 +25,8 @@ from django.utils import simplejson
 
 
 from online_bookmarking.settings import BOOKMARK_ADD_TEMPLATE_PATH, HOME_TEMPLATE_PATH
+from logger import getlogger
+from logger.getlogger import Logger
 
 def store_bookmark(request, bookmark_form,edit_bookmark_id=''):
 	''' A controller which calls the individual store methods '''
@@ -118,6 +121,15 @@ def display_bookmarks(request):
 	bookmark_form = BookmarkForm(initial={'visibility':'public'})	
 	category_form = CategoryForm()
 	
+	#testing logger
+	l_instance = Logger(strftime("%d-%m-%Y" + ".log"))
+	mylogger = l_instance.start()
+	mylogger.info(str(username) + " " + str(data))
+	mylogger.warning("A WARNING message")
+	
+
+	l_instance.stop()
+
 	if request.is_ajax():
 		
 		data = simplejson.dumps(data)
