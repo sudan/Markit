@@ -10,6 +10,7 @@ import json
 import datetime
 
 from bookmark.forms import BookmarkForm
+from category.forms import CategoryForm
 from redis_helpers.views import Redis
 from auth.login_status import is_logged_in
 from auth.signin import login, authentication
@@ -41,10 +42,7 @@ def store_bookmark(request, bookmark_form,edit_bookmark_id=''):
 	store_url(redis_obj, bookmark_id, bookmark_form['url'])
 	store_name(redis_obj, bookmark_id, bookmark_form['name'])
 	store_description(redis_obj, bookmark_id, bookmark_form['description'])
-	store_visibility(redis_obj, bookmark_id, bookmark_form['visibility'])
-	
-	
-	
+	store_visibility(redis_obj, bookmark_id, bookmark_form['visibility'])	
 
 	return get_json_bookmark(redis_obj,bookmark_id)
 
@@ -118,6 +116,7 @@ def display_bookmarks(request):
 
 	username , data = get_bookmarks(request)	
 	bookmark_form = BookmarkForm(initial={'visibility':'public'})	
+	category_form = CategoryForm()
 	
 	if request.is_ajax():
 		
@@ -128,6 +127,7 @@ def display_bookmarks(request):
 		{
 			'username' : username,
 			'bookmark_form':bookmark_form,
+			'category_form':category_form
 		},
 		context_instance=RequestContext(request))	
 

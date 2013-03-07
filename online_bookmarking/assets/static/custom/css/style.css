@@ -141,7 +141,7 @@ tr,.btn,.btn-primary
 	display: inline-block;
 }
 
-#create_bookmark
+#create_bookmark,#add_category_form
 {
 	height: 500px;
 }
@@ -151,4 +151,9 @@ tr,.btn,.btn-primary
 	position: fixed;
 	top: 50%
 	left:50%;
+}
+
+#create_category
+{
+	height: 130px;
 }

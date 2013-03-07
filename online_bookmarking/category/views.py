@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response, HttpResponseRedirect
 from django.template import RequestContext
+from django.http import HttpResponse
 
 from redis_helpers.views import Redis
 from category.forms import CategoryForm
@@ -12,6 +13,8 @@ from bookmark.bookmarks import store_category
 from category.getters import *
 from category.setters import *
 from category.deleters import *
+
+import simplejson
 
 from online_bookmarking.settings import CATEGORY_CREATE_TEMPLATE_PATH
 from online_bookmarking.settings import ADD_BOOKMARKS_TO_CATEGORY_TEMPLATE_PATH
@@ -74,32 +77,37 @@ def store_category_user(user_id, category_form):
 			remove_category_name_userId_uid_mapping(redis_obj, user_id, old_category_name)
 			store_category_name_userId_uid_mapping(redis_obj, user_id, category_id, category_form['name'])
 
+	category = {}
+	category['category_id'] = category_id
+	category['category_name'] = category_form['name']
+	category['status'] = 'success'
+	return simplejson.dumps(category) 
+
 @authentication('/category')
 def create_category(request):
 	''' create a new category '''
 
 	if request.method == "POST":
-		category_form = CategoryForm(data=request.POST)
+
+		if request.is_ajax():
+			data = simplejson.loads(request.POST.keys()[0])
+		else:
+			data = request.POST
+		
+		category_form = CategoryForm(data=data)
+		
 		if category_form.is_valid():
 
 			category_form_cleaned = category_form.cleaned_data
 			user_id = get_userId(request)
-			store_category_user(user_id, category_form_cleaned)
-	
-			return HttpResponseRedirect('/success/')
+			category_json = store_category_user(user_id, category_form_cleaned)
+			print category_json
+			return HttpResponse(category_json, mimetype='application/json')
 
-		return render_to_response(CATEGORY_CREATE_TEMPLATE_PATH,
-			{
-				'category_form':category_form
-			},
-			context_instance=RequestContext(request))
+		category_form.errors['status'] = 'failure'
+		return HttpResponse(simplejson.dumps(category_form.errors),mimetype='application/json')
 
-	category_form = CategoryForm()
-	return render_to_response(CATEGORY_CREATE_TEMPLATE_PATH,
-		{
-			'category_form':category_form
-		},
-		context_instance=RequestContext(request))
+	raise Http404()
 
 @authentication('/add_bookmarks_to_category')
 def add_bookmarks_to_category(request):

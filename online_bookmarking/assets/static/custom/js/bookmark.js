@@ -195,7 +195,6 @@
 
 		displayErrorMessages: function(responseText)
 		{
-			var responseText = responseText;
 			var self = this;
 
 			if(responseText['url'])
@@ -278,6 +277,6 @@
     
     };
 
-	var bookmarks = new BookmarksView();
+	window.bookmarks = new BookmarksView();
 
 })(jQuery,window,document)
