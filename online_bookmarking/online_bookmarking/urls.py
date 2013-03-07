@@ -26,7 +26,6 @@ urlpatterns = patterns('',
     url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),
     
     url(r'^tags/$','tags.views.tag_bundle'),
-    url(r'^category/$','category.views.create_category'),
     url(r'^add_bookmarks_to_category/$','category.views.add_bookmarks_to_category'),
     url(r'^users/$','socialize.relationship.users'),
     url(r'^toggle/$','socialize.relationship.toggle_relationship'),
