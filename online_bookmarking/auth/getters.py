@@ -61,3 +61,4 @@ def get_auth_token(redis_obj, user_id):
 
 	key = "userId:%d:auth.token" %(user_id)
 	return redis_obj.get_value(key)
+

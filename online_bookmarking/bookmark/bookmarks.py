@@ -17,6 +17,7 @@ from auth.login_status import is_logged_in
 from auth.signin import login, authentication
 from auth.helpers import get_userId
 from auth.getters import *
+from socialize.profile import get_user_info,get_following_count,get_followers_count
 
 from bookmark.getters import *
 from bookmark.setters import *
@@ -120,26 +121,23 @@ def display_bookmarks(request):
 	username , data = get_bookmarks(request)	
 	bookmark_form = BookmarkForm(initial={'visibility':'public'})	
 	category_form = CategoryForm()
-	
-	
-	# l_instance = Logger(strftime("%d-%m-%Y" + ".log"))
-	# mylogger = l_instance.start()
-	# mylogger.info(str(username) + " " + str(data))
-	# mylogger.warning("A WARNING message")
-	
-
-	# l_instance.stop()
+	redis_obj = Redis()
 
 	if request.is_ajax():
 		
 		data = simplejson.dumps(data)
 		return HttpResponse(data, mimetype='application/json')
 
+	user_info = get_user_info(redis_obj, username, get_userId(request))
+	user_info['following'] = get_following_count(redis_obj, username)
+	user_info['followers'] = get_followers_count(redis_obj, username)
+	
 	return render_to_response(HOME_TEMPLATE_PATH, 
 		{
 			'username' : username,
 			'bookmark_form':bookmark_form,
-			'category_form':category_form
+			'category_form':category_form,
+			'user_info':user_info
 		},
 		context_instance=RequestContext(request))	
 
