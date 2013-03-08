@@ -1,0 +1,35 @@
+<div id="create_bookmark" style="display:none">
+
+	<form id="add_bookmark_form" method="POST" action="/bookmark/">{% csrf_token %}
+				
+        <div>
+            <span><label for="id_visibility">Visibility:</label></span>
+            <span class="inline-fields">{{bookmark_form.visibility}}</span>
+            <span class="bookmark_visibility_error error-messages"></span>
+    	</div>
+
+		<div class="inline-fields">
+            <span><label for="id_url">URL:</label></span>
+            <span>{{bookmark_form.url}}</span>
+            <span class="bookmark_url_error error-messages"></span>
+        </div>
+
+        <div class="inline-fields">
+            <span ><label for="id_name">Name:</label></span>
+            <span>{{bookmark_form.name}}</span>
+            <span class="bookmark_name_error error-messages"></span>
+        </div>
+
+        <div class="inline-fields">
+            <span><label for="id_description">Description:</label></span>
+            <span class="inline-fields">{{bookmark_form.description}}</span>
+            <span class="bookmark_description_error error-messages"></span>
+        </div>
+
+        <div>
+			<input type="submit" value="Create" class="btn-primary" id="add_bookmark"/>             	
+		</div>
+
+	</form>
+			
+</div>

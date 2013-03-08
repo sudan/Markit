@@ -12,6 +12,7 @@ from time import strftime
 
 from bookmark.forms import BookmarkForm
 from category.forms import CategoryForm
+from tags.forms import TagForm
 from redis_helpers.views import Redis
 from auth.login_status import is_logged_in
 from auth.signin import login, authentication
@@ -121,6 +122,7 @@ def display_bookmarks(request):
 	username , data = get_bookmarks(request)	
 	bookmark_form = BookmarkForm(initial={'visibility':'public'})	
 	category_form = CategoryForm()
+	tag_form = TagForm()
 	redis_obj = Redis()
 
 	if request.is_ajax():
@@ -137,6 +139,7 @@ def display_bookmarks(request):
 			'username' : username,
 			'bookmark_form':bookmark_form,
 			'category_form':category_form,
+			'tag_form':tag_form,
 			'user_info':user_info
 		},
 		context_instance=RequestContext(request))	

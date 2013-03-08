@@ -1,0 +1,16 @@
+<div id="tag_list">
+	<a href="#" id="display_tag_form_button">Create a Tag</a>
+
+	<div id="create_tag" style="display:none">
+		
+		<form  id="add_tag_form" method="POST" action="/tag/"> {% csrf_token %}
+			<span><label for="id_tag">Tag Name:</label></span>
+			<span class="inline-fields">{{tag_form.name}}</span>
+			<br/>
+			<input type="submit" value="Create" class="btn-primary" id="add_tag"/> 
+			<span id="tag_name_error" class="error-messages"></span>
+		</form>
+		
+	</div>
+
+</div>

@@ -1,0 +1,15 @@
+<div id="category_list" class="inline-fields">
+	<input type="button" id="display_category_form_button" class="btn-primary" value="Create a category"/>
+
+	<div id="create_category" style="display:none">
+
+		<form id="add_category_form" method="POST" action="/category/">{% csrf_token %}
+			<span><label for="id_category">Category Name:</label></span>
+			<span class="inline-fields">{{category_form.name}}</span>
+			<br/>
+			<input type="submit" value="Create" class="btn-primary" id="add_category"/> 
+			<span id="category_name_error" class="error-messages"></span>
+		</form>	
+
+	</div>
+</div>
