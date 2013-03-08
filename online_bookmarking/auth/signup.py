@@ -4,7 +4,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 import datetime
-import logging
+from time import strftime
+from logger.get_logger import Logger
 
 from auth.forms import SignUpForm, LoginForm
 from auth.encrypt import encrypt_password
@@ -19,7 +20,8 @@ def get_next_userId(redis_obj):
 	
 	key = "global:userId"
 	return Redis.next_unique_key(redis_obj, key)
-
+import datetime
+from time import strftime
 def store_user_info(signup_form):
 	''' A controller which calls the individual store methods '''
 	
@@ -49,6 +51,14 @@ def store_user_info(signup_form):
 	store_uid_with_auth_token(redis_obj, user_id, auth_token)
 	store_email_with_auth_token(redis_obj, email, auth_token)
 	store_global_userIds(redis_obj, user_id)
+
+	logger_instance = Logger(strftime("%d-%m-%Y" + ".log"))
+	logger = logger_instance.start()
+
+	log_info = "Username with %s name and %s email has been signed up" %(username,email)
+	log_info += " at %s" %(datetime.datetime.now())
+	logger.info("log_info")
+	logger_instance.stop()
 
 def username_exists(username):
 	'''  check for the existence of a username '''

@@ -121,7 +121,14 @@ def display_bookmarks(request):
 	bookmark_form = BookmarkForm(initial={'visibility':'public'})	
 	category_form = CategoryForm()
 	
+	
+	# l_instance = Logger(strftime("%d-%m-%Y" + ".log"))
+	# mylogger = l_instance.start()
+	# mylogger.info(str(username) + " " + str(data))
+	# mylogger.warning("A WARNING message")
+	
 
+	# l_instance.stop()
 
 	if request.is_ajax():
 		
