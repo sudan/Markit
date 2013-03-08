@@ -5,7 +5,8 @@
 	var Tag = Backbone.Model.extend({
 		defaults:{
 			name: '',
-			tag_id: ''
+			tag_id: '',
+			bookmark_id: '',
 		},
 		urlRoot: '/tag/'
 	});
