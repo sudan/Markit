@@ -18,6 +18,8 @@ from auth.login_status import is_logged_in
 from auth.signin import login, authentication
 from auth.helpers import get_userId
 from auth.getters import *
+from category.getters import get_category_for_user
+
 from socialize.profile import get_user_info,get_following_count,get_followers_count
 
 from bookmark.getters import *
@@ -139,7 +141,7 @@ def display_bookmarks(request):
 			'bookmark_form':bookmark_form,
 			'category_form':category_form,
 			'tag_form':tag_form,
-			'user_info':user_info
+			'user_info':user_info,
 		},
 		context_instance=RequestContext(request))	
 

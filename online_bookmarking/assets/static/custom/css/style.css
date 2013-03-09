@@ -157,3 +157,10 @@ tr,.btn,.btn-primary
 {
 	height: 130px;
 }
+
+#categories
+{
+	width: 150px;
+	position: relative;
+	top: 10px;
+}

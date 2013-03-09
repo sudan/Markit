@@ -109,6 +109,14 @@ def create_category(request):
 
 	raise Http404()
 
+@authentication('/categories')
+def get_categories(request):
+	''' Get the categories of the user '''
+
+	redis_obj = Redis()
+	data = simplejson.dumps(get_category_for_user(redis_obj, get_userId(request)))
+	return HttpResponse(data, mimetype='application/json')
+	
 @authentication('/add_bookmarks_to_category')
 def add_bookmarks_to_category(request):
 	''' add bookmark to category '''

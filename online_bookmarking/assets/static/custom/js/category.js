@@ -10,16 +10,42 @@
 		urlRoot: '/category/'
 	});
 
-	var CategoryView = Backbone.View.extend({
-		
+	var Categories = Backbone.Collection.extend({
+		model: Category,
+		url:'/categories/'
+
+	});
+
+	var CategoriesView = Backbone.View.extend({
 		el:$('#category_list'),
 
 		initialize: function()
 		{
+
 			var self = this;
 
 			self.createCategoryFormDiv = $('#create_category');
 			self.categoryNameErrorSpan = $('#category_name_error');	
+			self.categoriesDiv = $('#display_category');
+
+			this.collection = new Categories();
+			
+			this.collection.fetch({
+				
+				success: function(response)
+				{
+					$.loadImage();
+					self.render();
+					$.hideImage();		
+				},
+				error: function(response)
+				{
+
+				}
+
+			});
+
+			this.collection.on("add",this.render,this);
 		},
 
 		events:
@@ -48,6 +74,8 @@
 			category_form_data["name"] = self.createCategoryFormDiv.find('input[name=name]').val();
 
 			var category = new Category(category_form_data);
+			this.collection.add(category);
+
 			$.loadImage();
 
 			category.save({
@@ -68,23 +96,57 @@
 				if(responseText.status == "failure")
 					self.displayErrorMessages(responseText);
 				else
+				{	
 					self.showHideCategoryForm();
+
+				}
 			});			
 
 		},
 
 		displayErrorMessages: function(responseText)
 		{
-			window.self = this;
+			var self = this;
 
 			if(responseText['name'])
 				self.createCategoryFormDiv
 					.find(self.categoryNameErrorSpan)
 					.text(responseText['name']);
+		},
+
+		render: function()
+		{
+
+			this.categoriesDiv.empty();
+
+			var select = $('<select/>',{
+				id: 'categories',
+				'data-placeholder':'Select a category'
+			});
+
+			var option = $('<option/>',{
+				value: 'All',
+				text: 'All'
+			}).appendTo(select);
+
+			_.each(this.collection.models,function(model){
+				var option = $('<option/>',{
+					
+					text: model.get("name"),
+					value: model.get("category_id")
+
+				}).appendTo(select);
+
+			});
+
+			select.appendTo(this.categoriesDiv);
+			select.chosen();
+
+			this.categoriesDiv.show();
 		}
-	
+
 	});
 
-	window.category = new CategoryView();
+	window.categories = new CategoriesView();
 
 })(jQuery,window,document)

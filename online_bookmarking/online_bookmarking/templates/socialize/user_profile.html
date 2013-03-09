@@ -40,7 +40,7 @@
 		<div class="bookmarks">
 			<span>Public bookmarks</span>
 			{% for bookmark in public_bookmarks %}
-				<div><a href="{{bookmark.url}}">{{bookmark.name}}</a></div>
+				<div><a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a></div>
 			{% empty %}
 				<span>Hurray! no public bookmarks has been shared!</span>
 			{% endfor %}
