@@ -18,7 +18,6 @@ from bookmark.getters import *
 
 import simplejson
 
-from online_bookmarking.settings import CREATE_TAG_TEMPLATE_PATH
 from online_bookmarking.settings import TAG_NAMES_LIST_TEMPLATE_PATH
 from online_bookmarking.settings import BOOKMARKS_FOR_TAGS_TEMPLATE_PATH
 
