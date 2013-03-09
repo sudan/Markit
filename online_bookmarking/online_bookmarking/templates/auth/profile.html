@@ -64,12 +64,21 @@
 
             			<div class="inline-fields">
 							<span><label for="id_visibility">Visibility:</label></span>
-							<span>
-								<label class="inline-fields"><input type="radio" checked="checked" name="visibility" value="public"/>Public</label>
-							</span>
-							<span>
-								<label class="inline-fields"><input type="radio" name="visibility" value="private"/>Private</label>
-							</span>
+							<% if(visibility == "public"){  %>
+								<span>
+									<label class="inline-fields"><input type="radio" checked="checked" name="visibility" value="public"/>Public</label>
+								</span>
+								<span>
+									<label class="inline-fields"><input type="radio" name="visibility" value="private"/>Private</label>
+								</span>
+							<% } else { %>
+								<span>
+									<label class="inline-fields"><input type="radio"  name="visibility" value="public"/>Public</label>
+								</span>
+								<span>
+									<label class="inline-fields"><input type="radio" checked="checked" name="visibility" value="private"/>Private</label>
+								</span>
+							<%  } %>
 						</div>
 
             			<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>

@@ -113,6 +113,7 @@
 					}).appendTo(select);
 				}
 			});
+			
 			return select;
 		}
 	
