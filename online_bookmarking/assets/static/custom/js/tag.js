@@ -105,11 +105,13 @@
 
 			_.each(bookmarks.collection.models,function(model){
 
-				var option = $('<option/>',{
-					text: model.get("name"),
-					value: model.get("bookmark_id")
-				}).appendTo(select);
-
+				if(model.get("visibility") != "private")
+				{
+					var option = $('<option/>',{
+						text: model.get("name"),
+						value: model.get("bookmark_id")
+					}).appendTo(select);
+				}
 			});
 			return select;
 		}
