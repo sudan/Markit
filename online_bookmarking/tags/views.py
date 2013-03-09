@@ -9,6 +9,8 @@ from tags.forms import TagForm
 from bookmark.bookmarks import get_bookmarks
 from auth.login_status import is_logged_in
 from auth.signin import login, authentication
+from auth.helpers import get_userId
+from auth.getters import get_username
 
 from tags.getters import *
 from tags.setters import *
@@ -107,9 +109,11 @@ def retrieve_tags(request):
 
 	redis_obj = Redis()
 	tag_info = get_tag_names(redis_obj)
+	username = get_username(redis_obj,get_userId(request))
 	return render_to_response(TAG_NAMES_LIST_TEMPLATE_PATH,
 		{
-			'tag_info':tag_info
+			'tag_info': tag_info,
+			'username': username
 		},
 		context_instance=RequestContext(request))
 
