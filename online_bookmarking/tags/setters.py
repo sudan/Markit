@@ -15,9 +15,10 @@ def store_tagId_name_mapping(redis_obj, tag_id, name):
 def add_bookmark_to_tag(redis_obj, tag_id, bookmark_id):
 	''' add the bookmark to the set in tag ids '''
 
+	print tag_id,bookmark_id,"bb"
 	key = "tagId:%d:bookmarkIds" % (tag_id)
 	redis_obj.add_to_set(key, bookmark_id)
-
+	
 def store_global_tagIds(redis_obj, tag_id):
 	''' add the tag id to the set of global tags '''
 

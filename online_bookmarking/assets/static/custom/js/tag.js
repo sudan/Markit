@@ -2,6 +2,39 @@
 
 	"use strict"
 
+	$('.tags').on("click",function(e){
+		e.preventDefault();
+		window.anchor = $(this);
+
+		var href = $(this).attr('href');
+			
+		$.ajax({
+			url: href,
+			success: function(bookmarks)
+			{
+				var ul = anchor.parents('div').children('ul.url_list');
+				ul.empty();
+
+				$.each(bookmarks,function(index,bookmark){
+					var li = $('<li/>');
+					var anchor = $('<a/>',{
+                        href : bookmark.url,
+                        html : bookmark.name,
+                        target: '_blank'
+                    }).appendTo(li);
+                 
+                    li.appendTo(ul);
+				});
+				ul.slideToggle();
+			},
+			error: function(response)
+			{
+
+			}
+		});
+
+	});
+
 	window.Tag = Backbone.Model.extend({
 		defaults:{
 			name: '',

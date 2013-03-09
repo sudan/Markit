@@ -164,3 +164,9 @@ tr,.btn,.btn-primary
 	position: relative;
 	top: 10px;
 }
+
+.url_list
+{
+	display: none;
+	list-style-type: none;
+}

@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^categories/$','category.views.get_categories'),
     
     url(r'^tag/$','tags.views.tag_bundle'),
+    url(r'^tag_list/$','tags.views.retrieve_tags'),
     url(r'^add_bookmarks_to_category/$','category.views.add_bookmarks_to_category'),
     url(r'^users/$','socialize.relationship.users'),
     url(r'^toggle/$','socialize.relationship.toggle_relationship'),

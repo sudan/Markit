@@ -1,9 +1,21 @@
+{% extends "base.html" %}
+
+{% block middle_pane %}
 <html>
 	<body>
+		<h3>Here are the list of available Tags</h3>
 		<form method="POST" action="/tag_names/">{% csrf_token %}
 			{% for tag in tag_info %}
-				{{tag}}
+				<div>
+					<b>
+						<a class="tags" href="/tags/{{tag.tag_id}}">{{tag.name}}</a>
+					</b>
+					<ul class="url_list">
+					</ul>
+				</div>
 			{% endfor %}
 		</form>
+	
 	</body>
 </html>
+{% endblock %}

@@ -33,7 +33,7 @@ def create_tag(redis_obj, name):
 
 	if tag_name_exists(redis_obj, name) == 1 :
 		key = "name:%s:tagId" % (name)
-		return redis_obj.get_value(key)
+		return int(redis_obj.get_value(key))
 
 	tag_id = get_next_tagId(redis_obj)
 	store_global_tagIds(redis_obj, tag_id)
@@ -49,7 +49,7 @@ def store_tag_info(tag_form):
 	
 	bookmark_list = tag_form['bookmark_ids']
 	for bookmark in bookmark_list:
-		add_bookmark_to_tag(redis_obj, tag_id, bookmark)
+		add_bookmark_to_tag(redis_obj, tag_id, int(bookmark))
 	
 	tag_form['status'] = 'success'
 	return simplejson.dumps(tag_form)
@@ -137,11 +137,7 @@ def get_bookmarks_for_tags(request, tag_id):
 
 		bookmark_list[i] = bookmark_info
 
-	return render_to_response(BOOKMARKS_FOR_TAGS_TEMPLATE_PATH,
-		{
-			'bookmark_list':bookmark_list
-		},
-		context_instance=RequestContext(request))
+	return HttpResponse(simplejson.dumps(bookmark_list),mimetype='application/json')
 
 	return Http404()
 
