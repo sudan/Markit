@@ -30,4 +30,12 @@
         $('#image-loader').fadeOut();
     };
 
+    $.refreshBookmarks = function()
+    {
+        var tagAnchor = $('#display_tag_form_button');
+        var tagForm = $('#create_tag');
+        if(tagForm.is(":visible"))
+            tagForm.slideUp();
+    };
+
 })(jQuery,window,document);

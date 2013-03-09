@@ -96,6 +96,7 @@
 			}).complete(function(response){
 
 				$.hideImage();
+				$.refreshBookmarks();
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "failure")
 					self.displayErrorMessages(editBookmarkForm,responseText);
@@ -250,13 +251,14 @@
 			}).complete(function(response){
 
 				$.hideImage();
+				$.refreshBookmarks();
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "success")
 					self.collection.add(new Bookmark(responseText));
 				else
 					self.displayErrorMessages(responseText);	
 			});			
-		}
+		},
 
 	});
 	     
