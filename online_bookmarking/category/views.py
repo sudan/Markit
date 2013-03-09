@@ -57,6 +57,7 @@ def store_category_user(user_id, category_form):
 	a new category '''
 
 	redis_obj = Redis()
+	status = 'success'
 
 	#POST and PUT requests handled in the same view
 	if category_name_exists(redis_obj, user_id, category_form['name']) == 0:
@@ -66,6 +67,7 @@ def store_category_user(user_id, category_form):
 		store_category_name_uid_mapping(redis_obj, user_id, category_form['name'])
 		store_category_name_userId_uid_mapping(redis_obj, user_id, category_id, category_form['name'])
 	else:
+		status = 'duplicate'
 		category_id = category_form.get('category_id', '')
 		if category_id == '':
 			pass
@@ -80,7 +82,7 @@ def store_category_user(user_id, category_form):
 	category = {}
 	category['category_id'] = category_id
 	category['category_name'] = category_form['name']
-	category['status'] = 'success'
+	category['status'] = status
 	return simplejson.dumps(category) 
 
 @authentication('/category')

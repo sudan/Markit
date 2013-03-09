@@ -2,7 +2,7 @@
 
 	"use strict"
 
-	var Category = Backbone.Model.extend({
+	window.Category = Backbone.Model.extend({
 		defaults:{
 			name: '',
 			category_id: ''
@@ -74,10 +74,9 @@
 			category_form_data["name"] = self.createCategoryFormDiv.find('input[name=name]').val();
 
 			var category = new Category(category_form_data);
-			this.collection.add(category);
-
+			
 			$.loadImage();
-
+			
 			category.save({
 				
 				success: function(response)
@@ -90,14 +89,17 @@
 				}
 			
 			}).complete(function(response){
-
+				
 				$.hideImage();
 				var responseText = JSON.parse(response.responseText);
+				
 				if(responseText.status == "failure")
 					self.displayErrorMessages(responseText);
 				else
 				{	
 					self.showHideCategoryForm();
+					if(responseText.status != "duplicate")
+						self.collection.add(category);
 
 				}
 			});			
@@ -146,7 +148,7 @@
 		}
 
 	});
-
+	
 	window.categories = new CategoriesView();
 
 })(jQuery,window,document)
