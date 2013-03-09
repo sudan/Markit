@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response, HttpResponseRedirect
 from django.template import RequestContext
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django import forms
 
 from redis_helpers.views import Redis
@@ -47,9 +47,13 @@ def store_tag_info(tag_form):
 
 	redis_obj = Redis()
 	tag_id = create_tag(redis_obj, tag_form['name'])	
-	bookmark_list = tag_form['bookmark_list']
+	
+	bookmark_list = tag_form['bookmark_ids']
 	for bookmark in bookmark_list:
 		add_bookmark_to_tag(redis_obj, tag_id, bookmark)
+	
+	tag_form['status'] = 'success'
+	return simplejson.dumps(tag_form)
 
 def get_tag_names(redis_obj):
 	''' Returns a dictionary of tag info '''
@@ -68,41 +72,35 @@ def get_tag_names(redis_obj):
 
 	return tag_info
 
-@authentication('/tags')
+@authentication('/tag')
 def tag_bundle(request):
 	''' create a tag if it doesnt exist.Add urls to the
 	existing ones '''
 
+
 	if request.method == "POST":
-		tag_form = TagForm(data=request.POST)
-		
-		if tag_form.is_valid():
 
+		if request.is_ajax():
+			data = simplejson.loads(request.POST.keys()[0])
+		else:
+			data = request.POST
+
+		tag_form = TagForm(data=data)
+		name = data.get('name','')
+		if tag_form.is_valid() and data.get('bookmark_ids','') != '' and data['bookmark_ids'] != '':
 			tag_form_cleaned = tag_form.cleaned_data
-			tag_form_cleaned['bookmark_list']  = request.POST.getlist('bookmark_list')
-			store_tag_info(tag_form_cleaned)
-
-			return HttpResponseRedirect('/success/')
-
-		userId , data = get_bookmarks(request)
-		bookmark_list = get_bookmark_list(data)
-		tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
-		return render_to_response(CREATE_TAG_TEMPLATE_PATH,
-			{
-				'tag_form':tag_form
-			},
-			context_instance=RequestContext(request))	
-
-	userId , data = get_bookmarks(request)
-	bookmark_list = get_bookmark_list(data)
-	tag_form = TagForm()
-	tag_form.fields['bookmark_list'] = forms.MultipleChoiceField(choices=bookmark_list)
+			tag_form_cleaned['bookmark_ids'] = data['bookmark_ids']
+			tag_json = store_tag_info(tag_form_cleaned)
+			
+			return HttpResponse(tag_json,mimetype='application/json')
 	
-	return render_to_response(CREATE_TAG_TEMPLATE_PATH,
-		{
-			'tag_form':tag_form
-		},
-		context_instance=RequestContext(request))
+		tag_form = {}
+		tag_form['name'] = name
+		tag_form['status'] = 'failure'
+		tag_form['error'] = 'Invalid entries'
+		return HttpResponse(simplejson.dumps(tag_form),mimetype='application/json')
+	
+	raise Http404()
 
 @authentication('/tag_names')
 def retrieve_tags(request):

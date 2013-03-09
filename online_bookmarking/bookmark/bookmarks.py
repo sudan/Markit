@@ -27,7 +27,6 @@ from django.utils import simplejson
 
 
 from online_bookmarking.settings import BOOKMARK_ADD_TEMPLATE_PATH, HOME_TEMPLATE_PATH
-from logger import getlogger
 from logger.get_logger import Logger
 
 def store_bookmark(request, bookmark_form,edit_bookmark_id=''):

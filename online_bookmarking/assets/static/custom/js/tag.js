@@ -2,11 +2,11 @@
 
 	"use strict"
 
-	var Tag = Backbone.Model.extend({
+	window.Tag = Backbone.Model.extend({
 		defaults:{
 			name: '',
 			tag_id: '',
-			bookmark_id: '',
+			bookmark_ids: '',
 		},
 		urlRoot: '/tag/'
 	});
@@ -20,7 +20,8 @@
 			var self = this;
 
 			self.createTagFormDiv = $('#create_tag');
-			self.TagNameErrorSpan = $('#tag_name_error');	
+			self.tagNameErrorSpan = $('#tag_name_error');	
+			self.bookmarkDropDownId = 'bookmark_dropdown';
 		},
 
 		events:
@@ -29,15 +30,20 @@
 			"click #add_tag":"saveTag",
 		},
 
-		showHideTagForm: function(e)
+		showHideTagForm: function()
 		{
 			var self = this;
-			e.preventDefault();
+			self.$el.find('#bookmark_tag_wrapper')
+				.empty()
+				.append(self.createBookmarkDropDown());
+			
+			$('#' + self.bookmarkDropDownId).chosen()
+			$('#' + self.bookmarkDropDownId).trigger("liszt:updated");
 
 			self.$el.find(self.createTagFormDiv).slideToggle();
 
 			self.createTagFormDiv.find('input[name=name]').val('');
-			self.TagNameErrorSpan.empty();
+			self.tagNameErrorSpan.empty();
 
 		},
 
@@ -48,10 +54,11 @@
 			
 			var tag_form_data = {};
 			tag_form_data["name"] = self.createTagFormDiv.find('input[name=name]').val();
-
+			tag_form_data["bookmark_ids"] = self.createTagFormDiv
+												.find($('#bookmark_dropdown')).val();
 			var tag = new Tag(tag_form_data);
 			$.loadImage();
-
+			
 			tag.save({
 				
 				success: function(response)
@@ -67,6 +74,7 @@
 
 				$.hideImage();
 				var responseText = JSON.parse(response.responseText);
+				
 				if(responseText.status == "failure")
 					self.displayErrorMessages(responseText);
 				else
@@ -77,12 +85,33 @@
 
 		displayErrorMessages: function(responseText)
 		{
-			window.self = this;
-
-			if(responseText['name'])
+			var self = this;
+			
+			if(responseText['error'])
 				self.createTagFormDiv
-					.find(self.TagNameErrorSpan)
-					.text(responseText['name']);
+					.find(self.tagNameErrorSpan)
+					.text(responseText['error']);
+		},
+
+		createBookmarkDropDown: function()
+		{
+			var self = this;
+
+			var select = $('<select/>',{
+				id: self.bookmarkDropDownId,
+				multiple: true,
+				'data-placeholder': 'Select bookmarks'
+			});
+
+			_.each(bookmarks.collection.models,function(model){
+
+				var option = $('<option/>',{
+					text: model.get("name"),
+					value: model.get("bookmark_id")
+				}).appendTo(select);
+
+			});
+			return select;
 		}
 	
 	});
