@@ -29,12 +29,14 @@
 						<img  style="float:right" src="{{STATIC_URL}}custom/img/private.jpg"/>
 					<% } %>
 					<div><i>Created Date:<%= creation_date %></i></div>
+					<br/>
 					<div>
 						<span><h3><a target="_blank" href="<%= url %>"><%= name %></a></h3></span>
 					</div>
 					<input type="hidden" name="bookmark_id" value="<%= bookmark_id %>"/>
+
 					<p><%= description %>
-						<span><button class="btn-primary edit_bookmark">Edit</button></span>
+						<span><br/><button class="btn-primary edit_bookmark">Edit</button></span>
 					</p>
 				
 				</script>
