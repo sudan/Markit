@@ -24,6 +24,8 @@ urlpatterns = patterns('',
     url(r'^home$', 'bookmark.bookmarks.display_bookmarks'),
     url(r'^bookmarks/$', 'bookmark.bookmarks.display_bookmarks'),
     url(r'^bookmark/$', 'bookmark.bookmarks.create_bookmark'),
+    url(r'^delete_bookmark/$','bookmark.bookmarks.delete_bookmark'),
+
     url(r'^category/$','category.views.create_category'),
     url(r'^categories/$','category.views.get_categories'),
     

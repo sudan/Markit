@@ -46,4 +46,4 @@ def delete_bookmark_uid_mapping(redis_obj, bookmark_id, user_id):
 	''' Remove bookmark id from user id mapping ''' 
 
 	key = "userId:%d:bookmarks" %(user_id)
-	redis_obj.remove_from_stack(key, 0, value)
+	redis_obj.remove_from_stack(key,bookmark_id)

@@ -64,7 +64,7 @@ def clear_bookmark(user_id, bookmark_id):
 	delete_userId(redis_obj, bookmark_id)
 	delete_category(redis_obj, bookmark_id)
 	delete_bookmark_uid_mapping(redis_obj, bookmark_id, user_id)
-
+	
 def get_bookmarks(request):
 
 	redis_obj = Redis()
@@ -155,5 +155,6 @@ def delete_bookmark(request):
 	if bookmark_id != "":
 		clear_bookmark(user_id, int(bookmark_id))
 
-	return render_to_response(HOME_TEMPLATE_PATH,
-		context_instance=RequestContext(request))
+	data  = {}	
+	data ['status'] = 'success'
+	return HttpResponse(simplejson.dumps(data),mimetype='application/json')

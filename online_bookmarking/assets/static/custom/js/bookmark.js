@@ -37,12 +37,37 @@
 			'click button.edit_bookmark':'editBookmark',
 			'click button.cancel_bookmark':'cancelBookmark',
 			'click button.save_bookmark':'saveBookmark',
+			'click button.delete_bookmark':'deleteBookmark',
 		},
 
 		editBookmark: function()
 		{	
 			var tmpl = _.template(this.editTemplate);
 			this.$el.html(tmpl(this.model.toJSON())).hide().slideDown();
+		},
+
+		deleteBookmark: function()
+		{
+			var self = this;
+			var bookmark_id = this.model.get("bookmark_id");
+			
+			$.ajax({
+				type: 'POST',
+				data: {'bookmark_id':bookmark_id},
+				url: '/delete_bookmark/',
+				headers: { "X-CSRFToken": $.getCookie("csrftoken") },
+				success: function()
+				{
+					self.model.destroy();
+					self.remove();
+				},
+				error: function(error)
+				{
+					console.log(error)
+				}
+			});
+
+			
 		},
 
 		cancelBookmark: function(e)
