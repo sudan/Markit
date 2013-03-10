@@ -11,7 +11,7 @@
 	});
 
 	var addListBookmarkView = Backbone.View.extend({
-		el: $('#tags_wrapper'),
+		el: $('#bookmarks_wrapper'),
 
 		initialize: function()
 		{
@@ -26,7 +26,7 @@
 		{
 			$.loadImage();
 			$.hideSuccess();
-
+			
 			var img = $(e.currentTarget);
 			var url = img.closest('li').find('a').attr('href');
 			var name = img.closest('li').find('a').text();

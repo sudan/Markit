@@ -10,7 +10,7 @@
   		<span>Bookmark has added successfully</span>
 	</div>
 
-	<div id="tags_wrapper">
+	<div id="bookmarks_wrapper">
 		<h3>Here are the list of available Tags</h3>
 		<form method="POST" action="/tag_names/">{% csrf_token %}
 			{% for tag in tag_info %}
