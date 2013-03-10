@@ -50,24 +50,27 @@
 		{
 			var self = this;
 			var bookmark_id = this.model.get("bookmark_id");
-			
-			$.ajax({
-				type: 'POST',
-				data: {'bookmark_id':bookmark_id},
-				url: '/delete_bookmark/',
-				headers: { "X-CSRFToken": $.getCookie("csrftoken") },
-				success: function()
-				{
-					self.model.destroy();
-					self.remove();
-				},
-				error: function(error)
-				{
-					console.log(error)
-				}
-			});
 
-			
+			var confirmation = confirm("Are you sure you want to delete the bookmark?");
+			if(confirmation == true)
+			{
+				$.ajax({
+					type: 'POST',
+					data: {'bookmark_id':bookmark_id},
+					url: '/delete_bookmark/',
+					headers: { "X-CSRFToken": $.getCookie("csrftoken") },
+					success: function()
+					{
+						self.model.destroy();
+						self.remove();
+					},
+					error: function(error)
+					{
+						console.log(error)
+					}
+				});
+
+			}
 		},
 
 		cancelBookmark: function(e)
