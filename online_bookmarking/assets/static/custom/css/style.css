@@ -170,3 +170,8 @@ tr,.btn,.btn-primary
 	display: none;
 	list-style-type: none;
 }
+
+.description
+{
+	font-size: 12px;
+}

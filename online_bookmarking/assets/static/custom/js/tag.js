@@ -22,6 +22,11 @@
                         html : bookmark.name,
                         target: '_blank'
                     }).appendTo(li);
+
+                    var description = $('<p/>',{
+                    	html: bookmark.description,
+                    	class: 'description'
+                    }).appendTo(li);
                  
                     li.appendTo(ul);
 				});
