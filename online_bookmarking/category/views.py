@@ -124,18 +124,33 @@ def add_bookmarks_to_category(request):
 	''' add bookmark to category '''
 
 	if request.method == "POST":
-		bookmark_id = request.POST.get("bookmark_id", "")
-		category_id = request.POST.get("category_id", "")
-		user_id = get_userId(request)
 
+		if request.is_ajax():
+			data = simplejson.loads(request.POST.keys()[0])
+		else:
+			data = request.POST
+
+		category_id = data.get('category_id','')
+		bookmark_ids = data.get('bookmark_ids','')
+
+		if category_id == '' or bookmark_ids == '':
+			data['status'] = 'failure'
+			data['category_id'] = 'Invalid entries'
+			data['bookmark_ids'] = 'Invalid entries'
+			print "no"
+			return HttpResponse(simplejson.dumps(data),mimetype='application/json')
+
+		user_id = get_userId(request)
 		redis_obj = Redis()
 
-		store_bookmark_category_mapping(redis_obj, get_userId(request), int(category_id), int(bookmark_id))
+		for bookmark_id in bookmark_ids:
+			store_bookmark_category_mapping(redis_obj, get_userId(request), int(category_id), int(bookmark_id))
 
-		return HttpResponseRedirect('/success/')
-
-	return render_to_response(ADD_BOOKMARKS_TO_CATEGORY_TEMPLATE_PATH,
-		context_instance=RequestContext(request))
+		data = {}
+		data['category_id'] = category_id
+		data['bookmark_ids'] = bookmark_ids
+		data['status'] = 'success'
+		return HttpResponse(simplejson.dumps(data),mimetype='application/json')
 
 @authentication('/home')
 def clear_category(request):

@@ -180,3 +180,9 @@ tr,.btn,.btn-primary
 {
 	cursor: pointer;
 }
+
+.category_options
+{
+	padding-top: 2px;
+	padding-left: 15px;
+}

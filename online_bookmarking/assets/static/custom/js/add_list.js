@@ -1,5 +1,7 @@
 (function($,window,document,undefined){
 
+	"use strict"
+	
 	var addListBookmark = Backbone.Model.extend({
 		defaults:{
 			url: '',

@@ -19,7 +19,7 @@ from auth.signin import login, authentication
 from auth.helpers import get_userId
 from auth.getters import *
 from tags.deleters import delete_bookmark_from_tag
-from category.getters import get_category_for_user
+from category.getters import get_category_for_user,get_categoryId_from_bookmark
 
 from socialize.profile import get_user_info,get_following_count,get_followers_count
 
@@ -86,6 +86,7 @@ def get_bookmarks(request):
 		data_dic['visibility'] = get_visibility(redis_obj, bookmark_id)
 		data_dic['creation_date'] = get_created_date(redis_obj, bookmark_id).split()[0]
 		data_dic['description'] = get_description(redis_obj, bookmark_id)
+		data_dic['category_id'] = get_categoryId_from_bookmark(redis_obj,user_id,bookmark_id)
 		
 		data[i] = data_dic
 

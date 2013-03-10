@@ -1,0 +1,29 @@
+<div id="bookmark_category_list">
+	<a href="#" id="display_bookmark_category_button">Add bookmarks to category</a>
+
+	<div id="bookmark_category_wrapper" style="display:none">
+
+		<form  id="add_bookmark_category_form" method="POST" action="/add_bookmarks_to_category/"> {% csrf_token %}
+			<div class="category_wrapper">
+				<label for_id="category">Category Name:</label>
+				<div class="category_dropdown">
+				</div>
+			</div>
+			
+			<div class="bookmark_category_wrapper">
+				<label for_id="bookmark">Bookmark List:</label>
+				<div class="bookmark_dropdown">
+
+				</div>
+			</div>
+
+			<input type="submit" value="Add" class="btn-primary" id="add_bookmarks_to_category"/> 
+			<span id="bookmark_category_error" class="error-messages"></span>
+		
+		</form>
+
+	</div>
+
+</div>
+
+

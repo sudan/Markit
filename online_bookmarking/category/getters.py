@@ -10,7 +10,13 @@ def get_categoryId(redis_obj, user_id, name):
 	''' return the category id given the user id and category name '''
 
 	key = "userId:%d:categoryName:%s:categoryId" %(user_id, name)
-	return redis_obj.get_value(key, category_id)
+	return int(redis_obj.get_value(key))
+
+def get_categoryId_from_bookmark(redis_obj,user_id,bookmark_id):
+	''' Returns the category id given the user id and bookmark id '''
+
+	key = "userId:%d:bookmarkId:%d:categoryId" %(user_id,bookmark_id)
+	return int(redis_obj.get_value(key))
 
 def get_category_name(redis_obj, category_id):
 	''' return the category name given the id '''

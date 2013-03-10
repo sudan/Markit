@@ -4,6 +4,7 @@
 
 	{% include "_partials/user_info.html" %}
 	{% include "_partials/add_tag.html" %}
+	{% include "_partials/add_bookmarks_to_category.html" %}
 
 {% endblock %}
 
@@ -28,7 +29,10 @@
 					<% if(visibility == "private"){ %>
 						<img  style="float:right" src="{{STATIC_URL}}custom/img/private.jpg"/>
 					<% } %>
-					<div><i>Created Date:<%= creation_date %></i></div>
+					<div>
+						<i>Created Date:<%= creation_date %></i>
+					</div>
+					
 					<br/>
 					<div>
 						<span><h3><a target="_blank" href="<%= url %>"><%= name %></a></h3></span>
@@ -41,7 +45,7 @@
 							<button class="btn-primary delete_bookmark">Delete</button>
 						</span>
 					</p>
-				
+					
 				</script>
 
 			</div>

@@ -9,7 +9,8 @@
 			description: '',
 			visibility: '',
 			creation_date: '',
-			bookmark_id: ''
+			bookmark_id: '',
+			category_id: 0
 		},
 		urlRoot: '/bookmark/'
 	});
