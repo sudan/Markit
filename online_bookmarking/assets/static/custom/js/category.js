@@ -46,12 +46,36 @@
 			});
 
 			this.collection.on("add",this.render,this);
+			this.on("change:filterType", this.filterBookmarks, this);
 		},
 
 		events:
 		{
-			"click #display_category_form_button":"showHideCategoryForm",
-			"click #add_category":"saveCategory",
+			"click #display_category_form_button": "showHideCategoryForm",
+			"click #add_category": "saveCategory",
+			"change #display_category select": "setFilter",
+		},
+
+		setFilter: function(e)
+		{
+			this.filterType = e.currentTarget.value;
+			this.trigger("change:filterType");
+		},
+
+		filterBookmarks: function()
+		{
+
+			if(this.filterType == "All")
+			 	bookmarks.collection.reset(bookmarks.bookmarks_json);
+			else
+			{
+			 	bookmarks.collection.reset(bookmarks.bookmarks_json,{silent:true});
+			 	var filterType = this.filterType;
+			 	var filtered = _.filter(bookmarks.collection.models,function(model){
+			 		return model.get('category_id') == filterType;
+			 	});
+			 	bookmarks.collection.reset(filtered);
+			}
 		},
 
 		showHideCategoryForm: function()

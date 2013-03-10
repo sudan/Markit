@@ -69,11 +69,11 @@
 				'data-placeholder': 'Select bookmarks'
 			});
 
-			_.each(bookmarks.collection.models,function(model){
+			_.each(bookmarks.bookmarks_json,function(bookmark){
 
 				var option = $('<option/>',{
-					text: model.get("name"),
-					value: model.get("bookmark_id")
+					text: bookmark['name'],
+					value: bookmark['bookmark_id']
 				}).appendTo(select);
 
 			});
@@ -133,7 +133,9 @@
 		updateCategoryIds: function(responseText)
 		{
 
-			var cidBookmarkIdMapping = {}
+			var cidBookmarkIdMapping = {};
+
+			bookmarks.collection.reset(bookmarks.bookmarks_json);
 			bookmarks.collection.each(function(model){
 				cidBookmarkIdMapping[model.get('bookmark_id')] = model.cid;
 			});
@@ -146,6 +148,13 @@
 				var cid = cidBookmarkIdMapping[bookmarkId];
 				var model = bookmarks.collection.getByCid(cid);
 				model.set({'category_id':categoryId});
+				bookmarks.bookmarks_json = bookmarks.collection.toJSON();
+
+				window.category = $('#categories');
+				categories.$el.find(category).children("[value='" + "All" + "']").attr('selected','selected');
+				category.chosen().change();
+				category.trigger("liszt:updated");
+
 			});
 
 		},

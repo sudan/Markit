@@ -16,7 +16,11 @@ def get_categoryId_from_bookmark(redis_obj,user_id,bookmark_id):
 	''' Returns the category id given the user id and bookmark id '''
 
 	key = "userId:%d:bookmarkId:%d:categoryId" %(user_id,bookmark_id)
-	return int(redis_obj.get_value(key))
+	value = redis_obj.get_value(key)
+	if value is None:
+		return 0;
+	else:
+		return value;
 
 def get_category_name(redis_obj, category_id):
 	''' return the category name given the id '''

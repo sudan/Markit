@@ -163,6 +163,8 @@
 				{
 					$.hideImage();
 					self.render();
+					self.bookmarks_json = self.collection.toJSON();
+
 				},
 				error: function(error)
 				{
@@ -171,12 +173,15 @@
 			});
 
 			this.collection.on("add",this.renderBookmark,this);
-		
+			this.collection.on("reset", this.render, this);
+
 		},
 
 		render: function()
 		{
 			var self = this;
+			self.$el.find(this.bookmarkWrapperDiv).empty();
+			
 			_.each(this.collection.models,function(bookmark){
 				self.renderBookmark(bookmark);
 			},this);
@@ -187,6 +192,7 @@
 			var bookmarkView = new BookmarkView({
 				model: bookmark
 			});
+			
 
 			if(bookmark.get('status') == 'success')
 			{
@@ -194,7 +200,8 @@
 					.prepend(bookmarkView.render().el)
 					.hide()
 					.slideDown();
-				this.showHideBookmarkForm();
+				if(this.createBookmarkDiv.is(':visible'))
+					this.showHideBookmarkForm();
 			}	
 			else
 				this.$el.find(this.bookmarkWrapperDiv)
@@ -265,6 +272,7 @@
 			
 			var bookmark = new Bookmark(bookmark_form_data);
 			
+
 			$.loadImage();
 			bookmark.save({
 				
@@ -283,7 +291,11 @@
 				$.refreshBookmarks();
 				var responseText = JSON.parse(response.responseText);
 				if(responseText.status == "success")
+				{
+					self.collection.reset(self.bookmarks_json,{silent:true});
 					self.collection.add(new Bookmark(responseText));
+					self.bookmarks_json = self.collection.toJSON();
+				}
 				else
 					self.displayErrorMessages(responseText);	
 			});			
