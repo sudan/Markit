@@ -4,7 +4,7 @@
 
 	$('.tags').on("click",function(e){
 		e.preventDefault();
-		window.anchor = $(this);
+		var anchor = $(this);
 
 		var href = $(this).attr('href');
 			

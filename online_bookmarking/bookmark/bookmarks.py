@@ -18,6 +18,7 @@ from auth.login_status import is_logged_in
 from auth.signin import login, authentication
 from auth.helpers import get_userId
 from auth.getters import *
+from tags.deleters import delete_bookmark_from_tag
 from category.getters import get_category_for_user
 
 from socialize.profile import get_user_info,get_following_count,get_followers_count
@@ -64,6 +65,7 @@ def clear_bookmark(user_id, bookmark_id):
 	delete_userId(redis_obj, bookmark_id)
 	delete_category(redis_obj, bookmark_id)
 	delete_bookmark_uid_mapping(redis_obj, bookmark_id, user_id)
+	delete_bookmark_from_tag(redis_obj,bookmark_id)
 	
 def get_bookmarks(request):
 
