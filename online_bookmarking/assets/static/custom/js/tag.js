@@ -20,8 +20,15 @@
 					var anchor = $('<a/>',{
                         href : bookmark.url,
                         html : bookmark.name,
-                        target: '_blank'
+                        target: '_blank',
+                        class: 'add_to_my_bookmarks'
                     }).appendTo(li);
+
+                    var img = $('<img/>',{
+                    	src: '/static/custom/img/add-button.png',
+                    	class: 'add_bookmark_icon',
+                    	title: 'Add to My Bookmarks'
+                    }).insertAfter(anchor);
 
                     var description = $('<p/>',{
                     	html: bookmark.description,

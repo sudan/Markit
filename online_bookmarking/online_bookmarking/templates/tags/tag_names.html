@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
 {% block middle_pane %}
-<html>
-	<body>
+	
+	<div>
+		<img id="image-loader" src="{{STATIC_URL}}custom/img/ajax-loader.gif">
+	</div>
+
+	<div class="alert" style="display:none">
+  		<span>Bookmark has added successfully</span>
+	</div>
+
+	<div id="tags_wrapper">
 		<h3>Here are the list of available Tags</h3>
 		<form method="POST" action="/tag_names/">{% csrf_token %}
 			{% for tag in tag_info %}
@@ -15,7 +23,6 @@
 				</div>
 			{% endfor %}
 		</form>
-	
-	</body>
-</html>
+	</div>
+
 {% endblock %}

@@ -38,4 +38,16 @@
             tagForm.slideUp();
     };
 
+    $.showSuccess = function()
+    {
+        var message = $('.alert');
+        message.fadeIn();
+    };
+
+    $.hideSuccess = function()
+    {
+        var message = $('.alert');
+        message.fadeOut();
+    };
+
 })(jQuery,window,document);

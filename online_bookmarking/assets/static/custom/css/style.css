@@ -175,3 +175,8 @@ tr,.btn,.btn-primary
 {
 	font-size: 12px;
 }
+
+.add_bookmark_icon
+{
+	cursor: pointer;
+}
