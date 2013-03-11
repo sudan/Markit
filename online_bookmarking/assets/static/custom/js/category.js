@@ -66,7 +66,10 @@
 		{
 
 			if(this.filterType == "All")
+			{
 			 	bookmarks.collection.reset(bookmarks.bookmarks_json);
+				categoryRouter.navigate("filter/all");
+			}
 			else
 			{
 			 	bookmarks.collection.reset(bookmarks.bookmarks_json,{silent:true});
@@ -75,6 +78,7 @@
 			 		return model.get('category_id') == filterType;
 			 	});
 			 	bookmarks.collection.reset(filtered);
+			 	categoryRouter.navigate("filter/" + filterType);
 			}
 		},
 
@@ -172,7 +176,22 @@
 		}
 
 	});
+
+	var CategoryRouter = Backbone.Router.extend({
+		routes:
+		{
+			"filter/:type":"urlFilter"
+		},
+
+		urlFilter: function(type)
+		{
+			categories.filterType = type;
+			categories.trigger("change:filterType");
+		}
+	});
 	
 	window.categories = new CategoriesView();
+	window.categoryRouter = new CategoryRouter();
+	Backbone.history.start();
 
 })(jQuery,window,document)
