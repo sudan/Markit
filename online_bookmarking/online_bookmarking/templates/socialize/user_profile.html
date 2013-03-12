@@ -2,7 +2,7 @@
 
 {% block middle_pane %}
 	
-	<div class="profile_container">
+	<div class="user_profile">
 
 		<div class="image_wrapper inline-fields">
 			<a href="/profile/{{user_info.username}}/">
@@ -19,22 +19,27 @@
 		</div>
 
 		<div class="socialize_wrapper">
-			<span><a href="#">{{following_count}}&nbsp;following</a></span>
-			<span><a href="#">{{followers_count}}&nbsp;followers</a></span>
-		
+			
 		</div>
 
-		<div class="follow_unfollow_wrapper">
-			<form class="custom_form" method="POST" action="/toggle/">{% csrf_token %}
-				{% if not  my_profile %}
-					{% if follow %}
-						<input type="submit" class="btn-primary" value="unfollow" name="relationship_button"/>
-					{% else %}
-						<input type="submit" class="btn" value="follow" name="relationship_button"/>
+		<div class="users_list_wrapper">
+			<div class="follow_unfollow_wrapper">
+				<form class="custom_form" method="POST" action="/toggle/">{% csrf_token %}
+					{% if not  my_profile %}
+						<input type="hidden" name="others_id" value="{{user_info.others_id}}"/>
+						{% if follow %}
+							<input type="submit" class="btn-primary relationship_button" value="unfollow" name="relationship_button"/>
+						{% else %}
+							<input type="submit" class="btn relationship_button" value="follow" name="relationship_button"/>
+						{% endif %}
+						
 					{% endif %}
-					<input type="hidden" name="others_id" value="{{user_info.others_id}}"/>
-				{% endif %}
-			</form>
+				</form>
+			</div>
+
+			<span><a class="following" href="#">{{following_count}}&nbsp;following</a></span>
+			<span><a class="followers" href="#">{{followers_count}}&nbsp;followers</a></span>
+		
 		</div>
 
 		

@@ -2,7 +2,7 @@
 
 	{% block middle_pane %}
 
-		<div class="users_list">
+		<div class="user_profile">
 
 			{% for user in users_list %}
 				<div class="user_info">
@@ -17,23 +17,23 @@
 							</div>
 
 
-							<div class="right">
+							<div class="right follow_unfollow_wrapper">
 								<span><h2 class="inline-fields">{{user.username}}</h2></span>
 								<span>&nbsp;&nbsp;</span>
 								<input type="hidden" name="others_id" value="{{user.others_id}}"/>
 								{% if user.follow %}
-									<input type="submit" class="btn-primary margin-top-adjustment" value="unfollow" name="relationship_button"/>
+									<input type="submit" class="btn-primary relationship_button margin-top-adjustment" value="unfollow" name="relationship_button"/>
 								{% else %}
-									<input type="submit"  class="btn margin-top-adjustment" value="follow" name="relationship_button"/>
+									<input type="submit"  class="btn relationship_button margin-top-adjustment" value="follow" name="relationship_button"/>
 								{% endif %}
 							</div>
 
 							<div>
-								<span><a href="#">{{user.followers}}  &nbsp;Followers</a></span>
+								<span><a class="followers" href="#">{{user.followers}}  &nbsp;Followers</a></span>
 							</div>
 
 							<div>
-								<span><a href="#">{{user.following}}  &nbsp;Following</a></span>
+								<span><a class="following" href="#">{{user.following}}  &nbsp;Following</a></span>
 							</div>
 
 						</form>

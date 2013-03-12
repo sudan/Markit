@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.http import HttpResponse
 
 from redis_helpers.views import Redis
 from auth.signin import login, authentication
@@ -10,6 +11,7 @@ from auth.getters import *
 
 from online_bookmarking.settings import USERS_LIST_TEMPLATE_PATH
 from socialize.profile import get_following_count,get_followers_count
+import simplejson
 
 def get_users(redis_obj, current_user_id):
 	''' Returns the users excluding the current user '''
@@ -119,34 +121,50 @@ def unfollow_user(redis_obj, current_user_id, others_id):
 
 @authentication('/users')
 def toggle_relationship(request):
-	''' Follow a user '''
+	''' Follow/unfollow a user '''
 
 	current_user_id = get_userId(request)
 	redis_obj = Redis()
 	username = get_username(redis_obj, current_user_id)
-	
+
 	if request.method == "POST":
 
-		others_id = request.POST.get("others_id", "")
-		relationship_request = request.POST.get("relationship_button", "")
-		
+		if request.is_ajax():
+			data = simplejson.loads(request.POST.keys()[0])
+		else:
+			data = request.POST
+
+		others_id = data.get("others_id", "")
+		relationship_request = data.get("relationship_request", "")
+	
 		if others_id != "" and relationship_request != "":
 
 			if relationship_request == "follow":
-				follow_user(redis_obj, current_user_id, int(others_id)) 
+				follow_user(redis_obj, current_user_id, int(others_id))
+				toggle_status = "unfollow" 
 			else:
 				unfollow_user(redis_obj, current_user_id, int(others_id))
+				toggle_status = "follow"
 
-	current_user_id = get_userId(request)
-	redis_obj = Redis()
+		data = {}
+		try:
+			
+			data['status'] = 'success'
+			data['toggle_status'] = toggle_status
+			data['followers'] = get_followers_count(redis_obj,int(others_id))
+			data['following'] = get_following_count(redis_obj,int(others_id))
+		except:
+			pass
+		return HttpResponse(simplejson.dumps(data),mimetype='application/json')
+
 	users_list = get_users(redis_obj, current_user_id)
-
 	return render_to_response(USERS_LIST_TEMPLATE_PATH,
 		{
 			'users_list':users_list,
 			'username':username,
 		},
 		context_instance=RequestContext(request))
+
 
 @authentication('/users')
 def users(request):
@@ -163,4 +181,27 @@ def users(request):
 			'username':username,
 		},
 		context_instance=RequestContext(request))
+
+def get_relations(request,relation_type):
+	''' Display the followers or following depending on the request '''
+
+	email = request.COOKIES.get("email", "")
+	auth_token = request.COOKIES.get("auth", "")
+
+	if not is_logged_in(email, auth_token):
+		return login(request,'/relation/' + relation_type)
+
+	redis_obj = Redis()
+	user_id = get_userId(request)
+
+	if relation_type == "followers":
+		relations = get_followers(redis_obj,user_id)
+	elif relation_type == "following":
+		relations = get_following(redis_obj,user_id)
+	else:
+		relations = []
+
+	return HttpResponse(simplejson.dumps(relations),mimetype='application/json')
+
+
 
