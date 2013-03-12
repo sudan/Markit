@@ -19,8 +19,7 @@ def get_next_userId(redis_obj):
 	
 	key = "global:userId"
 	return Redis.next_unique_key(redis_obj, key)
-import datetime
-from time import strftime
+
 def store_user_info(signup_form):
 	''' A controller which calls the individual store methods '''
 	
