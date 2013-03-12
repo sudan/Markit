@@ -4,10 +4,12 @@ from django.shortcuts import render_to_response
 
 from auth.helpers import get_userId
 from auth.getters import *
+from auth.signin import authentication
 from redis_helpers.views import Redis
 from socialize.profile import get_public_bookmarks
 from online_bookmarking.settings import RECOMMENDATIONS_LIST_TEMPLATE_PATH
 
+@authentication('/recommendations')
 def get_recommendations(request):
 	''' Get public bookmarks for the user '''
 
