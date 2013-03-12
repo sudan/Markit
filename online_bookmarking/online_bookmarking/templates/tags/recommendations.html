@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block middle_pane %}
+	<div class="alert" style="display:none">
+  		<span>Bookmark has added successfully</span>
+	</div>
+
+	<div id="bookmarks_wrapper">
+		<span>Public bookmarks</span>
+		<ul class="url_list">
+			{% for bookmark in recommendations %}
+				<li>
+					<a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a>
+						<img src="{{STATIC_URL}}custom/img/add-button.png" class="add_bookmark_icon" title="Add to My Bookmarks">
+					</li>
+					<p class="description">{{bookmark.description}}</p>
+				{% empty %}
+					<span>Hurray! no public bookmarks has been shared!</span>
+				{% endfor %}
+			</ul>
+		</div>
+{% endblock %}

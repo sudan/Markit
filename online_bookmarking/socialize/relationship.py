@@ -32,8 +32,8 @@ def get_users(redis_obj, current_user_id):
 			user_info['image_url'] = get_image_url(redis_obj, user_id)
 			user_info['timestamp'] = get_timestamp(redis_obj, user_id)
 			user_info['follow'] = is_following(redis_obj, current_user_id, user_id)
-			user_info['followers'] = get_followers_count(redis_obj, user_info['username'])
-			user_info['following'] = get_following_count(redis_obj, user_info['username'])
+			user_info['followers'] = get_followers_count(redis_obj, user_id)
+			user_info['following'] = get_following_count(redis_obj, user_id)
 
 			users_list.append(user_info)
 	
@@ -43,13 +43,14 @@ def get_followers(redis_obj, current_user_id):
 	''' Returns the list of followers info  for the user id '''
 	
 	key = "userId:%d:followers" %(current_user_id)
-	follower_ids = redis_obj.members_in_set(current_user_id)
+	follower_ids = redis_obj.members_in_set(key)
 
 	followers_list = [{} for i in xrange(len(follower_ids))]
 
 	for i, follower_id in enumerate(follower_ids):
 
 		follower_info = {}
+		follower_id = int(follower_id)
 		follower_info['others_id'] = follower_id
 		follower_info['email'] = get_email(redis_obj, follower_id)
 		follower_info['username'] = get_username(redis_obj, follower_id)
@@ -67,13 +68,14 @@ def get_following(redis_obj, current_user_id):
 	''' Returns the users whom the user is following '''
 	
 	key = "userId:%d:following" %(current_user_id)
-	following_ids = redis_obj.members_in_set(current_user_id)
-
+	
+	following_ids = redis_obj.members_in_set(key)
 	following_list = [{} for i in xrange(len(following_ids))]
 
 	for i, following_id in enumerate(following_ids):
 
 		following_info = {}
+		following_id = int(following_id)
 		following_info['others_id'] = following_id
 		following_info['email'] = get_email(redis_obj, following_id)
 		following_info['username'] = get_username(redis_obj, following_id)

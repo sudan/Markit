@@ -128,9 +128,9 @@ def display_bookmarks(request):
 		data = simplejson.dumps(data)
 		return HttpResponse(data, mimetype='application/json')
 
-	user_info = get_user_info(redis_obj, username, get_userId(request))
-	user_info['following'] = get_following_count(redis_obj, username)
-	user_info['followers'] = get_followers_count(redis_obj, username)
+	user_info = get_user_info(redis_obj, get_unique_id(redis_obj, username), get_userId(request))
+	user_info['following'] = get_following_count(redis_obj, get_unique_id(redis_obj, username))
+	user_info['followers'] = get_followers_count(redis_obj, get_unique_id(redis_obj, username))
 	
 	return render_to_response(HOME_TEMPLATE_PATH, 
 		{

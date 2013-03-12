@@ -121,6 +121,7 @@ class EditProfileForm(forms.Form):
 		)
 
 	summary = forms.CharField(
+		required=False,
 		widget=forms.widgets.Textarea(
 			attrs={'placeholder':'Describe Yourself'}
 			)

@@ -21,10 +21,10 @@ def is_following(redis_obj, current_user_id, others_id):
 	else:
 		return False
 
-def get_user_info(redis_obj, profile_name, current_user_id):
+def get_user_info(redis_obj, user_id, current_user_id):
 	''' Returns the profile info about the user '''
 
-	user_id = get_unique_id(redis_obj, profile_name)
+
 	if user_id == '':
 		raise Http404()
 
@@ -41,10 +41,9 @@ def get_user_info(redis_obj, profile_name, current_user_id):
 
 	return user_info
 
-def get_following_count(redis_obj, profile_name):
+def get_following_count(redis_obj, user_id):
 	''' Returns the following count of the user '''
 
-	user_id = get_unique_id(redis_obj, profile_name)
 	if user_id == '':
 		raise Http404()
 
@@ -52,25 +51,23 @@ def get_following_count(redis_obj, profile_name):
 	key = "userId:%d:following" %(user_id)
 	return redis_obj.total_members(key)
 
-def get_followers_count(redis_obj, profile_name):
+def get_followers_count(redis_obj, user_id):
 	''' Returns the followers count of the user '''
 
-	user_id = get_unique_id(redis_obj, profile_name)
 	if user_id == '':
 		raise Http404()
 
 	key = "userId:%d:followers" %(user_id)
 	return redis_obj.total_members(key)
 
-def get_public_bookmarks(redis_obj, profile_name):
+def get_public_bookmarks(redis_obj, user_id,limit=25):
 	''' Return the public bookmarks of the user '''
 
-	user_id = get_unique_id(redis_obj, profile_name)
 	if user_id == '':
 		raise Http404()
 	
 	key = "userId:%d:bookmarks" %(user_id)
-	bookmark_ids = redis_obj.get_elements_in_range(key, 0, 25)
+	bookmark_ids = redis_obj.get_elements_in_range(key, 0, limit)
 
 	bookmarks_list = []
 	for i, bookmark_id in enumerate(bookmark_ids):
@@ -99,10 +96,10 @@ def profile(request, profile_name=''):
 		if user_id == '':
 			raise Http404()
 		
-		user_info = get_user_info(redis_obj, profile_name, user_id)
-		followers_count = get_followers_count(redis_obj, profile_name)
-		following_count = get_following_count(redis_obj, profile_name)
-		public_bookmarks = get_public_bookmarks(redis_obj, profile_name)
+		user_info = get_user_info(redis_obj, get_unique_id(redis_obj, profile_name), user_id)
+		followers_count = get_followers_count(redis_obj, get_unique_id(redis_obj, profile_name))
+		following_count = get_following_count(redis_obj, get_unique_id(redis_obj, profile_name))
+		public_bookmarks = get_public_bookmarks(redis_obj, get_unique_id(redis_obj, profile_name))
 
 		if user_id == current_user_id:
 			my_profile = True
