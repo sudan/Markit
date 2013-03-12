@@ -11,15 +11,19 @@
 	</div>
 
 	<div id="bookmarks_wrapper">
-		<h3>Here are the list of available Tags</h3>
 		<form method="POST" action="/tag_names/">{% csrf_token %}
 			{% for tag in tag_info %}
+				<h3>Here are the list of available Tags</h3>
 				<div>
 					<b>
 						<a class="tags" href="/tags/{{tag.tag_id}}">{{tag.name}}</a>
 					</b>
 					<ul class="url_list">
 					</ul>
+				</div>
+			{% empty %}
+				<div>
+					Hurray No tags has been created yet!
 				</div>
 			{% endfor %}
 		</form>

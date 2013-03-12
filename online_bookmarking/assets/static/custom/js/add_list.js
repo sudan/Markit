@@ -29,11 +29,11 @@
 			$.loadImage();
 			$.hideSuccess();
 			
-			var img = $(e.currentTarget);
+			window.img = $(e.currentTarget);
 			var url = img.closest('li').find('a').attr('href');
 			var name = img.closest('li').find('a').text();
-			var description = img.closest('li').children('p.description').text();
-
+			var description = img.closest('li').next().text();
+			console.log(description);
 			var addBookmark = new addListBookmark({
 				url: url,
 				name: name,
