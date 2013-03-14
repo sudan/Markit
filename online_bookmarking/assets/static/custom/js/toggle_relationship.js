@@ -27,7 +27,7 @@
 		{
 			e.preventDefault();
 			var self = this;
-			window.e = e;
+			
 			var relationShipRequest = e.currentTarget.value;
 			var othersId = $(e.currentTarget).prev().val();
 
@@ -35,6 +35,8 @@
 				others_id: othersId,
 				relationship_request: relationShipRequest
 			});
+			
+			$.loadImage();
 
 			toggle.save({
 				success: function(response)
@@ -46,7 +48,7 @@
 
 				}
 			}).complete(function(response){
-				window.response = response;
+				$.hideImage();
 				var response = JSON.parse(response.responseText);
 				if(response['status'])
 				{

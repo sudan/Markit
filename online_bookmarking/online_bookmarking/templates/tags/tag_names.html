@@ -12,8 +12,8 @@
 
 	<div id="bookmarks_wrapper">
 		<form method="POST" action="/tag_names/">{% csrf_token %}
+			<h3>Here are the list of available Tags</h3>
 			{% for tag in tag_info %}
-				<h3>Here are the list of available Tags</h3>
 				<div>
 					<b>
 						<a class="tags" href="/tags/{{tag.tag_id}}">{{tag.name}}</a>
