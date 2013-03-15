@@ -44,7 +44,7 @@ urlpatterns = patterns('',
     url(r'^toggle/$','socialize.relationship.toggle_relationship'),
     url(r'^profile/(?P<profile_name>\w+)/$','socialize.profile.profile'),
     url(r'^recommendations','socialize.public_bookmarks.get_recommendations'),
-    url(r'^relation/(?P<relation_type>\w+)/$','socialize.relationship.get_relations'),
+    url(r'^relation/(?P<relation_type>\w+)/(?P<username>\w+)$','socialize.relationship.get_relations'),
     
     #future implementation
     url(r'', include('social_auth.urls')),

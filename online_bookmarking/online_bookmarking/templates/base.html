@@ -69,8 +69,13 @@
             <div id="fill">
                 <div class="content">
                     <div class="wrapper">
+                        {% block friends_pane %}
+                        {% endblock %}
+
                         {% block middle_pane %}
                         {% endblock %}
+
+
                     </div>
                 </div>
             </div>
@@ -104,6 +109,7 @@
         <script type="text/javascript" src="{{STATIC_URL}}custom/js/add_list.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}custom/js/bookmark_category.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}custom/js/toggle_relationship.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}custom/js/display_friends.js"></script>
 
     </body>
 

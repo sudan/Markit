@@ -1,0 +1,30 @@
+ <div id="follower_following_wrapper" style="display:none">
+    
+    <script type="text/template" id="friendsList">
+        
+        <div>
+            <a href="/profile/<%= username %>">
+                <img src="<%= image_url %>" alt="<%= username %>"/>
+            </a> 
+            <div>
+                <span><%= followers_count %>&nbsp;Followers</span>
+            </div>
+            <div>
+                <span><%= following_count %>&nbsp;Following</span>   
+            </div>
+        </div>
+
+        <div class="right">
+            <span><h2 class="inline-fields"><%= username %></h2></span>
+            <span>&nbsp;&nbsp;</span>
+            <input type="hidden" name="others_id" value="<%= others_id %>"/>
+            <% if(relationship_status){ %>
+                <input type="button"  value="unfollow" class="unfollow btn-primary"/>
+            <% } else { %>
+                <input type="button" class="follow" value="follow"/>
+            <% } %> 
+           
+        </div>  
+    
+    </script>
+</div>

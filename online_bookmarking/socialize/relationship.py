@@ -60,7 +60,9 @@ def get_followers(redis_obj, current_user_id):
 		follower_info['last_name'] = get_last_name(redis_obj, follower_id)
 		follower_info['image_url'] = get_image_url(redis_obj, follower_id)
 		follower_info['timestamp'] = get_timestamp(redis_obj, follower_id)	
-		follower_info['follow'] = is_following(redis_obj, current_user_id, follower_id)
+		follower_info['relationship_status'] = is_following(redis_obj, current_user_id, follower_id)
+		follower_info['following_count'] = get_following_count(redis_obj,follower_id)
+		follower_info['followers_count'] = get_followers_count(redis_obj,follower_id)
 
 		followers_list[i] = follower_info
 
@@ -85,7 +87,9 @@ def get_following(redis_obj, current_user_id):
 		following_info['last_name'] = get_last_name(redis_obj, following_id)
 		following_info['image_url'] = get_image_url(redis_obj, following_id)
 		following_info['timestamp'] = get_timestamp(redis_obj, following_id)	
-		following_info['follow'] = True
+		following_info['relationship_status'] = True
+		following_info['following_count'] = get_following_count(redis_obj,following_id)
+		following_info['followers_count'] = get_followers_count(redis_obj,following_id)
 
 		following_list[i] = following_info
 
@@ -182,7 +186,7 @@ def users(request):
 		},
 		context_instance=RequestContext(request))
 
-def get_relations(request,relation_type):
+def get_relations(request,relation_type,username):
 	''' Display the followers or following depending on the request '''
 
 	email = request.COOKIES.get("email", "")
@@ -192,13 +196,16 @@ def get_relations(request,relation_type):
 		return login(request,'/relation/' + relation_type)
 
 	redis_obj = Redis()
-	user_id = get_userId(request)
-
-	if relation_type == "followers":
-		relations = get_followers(redis_obj,user_id)
-	elif relation_type == "following":
-		relations = get_following(redis_obj,user_id)
-	else:
+	
+	try:
+		user_id = get_unique_id(redis_obj,username)
+		if relation_type == "followers":
+			relations = get_followers(redis_obj,user_id)
+		elif relation_type == "following":
+			relations = get_following(redis_obj,user_id)
+		else:
+			relations = []
+	except:
 		relations = []
 
 	return HttpResponse(simplejson.dumps(relations),mimetype='application/json')

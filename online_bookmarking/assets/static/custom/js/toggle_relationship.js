@@ -2,7 +2,7 @@
 
 	"use strict"
 
-	var ToggleRelationShip = Backbone.Model.extend({
+	window.ToggleRelationShip = Backbone.Model.extend({
 		defaults:{
 			others_id:'',
 			relationship_request:''

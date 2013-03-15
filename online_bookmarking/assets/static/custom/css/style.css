@@ -187,3 +187,9 @@ tr,.btn,.btn-primary
 	padding-left: 15px;
 }
 
+#follower_following_wrapper
+{
+	position:absolute;
+	top:0px;
+	background-color:#F7F7F9;
+}
