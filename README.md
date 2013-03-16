@@ -6,10 +6,10 @@ in python) jQuery and Backbone.js
 How to Use
 ==========
 
-1. Install Python and Django(1.x)
-2. Install Redis and Redis client for Python(redis-py)
-3. Install sqlite3 and corresponding adapter for python(pysqlite)
-4. Download the repo and run the following command python manage runserver and navigate to localhost:8000 to visit the home page
+  1. Install Python and Django(1.x) 
+  2. Install Redis and Redis client for Python(redis-py)
+  3. Install sqlite3 and corresponding adapter for python(pysqlite)
+  4. Download the repo and run the following command python manage runserver and navigate to localhost:8000 to visit the home page
 
 Data Layout using Redis
 =======================
@@ -74,3 +74,12 @@ There are mainly 5 objects namely
     i. SADD userId:1:followers -- set of follower Ids corresponding to the userId 1
     ii.SADD userId:1:following -- set of people whom the userId 1 is following
     
+Features
+========
+
+1.Users can add bookmarks and mark the visibility
+2.User can group bookmarks based on categories and filter it
+3.User can add bookmarks to tags
+4.User can follow other users
+5.User can add other user bookmarks to their list
+6.Add public bookmarks of following users
