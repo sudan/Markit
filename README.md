@@ -14,17 +14,17 @@ How to Use
 Data Layout using Redis
 =======================
 
-There are mainly 5 objects namely
-  i.User 
-    -- Represents a user object
-  ii.Bookmarks 
-    -- Represents a bookmark
-  iii.Category 
-    -- Represent a category for the bookmark corresponding to the user
-  iv.Tags 
-    --Bookmarks are associated with tags and are visible to everyone 
-  v.Socialize
-    -- Users can follow other users
+  There are mainly 5 objects namely
+    1.User 
+      -- Represents a user object
+    2.Bookmarks 
+      -- Represents a bookmark
+    3.Category 
+      -- Represent a category for the bookmark corresponding to the user
+    4.Tags 
+      --Bookmarks are associated with tags and are visible to everyone 
+    5.Socialize
+      -- Users can follow other users
   
   
 1. User object
@@ -77,10 +77,10 @@ There are mainly 5 objects namely
 Features
 ========
 
-  i.Users can create bookmarks and mark the visibility,edit and delete it
-  ii.User can create categories and group bookmarks based on categories and filter it
-  iii.User can add bookmarks to tags so that it is publicly available to others to follow it
-  iv.Multiple bookmarks can be added to same tag name by different users
-  v.User can follow other users
-  vi.User can add other user bookmarks to their list
-  vii.Add public bookmarks of following users
+  1.Users can create bookmarks and mark the visibility,edit and delete it
+  2.User can create categories and group bookmarks based on categories and filter it
+  3.User can add bookmarks to tags so that it is publicly available to others to follow it
+  4.Multiple bookmarks can be added to same tag name by different users
+  5.User can follow other users
+  6.User can add other user bookmarks to their list
+  7.Add public bookmarks of following users
