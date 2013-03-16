@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.http import Http404
+from django.http import Http404,HttpResponse
 
 from redis_helpers.views import Redis
 from auth.signin import login, authentication
@@ -8,6 +8,8 @@ from auth.login_status import is_logged_in
 from auth.helpers import get_userId
 from auth.getters import *
 from bookmark.getters import *
+
+import simplejson
 
 from online_bookmarking.settings import USER_PROFILE_TEMPLATE_PATH
 
@@ -121,3 +123,16 @@ def profile(request, profile_name=''):
 			context_instance=RequestContext(request))
 
 	return Http404()
+
+@authentication('/count/')
+def get_friends_count(request):
+	''' Get the followers and following count '''
+
+	redis_obj = Redis()
+	user_id  = get_userId(request)
+
+	friends_count = {}
+	friends_count['following_count'] = get_following_count(redis_obj,user_id)
+	friends_count['followers_count'] = get_followers_count(redis_obj,user_id)
+
+	return HttpResponse(simplejson.dumps(friends_count),mimetype='application/json')

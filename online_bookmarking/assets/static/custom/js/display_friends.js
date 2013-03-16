@@ -2,7 +2,7 @@
 
 	"use strict"
 
-	var displayFriend = Backbone.Model.extend({
+	var DisplayFriend = Backbone.Model.extend({
 		defaults:{
 			image_url:'',
 			name:'',
@@ -13,15 +13,44 @@
 		}
 	});
 
-	var displayFriends = Backbone.Collection.extend({
-		model: displayFriend
+	var DisplayFriends = Backbone.Collection.extend({
+		model: DisplayFriend
 	});
 
-	var userInfoView = Backbone.View.extend({
+	var FriendsCount = Backbone.Model.extend({
+		defaults:{
+			following_count:'',
+			followers_count:''
+		},
+		urlRoot: '/count/'
+	});
+
+	var friendsCountView = Backbone.View.extend({
 		el: $('#user_info'),
 
 		initialize: function()
 		{
+			this.on('change:count',this.changeFriendsCount,this);
+		},
+
+		changeFriendsCount: function()
+		{
+			var self = this;
+			self.model = new FriendsCount();
+			self.model.fetch({
+				success: function(response)
+				{
+
+				},
+				error: function(response)
+				{
+
+				}
+			}).complete(function(response){
+				var response = JSON.parse(response.responseText);
+				self.$el.find('a.following').text(response['following_count'] + " following");
+				self.$el.find('a.followers').text(response['followers_count'] + " followers" );
+			});
 
 		},
 
@@ -38,11 +67,11 @@
 			var relationType = $(anchor).attr('class');
 			var username = this.$el.find('b.title').text();
 		
-			this.displayFriends = new displayFriendsView(relationType,username);
+			this.displayFriends = new DisplayFriendsView(relationType,username);
 		}
 	});
 
-	var displayFriendView = Backbone.View.extend({
+	var DisplayFriendView = Backbone.View.extend({
 		
 		tagName: 'table',
 		template: $('#friendsList').html(),
@@ -54,7 +83,7 @@
 		}
 	});
 
-	var displayFriendsView = Backbone.View.extend({
+	var DisplayFriendsView = Backbone.View.extend({
 
 		el:$('#follower_following_wrapper'),
 		initialize: function(relationType,username)
@@ -124,6 +153,7 @@
 							.val('unfollow');
 					}
 				}
+				friendsCount.trigger('change:count');
 			});
 		},
 
@@ -131,7 +161,7 @@
 		{
 			var self = this;
 
-			self.collection = new displayFriends();
+			self.collection = new DisplayFriends();
 			if(self.relationType == "following")
 				self.collection.url = "/relation/following/" + self.username;
 			else
@@ -155,17 +185,20 @@
 		render: function(friends)
 		{
 			var self = this;
-			self.$el.find(self.friendsListWrapper).empty();
-			_.each(friends,function(friend){
-				self.renderFriend(friend);
-			});
+			if(friends.length > 0)
+			{
+				self.$el.find(self.friendsListWrapper).empty();
+				_.each(friends,function(friend){
+					self.renderFriend(friend);
+				});
 
-			self.$el.hide().slideDown(700);
+				self.$el.hide().slideDown(700);
+			}
 		},
 
 		renderFriend: function(friend)
 		{
-			var friend = new displayFriend({
+			var friend = new DisplayFriend({
 				image_url: friend['image_url'],
 				username: friend['username'],
 				relationship_status: friend['relationship_status'],
@@ -174,7 +207,7 @@
 				others_id: friend['others_id']
 			});
 
-			var friendView = new displayFriendView({
+			var friendView = new DisplayFriendView({
 				model: friend
 			});
 
@@ -183,6 +216,6 @@
 
 	});
 
-	window.userInfo = new userInfoView();
+	window.friendsCount = new friendsCountView();
 
 })(jQuery,window,document);

@@ -36,7 +36,6 @@ urlpatterns = patterns('',
     #tag related urls
     url(r'^tag/$','tags.views.tag_bundle'),
     url(r'^tag_list/$','tags.views.retrieve_tags'),
-    url(r'^tag_names/$','tags.views.retrieve_tags'),
     url(r'^tags/(?P<tag_id>\d+)','tags.views.get_bookmarks_for_tags'),
     
     #socialize related urls
@@ -45,7 +44,8 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<profile_name>\w+)/$','socialize.profile.profile'),
     url(r'^recommendations','socialize.public_bookmarks.get_recommendations'),
     url(r'^relation/(?P<relation_type>\w+)/(?P<username>\w+)$','socialize.relationship.get_relations'),
-    
+    url(r'^count/$','socialize.profile.get_friends_count'),
+
     #future implementation
     url(r'', include('social_auth.urls')),
 )
