@@ -46,7 +46,5 @@
 
 	$.layoutEngine(layoutSettings);
 
-	
-
 
 })(jQuery,window,document);

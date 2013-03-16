@@ -11,8 +11,8 @@
                 </td>
 
                 <td class="right">
-                    <span><h2 class="inline-fields"><%= username %></h2></span>
-                    <span>&nbsp;&nbsp;</span>
+                    <b class="inline-fields title"><%= username %></b>
+                    <p><%= summary %></p>
                     <input type="hidden" name="others_id" value="<%= others_id %>"/>
                     <% if(relationship_status){ %>
                         <input type="button"  value="unfollow" class="unfollow btn-primary"/>

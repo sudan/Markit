@@ -65,7 +65,8 @@
 			var self = this;
 
 			self.createTagFormDiv = $('#create_tag');
-			self.tagNameErrorSpan = $('#tag_name_error');	
+			self.tagNameErrorSpan = $('#tag_name_error');
+			self.tagForm = $('#add_tag_form');	
 			self.bookmarkDropDownId = 'bookmark_dropdown';
 		},
 
@@ -89,6 +90,8 @@
 
 			self.createTagFormDiv.find('input[name=name]').val('');
 			self.tagNameErrorSpan.empty();
+
+			self.tagForm.css('height','125px');
 
 		},
 

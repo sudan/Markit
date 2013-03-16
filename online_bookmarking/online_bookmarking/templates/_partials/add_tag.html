@@ -3,7 +3,7 @@
 
 	<div id="create_tag" style="display:none">
 		
-		<form  id="add_tag_form" method="POST" action="/tag/"> {% csrf_token %}
+		<form  id="add_tag_form" method="POST" action="/tag/" style="height:100px"> {% csrf_token %}
 			<span><label for="id_tag">Tag Name:</label></span>
 			<span class="inline-fields">{{tag_form.name}}</span>
 			<br/>

@@ -6,6 +6,7 @@
 		defaults:{
 			image_url:'',
 			name:'',
+			summary:'',
 			relationship_status:'',
 			following_count:'',
 			followers_count:'',
@@ -205,6 +206,7 @@
 			var friend = new DisplayFriend({
 				image_url: friend['image_url'],
 				username: friend['username'],
+				summary: friend['summary'],
 				relationship_status: friend['relationship_status'],
 				following_count: friend['following_count'],
 				followers_count: friend['followers_count'],

@@ -60,6 +60,7 @@ def get_followers(redis_obj, current_user_id):
 		follower_info['first_name'] = get_first_name(redis_obj, follower_id)
 		follower_info['last_name'] = get_last_name(redis_obj, follower_id)
 		follower_info['image_url'] = get_image_url(redis_obj, follower_id)
+		follower_info['summary'] = get_summary(redis_obj,follower_id)
 		follower_info['timestamp'] = get_timestamp(redis_obj, follower_id)	
 		follower_info['relationship_status'] = is_following(redis_obj, current_user_id, follower_id)
 		follower_info['following_count'] = get_following_count(redis_obj,follower_id)
@@ -87,6 +88,7 @@ def get_following(redis_obj, current_user_id):
 		following_info['first_name'] = get_first_name(redis_obj, following_id)
 		following_info['last_name'] = get_last_name(redis_obj, following_id)
 		following_info['image_url'] = get_image_url(redis_obj, following_id)
+		following_info['summary'] = get_summary(redis_obj,following_id)
 		following_info['timestamp'] = get_timestamp(redis_obj, following_id)	
 		following_info['relationship_status'] = True
 		following_info['following_count'] = get_following_count(redis_obj,following_id)
