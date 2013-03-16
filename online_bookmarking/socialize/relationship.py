@@ -31,6 +31,7 @@ def get_users(redis_obj, current_user_id):
 			user_info['username'] = get_username(redis_obj, user_id)
 			user_info['first_name'] = get_first_name(redis_obj, user_id)
 			user_info['last_name'] = get_last_name(redis_obj, user_id)
+			user_info['description'] = get_summary(redis_obj,user_id)
 			user_info['image_url'] = get_image_url(redis_obj, user_id)
 			user_info['timestamp'] = get_timestamp(redis_obj, user_id)
 			user_info['follow'] = is_following(redis_obj, current_user_id, user_id)

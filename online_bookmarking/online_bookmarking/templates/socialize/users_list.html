@@ -19,21 +19,15 @@
 
 							<div class="right follow_unfollow_wrapper">
 								<span><h2 class="inline-fields">{{user.username}}</h2></span>
-								<span>&nbsp;&nbsp;</span>
+
+								<span><p>{{user.description}}</p></span>
 								<input type="hidden" name="others_id" value="{{user.others_id}}"/>
 								{% if user.follow %}
 									<input type="submit" class="btn-primary relationship_button margin-top-adjustment" value="unfollow" name="relationship_button"/>
 								{% else %}
 									<input type="submit"  class="btn relationship_button margin-top-adjustment" value="follow" name="relationship_button"/>
 								{% endif %}
-							</div>
-
-							<div>
-								<span>{{user.followers}}  &nbsp;Followers</span>
-							</div>
-
-							<div>
-								<span>{{user.following}}  &nbsp;Following</span>
+								
 							</div>
 
 						</form>
