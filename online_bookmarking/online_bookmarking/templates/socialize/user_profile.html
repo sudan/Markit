@@ -2,7 +2,8 @@
 
 {% block middle_pane %}
 	
-	<div class="user_profile">
+	{% include "_partials/display_friends.html" %}
+	<div id="user_info" class="user_profile">
 
 		<div class="image_wrapper inline-fields">
 			<a href="/profile/{{user_info.username}}/">
@@ -11,7 +12,7 @@
 		</div>
 
 		<div class="username_wrapper">
-			<span><h1>{{user_info.username}}</h1></span>
+			<span><b class="title">{{user_info.username}}</b></span>
 		</div>
 
 		<div class="summary_wrapper">
@@ -36,11 +37,11 @@
 					{% endif %}
 				</form>
 			</div>
-
-			<span><a class="following" href="#">{{following_count}}&nbsp;following</a></span>
-			<span><a class="followers" href="#">{{followers_count}}&nbsp;followers</a></span>
 		
 		</div>
+
+		<div><a class="following" href="#">{{following_count}}&nbsp;following</a></div>
+		<div><a class="followers" href="#">{{followers_count}}&nbsp;followers</a></div>
 
 		
 		<div class="alert" style="display:none">

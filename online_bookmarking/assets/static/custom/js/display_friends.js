@@ -64,9 +64,13 @@
 		{
 			e.preventDefault();
 			var anchor = e.currentTarget;
+
 			var relationType = $(anchor).attr('class');
-			var username = this.$el.find('b.title').text();
-		
+			var username = $(anchor)
+								.parent()
+								.siblings($('.username_wrapper'))
+								.find('b.title').text();
+			
 			this.displayFriends = new DisplayFriendsView(relationType,username);
 		}
 	});

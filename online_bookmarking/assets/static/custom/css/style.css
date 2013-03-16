@@ -192,7 +192,7 @@ tr,.btn,.btn-primary
 	position:absolute;
 	top:0px;
 	background-color:#F7F7F9;
-	width: 460px;
+	width: 440px;
 	margin-left: auto;
 	margin-right: auto;
 	height: 500px;
@@ -203,4 +203,9 @@ tr,.btn,.btn-primary
 .close
 {
 	cursor: pointer;
+}
+
+.user_profile
+{
+	height: 100px;
 }
