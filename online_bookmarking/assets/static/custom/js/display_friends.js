@@ -44,8 +44,7 @@
 
 	var displayFriendView = Backbone.View.extend({
 		
-		tagName: 'div',
-		className: 'friendsList',
+		tagName: 'table',
 		template: $('#friendsList').html(),
 		render: function()
 		{
@@ -62,13 +61,21 @@
 		{
 			this.relationType = relationType;
 			this.username = username;
+			this.friendsListWrapper =  $('#friends_list_wrapper')
 			this.fetchFriends();
+			
 		},
 
 		events:
 		{
 			'click .unfollow':'toggle',
-			'click .follow':'toggle'	
+			'click .follow':'toggle',
+			'click button.close':'closeFriendsList',
+		},
+
+		closeFriendsList: function()
+		{
+			this.$el.slideUp(700);
 		},
 
 		toggle: function(e)
@@ -76,7 +83,7 @@
 			
 			e.preventDefault();
 			var self = this;
-			window.e = e;
+			
 			var relationShipRequest = e.currentTarget.value;
 			var othersId = $(e.currentTarget).prev().val();
 
@@ -148,12 +155,12 @@
 		render: function(friends)
 		{
 			var self = this;
-			self.$el.empty();
+			self.$el.find(self.friendsListWrapper).empty();
 			_.each(friends,function(friend){
 				self.renderFriend(friend);
 			});
 
-			self.$el.show().slideUp().slideDown();
+			self.$el.hide().slideDown(700);
 		},
 
 		renderFriend: function(friend)
@@ -171,7 +178,7 @@
 				model: friend
 			});
 
-			this.$el.append(friendView.render().el);
+			this.$el.find(this.friendsListWrapper).append(friendView.render().el);
 		}
 
 	});

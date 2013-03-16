@@ -11,7 +11,8 @@
 	            Name    :   "Top",
 	            Dock    :   $.layoutEngine.DOCK.TOP,
 	            EleID   :   "top",                           
-	            Height  :   75
+	            Height  :   75,
+	            Width   :   200
 	        },
 	        {
                 Name    :   "Left",
@@ -29,7 +30,7 @@
 	            Name    :   "Right",
 	            Dock    :   $.layoutEngine.DOCK.RIGHT,
 	            EleID   :   "right",                          
-	           	Width   :   550,
+	           	Width   :   500,
 	           	Height  :   500
 	                        
 	        },                        
