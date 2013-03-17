@@ -9,7 +9,8 @@ How to Use
   1. Install Python and Django(1.x) 
   2. Install Redis and Redis client for Python(redis-py)
   3. Install sqlite3 and corresponding adapter for python(pysqlite)
-  4. Download the repo and run the following command python manage runserver and navigate to localhost:8000 to visit the home page
+  4. Download the repo and run the following command python manage.py runserver from inside the online_bookmarking directory
+    where the manage.py file is present  and navigate to localhost:8000 to visit the home page
 
 Data Layout using Redis
 =======================
