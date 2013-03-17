@@ -44,25 +44,6 @@ DATABASES = {
     }
 }
 
-
-SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
-SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'associate_complete'
-SOCIAL_AUTH_EXTRA_DATA = False
-SOCIAL_AUTH_CHANGE_SIGNAL_ONLY = True
-SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
-
-LOGIN_URL = "/"
-LOGIN_REDIRECT_URL = "/home"
-LOGIN_ERROR_URL = "/"
-
-SOCIAL_AUTH_PIPELINE = (
-'social_auth.backends.pipeline.social.social_auth_user',
-'social_auth.backends.pipeline.associate.associate_by_email',
-'social_auth.backends.pipeline.user.get_username',
-'social_auth.backends.pipeline.user.create_user',
-'social_auth.backends.pipeline.social.associate_user',
-'social_auth.backends.pipeline.user.update_user_details',
-)
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -166,40 +147,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
-
-AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuthBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.google.GoogleBackend',
-    'social_auth.backends.yahoo.YahooBackend',
-    'social_auth.backends.browserid.BrowserIDBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    'social_auth.backends.contrib.disqus.DisqusBackend',
-    'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-    'social_auth.backends.contrib.orkut.OrkutBackend',
-    'social_auth.backends.contrib.foursquare.FoursquareBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.contrib.vkontakte.VKontakteBackend',
-    'social_auth.backends.contrib.live.LiveBackend',
-    'social_auth.backends.contrib.skyrock.SkyrockBackend',
-    'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
-    'social_auth.backends.contrib.readability.ReadabilityBackend',
-    'social_auth.backends.OpenIDBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-TWITTER_CONSUMER_KEY         = ''
-TWITTER_CONSUMER_SECRET      = ''
-FACEBOOK_APP_ID              = '206833696091079'
-FACEBOOK_API_SECRET          = 'f6557050b9eade538b87716addbb8304'
-LINKEDIN_CONSUMER_KEY        = ''
-LINKEDIN_CONSUMER_SECRET     = ''
-GOOGLE_CONSUMER_KEY          = ''
-GOOGLE_CONSUMER_SECRET       = ''
-GOOGLE_OAUTH2_CLIENT_ID      = ''
-GOOGLE_OAUTH2_CLIENT_SECRET  = ''
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

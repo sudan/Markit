@@ -46,6 +46,4 @@ urlpatterns = patterns('',
     url(r'^relation/(?P<relation_type>\w+)/(?P<username>\w+)$','socialize.relationship.get_relations'),
     url(r'^count/$','socialize.profile.get_friends_count'),
 
-    #future implementation
-    url(r'', include('social_auth.urls')),
 )
